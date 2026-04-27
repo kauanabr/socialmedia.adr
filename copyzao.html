@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Além do Capital — Copyzão · André Finguer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --carbon:#1F1F1F;--carbon-mid:#2a2a2a;
+  --gold:#DCB559;--gold-dark:#b8952e;--gold-light:#e8c97a;--gold-faint:rgba(220,181,89,0.07);
+  --prussian:#163446;--prussian-light:#1e4a64;
+  --white:#FFFFFF;--off-white:#F5F0E8;
+  --silver:rgba(255,255,255,0.55);--muted:rgba(255,255,255,0.3);
+  --border:rgba(220,181,89,0.15);--subtle:rgba(255,255,255,0.07);
+  --teal:#007374;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--carbon);color:var(--white);
+  font-family:'Inter',sans-serif;font-weight:300;
+  font-size:15px;line-height:1.8;overflow-x:hidden;
+}
+
+/* PROGRESS */
+.progress-bar{
+  position:fixed;top:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));
+  z-index:200;width:0%;transition:width .1s linear;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:56px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(31,31,31,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{
+  font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;
+  color:var(--gold);letter-spacing:.04em;
+}
+.nav-right{display:flex;align-items:center;gap:24px}
+.nav-toc-btn{
+  font-size:10px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;background:none;border:none;transition:color .2s;
+}
+.nav-toc-btn:hover{color:var(--gold-light)}
+.nav-counter{
+  font-size:10px;font-weight:300;color:var(--muted);
+  letter-spacing:.06em;
+}
+
+/* TOC DRAWER */
+.toc-drawer{
+  position:fixed;top:56px;right:0;bottom:0;width:300px;
+  background:rgba(25,25,25,0.98);backdrop-filter:blur(16px);
+  border-left:1px solid var(--border);z-index:99;
+  transform:translateX(100%);transition:transform .35s ease;
+  overflow-y:auto;padding:32px 28px;
+}
+.toc-drawer.open{transform:translateX(0)}
+.toc-title{
+  font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:2px}
+.toc-item{
+  padding:10px 14px;border:1px solid var(--subtle);cursor:pointer;
+  transition:all .2s;border-radius:3px;
+}
+.toc-item:hover{border-color:var(--border);background:var(--gold-faint)}
+.toc-item-num{
+  font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);
+  opacity:.3;line-height:1;
+}
+.toc-item-title{font-size:12px;font-weight:400;color:var(--white);margin-top:2px;line-height:1.3}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:0 80px 80px;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 85% 15%,rgba(22,52,70,0.5) 0%,transparent 55%),
+    radial-gradient(ellipse at 10% 90%,rgba(220,181,89,0.04) 0%,transparent 45%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:10px;font-weight:400;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px;
+  opacity:0;animation:rise .9s .2s forwards;
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,7vw,96px);font-weight:300;
+  line-height:1.0;letter-spacing:-.02em;
+  max-width:800px;
+  opacity:0;animation:rise .9s .4s forwards;
+}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-desc{
+  margin-top:28px;font-size:15px;font-weight:300;
+  color:var(--silver);max-width:540px;line-height:1.85;
+  opacity:0;animation:rise .9s .6s forwards;
+}
+.hero-stats{
+  margin-top:48px;display:flex;gap:0;
+  opacity:0;animation:rise .9s .8s forwards;
+}
+.hero-stat{
+  padding:18px 28px;border:1px solid var(--border);border-right:none;
+  display:flex;flex-direction:column;gap:3px;
+}
+.hero-stat:last-child{border-right:1px solid var(--border)}
+.hs-n{
+  font-family:'Cormorant Garamond',serif;font-size:32px;
+  font-weight:300;color:var(--gold);line-height:1;
+}
+.hs-l{
+  font-size:9px;font-weight:400;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+/* BLOCOS */
+.bloco{
+  padding:100px 80px;border-bottom:1px solid var(--subtle);
+  position:relative;
+}
+.bloco:nth-child(even){background:rgba(22,52,70,0.07)}
+
+.bloco-header{margin-bottom:56px}
+.bloco-num{
+  font-family:'Cormorant Garamond',serif;font-size:11px;font-weight:300;
+  letter-spacing:.25em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:16px;display:flex;align-items:center;gap:14px;
+}
+.bloco-num::after{content:'';display:block;width:40px;height:1px;background:var(--gold-dark);opacity:.4}
+.bloco-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,4vw,56px);font-weight:300;
+  line-height:1.1;letter-spacing:-.01em;max-width:760px;
+}
+.bloco-title em{font-style:italic;color:var(--gold)}
+
+/* BODY TEXT */
+.corpo{max-width:720px}
+.corpo p{
+  font-size:15px;font-weight:300;color:rgba(255,255,255,.78);
+  line-height:1.95;margin-bottom:24px;
+}
+.corpo p strong{color:var(--white);font-weight:500}
+.corpo p em{font-style:italic;color:var(--gold-light)}
+
+/* SUBTÍTULOS */
+.corpo h3{
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;
+  color:var(--white);margin:48px 0 16px;letter-spacing:.01em;
+  padding-left:16px;border-left:2px solid var(--gold);
+}
+
+/* PULL QUOTE */
+.pull-quote{
+  margin:40px 0;padding:24px 0 24px 32px;
+  border-left:2px solid var(--gold);
+}
+.pq-text{
+  font-family:'Cormorant Garamond',serif;font-size:21px;font-style:italic;
+  font-weight:300;color:var(--white);line-height:1.55;margin-bottom:10px;
+}
+.pq-source{
+  font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);
+}
+
+/* NOTA DE RODAPÉ */
+.footnote-ref{
+  font-size:10px;vertical-align:super;color:var(--gold);
+  font-weight:500;margin-left:1px;cursor:default;
+}
+.footnote-box{
+  margin-top:32px;padding:16px 20px;
+  background:rgba(220,181,89,.05);border:1px solid rgba(220,181,89,.15);
+  border-left:2px solid var(--gold-dark);
+}
+.fn-label{
+  font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold-dark);margin-bottom:8px;
+}
+.fn-text{
+  font-size:12px;font-weight:300;color:rgba(255,255,255,.55);line-height:1.7;
+}
+.fn-text a{color:rgba(220,181,89,.7);text-decoration:none}
+.fn-text a:hover{color:var(--gold-light)}
+
+/* DISTRIBUIÇÃO */
+.distrib{
+  margin-top:56px;padding:28px;
+  background:rgba(22,52,70,.2);border:1px solid rgba(22,52,70,.6);
+  border-top:2px solid var(--prussian-light);
+}
+.distrib-title{
+  font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  color:#5DA8C8;margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.distrib-title::before{
+  content:'';width:6px;height:6px;border-radius:50%;background:#5DA8C8;flex-shrink:0;
+}
+.distrib-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+}
+.distrib-item{
+  padding:12px 14px;background:rgba(255,255,255,.03);
+  border:1px solid var(--subtle);border-radius:4px;
+}
+.di-format{
+  font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:5px;
+}
+.di-desc{font-size:11px;font-weight:300;color:var(--silver);line-height:1.5}
+
+/* REFS */
+.refs{
+  margin-top:48px;padding-top:28px;
+  border-top:1px solid var(--subtle);
+}
+.refs-title{
+  font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:14px;
+}
+.ref-item{
+  font-size:12px;font-weight:300;color:rgba(255,255,255,.4);
+  line-height:1.6;margin-bottom:8px;padding-left:14px;
+  border-left:1px solid var(--subtle);
+}
+.ref-item a{
+  color:rgba(220,181,89,.6);text-decoration:none;transition:color .2s;
+}
+.ref-item a:hover{color:var(--gold-light)}
+
+/* CLOSING */
+.closing{
+  padding:120px 80px;text-align:center;
+  border-top:1px solid var(--border);
+}
+.closing-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,5vw,68px);font-weight:300;font-style:italic;
+  color:var(--white);margin-bottom:20px;line-height:1.1;
+}
+.closing-title em{color:var(--gold);font-style:normal}
+.closing-sub{
+  font-size:14px;font-weight:300;color:var(--silver);
+  max-width:500px;margin:0 auto 40px;line-height:1.85;
+}
+.btn-back{
+  display:inline-block;padding:12px 32px;
+  border:1px solid var(--border);color:var(--gold);
+  font-size:10px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;
+  text-decoration:none;transition:background .2s;
+}
+.btn-back:hover{background:var(--gold-faint)}
+.closing-meta{
+  margin-top:32px;font-size:11px;font-weight:300;
+  color:rgba(255,255,255,.2);letter-spacing:.08em;line-height:1.7;
+}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s,transform .65s}
+.reveal.visible{opacity:1;transform:none}
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(22px)}
+  to{opacity:1;transform:none}
+}
+
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .hero,.bloco,.closing{padding-left:24px;padding-right:24px}
+  .hero-stats{flex-wrap:wrap}
+  .hero-stat{flex:1 1 40%}
+  .distrib-grid{grid-template-columns:1fr 1fr}
+  .toc-drawer{width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="prog"></div>
+
+<nav>
+  <div class="nav-brand">Além do Capital · André Finguer</div>
+  <div class="nav-right">
+    <div class="nav-counter" id="counter">Bloco 1 de 6</div>
+    <button class="nav-toc-btn" onclick="toggleTOC()">Índice ≡</button>
+  </div>
+</nav>
+
+<div class="toc-drawer" id="toc">
+  <div class="toc-title">Índice de Blocos</div>
+  <ul class="toc-list">
+    <li class="toc-item" onclick="goTo('b1');toggleTOC()">
+      <div class="toc-item-num">01</div>
+      <div class="toc-item-title">A dor que ninguém nomeia: morte, silêncio e o que fica para trás</div>
+    </li>
+    <li class="toc-item" onclick="goTo('b2');toggleTOC()">
+      <div class="toc-item-num">02</div>
+      <div class="toc-item-title">A briga que destrói o que levou décadas para construir</div>
+    </li>
+    <li class="toc-item" onclick="goTo('b3');toggleTOC()">
+      <div class="toc-item-num">03</div>
+      <div class="toc-item-title">Diagnóstico: você tem patrimônio, mas não tem estrutura</div>
+    </li>
+    <li class="toc-item" onclick="goTo('b4');toggleTOC()">
+      <div class="toc-item-num">04</div>
+      <div class="toc-item-title">Holding familiar: proteção, não apenas economia de imposto</div>
+    </li>
+    <li class="toc-item" onclick="goTo('b5');toggleTOC()">
+      <div class="toc-item-num">05</div>
+      <div class="toc-item-title">Sucessão e governança: as regras que a família precisa antes de precisar delas</div>
+    </li>
+    <li class="toc-item" onclick="goTo('b6');toggleTOC()">
+      <div class="toc-item-num">06</div>
+      <div class="toc-item-title">Offshore, FIDC e gestão imobiliária: quando o patrimônio ultrapassa fronteiras</div>
+    </li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Planejamento Patrimonial · Copyzão · 2026</div>
+  <h1 class="hero-title">Além do<br><em>Capital.</em></h1>
+  <p class="hero-desc">
+    Seis blocos sobre planejamento patrimonial — da dor emocional ao diagnóstico técnico. Cada bloco gera conteúdo para Reel, carrossel, LinkedIn, Substack, YouTube e Threads.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hs-n">6</div><div class="hs-l">blocos temáticos</div></div>
+    <div class="hero-stat"><div class="hs-n">36+</div><div class="hs-l">peças de conteúdo</div></div>
+    <div class="hero-stat"><div class="hs-n">∞</div><div class="hs-l">meses de pauta</div></div>
+  </div>
+</section>
+
+<!-- BLOCO 1 -->
+<section class="bloco reveal" id="b1">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 01 · Dor emocional</div>
+    <h2 class="bloco-title">A dor que ninguém nomeia:<br><em>morte, silêncio e o que fica para trás.</em></h2>
+  </div>
+  <div class="corpo">
+    <p>Existe uma conversa que a maioria das famílias empresárias nunca tem. Não porque não saibam que precisam tê-la. Mas porque ela exige nomear algo que preferimos deixar no campo do indefinido: a morte do patriarca, a dissolução de uma sociedade, o fim de um ciclo que parecia eterno.</p>
+    <p>O silêncio em torno dessa conversa é compreensível. Quem construiu um negócio do zero, quem acumulou imóveis, participações e reservas ao longo de décadas, raramente consegue dissociar o patrimônio da própria identidade. Falar sobre o que acontece depois parece, em alguma medida, falar sobre o próprio fim. E ninguém quer fazer isso numa reunião de segunda-feira.</p>
+    <p>O problema é que esse silêncio tem um custo. E ele é mensurável.</p>
+
+    <h3>O que os números revelam</h3>
+    <p>O Conselho Nacional de Justiça registra mais de 1 milhão de processos de inventário em tramitação no Brasil. O prazo médio para conclusão de um inventário judicial supera 5 anos — e em casos de conflito entre herdeiros, esse prazo pode se estender por décadas. Durante todo esse período, os ativos da família ficam parcialmente bloqueados: imóveis não podem ser vendidos, contas são restringidas, decisões de negócio são travadas por disputas judiciais.</p>
+    <p>Não se trata de casos extremos ou de famílias disfuncionais. Trata-se do funcionamento ordinário de um sistema que foi desenhado para lidar com patrimônios que não foram previamente organizados.</p>
+    <p>O custo vai além do tempo. O Imposto sobre Transmissão Causa Mortis e Doação — o ITCMD — incide sobre o valor total do espólio, com alíquotas que variam entre os estados e que, em alguns deles, podem chegar a 8%. Em patrimônios relevantes, isso representa uma transferência compulsória de riqueza ao Estado que poderia ter sido significativamente reduzida com planejamento prévio.</p>
+
+    <h3>A ilusão da abundância</h3>
+    <p>Há uma crença silenciosa que permeia famílias com patrimônio relevante: a de que, quando o momento chegar, haverá recursos suficientes para resolver qualquer problema. Que o tamanho do patrimônio funciona como amortecedor natural para qualquer turbulência.</p>
+    <p>Essa crença é, em muitos casos, a origem do problema.</p>
+    <p><strong>Patrimônio imobilizado em participações societárias e imóveis não é liquidez.</strong> Um empresário que construiu R$30 milhões em ativos ao longo de 30 anos pode deixar herdeiros sem acesso imediato a caixa suficiente para pagar o ITCMD, os honorários advocatícios e as despesas do próprio inventário — sem precisar vender ativos em condições desfavoráveis ou contrair dívidas.</p>
+    <p>A abundância de patrimônio e a escassez de liquidez imediata coexistem com mais frequência do que se imagina. E quando essa combinação encontra a ausência de planejamento, o resultado raramente é o que o patriarca imaginava ao construir o que construiu.</p>
+
+    <h3>O que a morte revela</h3>
+    <p>A morte de um patriarca não destrói patrimônios. A falta de preparo para ela, sim.</p>
+    <p>O que a morte faz é revelar — com uma clareza brutal e irreversível — tudo aquilo que estava implícito e nunca foi formalizado. Revela quem achava que tinha direito ao quê. Revela acordos verbais que nunca foram documentados. Revela participações societárias que nunca foram revisadas. Revela imóveis que estavam no nome de pessoas que já faleceram há anos.</p>
+    <p>Em famílias empresárias, esse momento de revelação frequentemente coincide com o período de maior vulnerabilidade do negócio. A empresa perde seu principal tomador de decisões no exato momento em que precisa navegar um processo legal complexo, lidar com herdeiros com interesses divergentes e manter a operação funcionando sem interrupção.</p>
+
+    <div class="pull-quote">
+      <div class="pq-text">"O planejamento patrimonial não é um exercício de morbidez. É o ato mais concreto de cuidado que um patriarca pode ter com as pessoas e com o legado que construiu."</div>
+      <div class="pq-source">André Finguer · Gestor Patrimonial</div>
+    </div>
+
+    <p><strong>A pergunta não é se você vai morrer. A pergunta é o que você deixou preparado para quando isso acontecer.</strong></p>
+
+    <div class="distrib">
+      <div class="distrib-title">Mapa de distribuição — Bloco 01</div>
+      <div class="distrib-grid">
+        <div class="distrib-item">
+          <div class="di-format">Reel · Autoridade</div>
+          <div class="di-desc">Gancho: "A conversa que ninguém quer ter — e o que acontece quando você continua adiando."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Carrossel · Instagram</div>
+          <div class="di-desc">O custo real do inventário — 5 dados que o empresário precisa conhecer.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Artigo · LinkedIn</div>
+          <div class="di-desc">A ilusão da abundância: por que patrimônio grande não garante liquidez para os herdeiros.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Quadro Fixo · Além do Capital</div>
+          <div class="di-desc">Episódio: "O silêncio que custa caro — o que ninguém te conta sobre inventário."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Substack</div>
+          <div class="di-desc">Aprofundamento sobre ITCMD, prazo de inventário e o que muda estado a estado.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Threads</div>
+          <div class="di-desc">"A pergunta não é se você vai morrer. É o que você deixou preparado para quando isso acontecer."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="refs">
+      <div class="refs-title">Referências</div>
+      <div class="ref-item">CONSELHO NACIONAL DE JUSTIÇA. <em>Justiça em Números 2023</em>. Brasília: CNJ, 2023. Disponível em: <a href="https://www.cnj.jus.br/pesquisas-judiciarias/justica-em-numeros" target="_blank">cnj.jus.br</a></div>
+      <div class="ref-item">MAMEDE, Gladston; MAMEDE, Eduarda Cotta. <em>Holding Familiar e suas Vantagens</em>. 14. ed. São Paulo: Atlas, 2022.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCO 2 -->
+<section class="bloco reveal" id="b2">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 02 · Dor emocional</div>
+    <h2 class="bloco-title">A briga que destrói<br><em>o que levou décadas para construir.</em></h2>
+  </div>
+  <div class="corpo">
+    <p>Existe um padrão que se repete com regularidade perturbadora em famílias empresárias. O patriarca constrói. Durante décadas, constrói com disciplina, com sacrifício, com uma clareza de propósito que raramente é compartilhada com a mesma intensidade pelos que vieram depois. E então, num momento de transição — por morte, por doença, por afastamento voluntário — aquilo que parecia sólido começa a rachar.</p>
+    <p>A narrativa popular atribui essas rupturas ao caráter dos herdeiros. À ganância, à imaturidade, à falta de valores. Essa leitura é, na maioria dos casos, equivocada — e perigosa, porque desvia a atenção do verdadeiro problema.</p>
+    <p><strong>Brigas de família em torno de patrimônio raramente começam com má-fé. Começam com ambiguidade.</strong></p>
+
+    <h3>O que a pesquisa revela sobre empresas familiares</h3>
+    <p>Empresas familiares representam entre 65% e 90% de todas as empresas no mundo, dependendo do país e da metodologia utilizada. No Brasil, estimativas amplamente citadas no setor indicam que empresas de controle familiar respondem por parcela significativa do PIB nacional e da força de trabalho do setor privado.<span class="footnote-ref">*</span></p>
+    <p>O Family Business Institute aponta que apenas 30% das empresas familiares sobrevivem à transição para a segunda geração. Esse número cai para 12% na transição para a terceira geração. As causas mais citadas não são econômicas — são relacionais e estruturais: falta de planejamento sucessório, ausência de governança familiar e conflitos entre herdeiros.</p>
+
+    <div class="footnote-box">
+      <div class="fn-label">* Nota de rodapé</div>
+      <div class="fn-text">Os dados sobre participação de empresas familiares no PIB brasileiro variam conforme a metodologia e o período analisado. O dado de 65% é frequentemente atribuído a levantamentos do IBGE e do Sebrae, porém com diferentes critérios de definição de "empresa familiar". Para fins editoriais, André pode optar por referenciar diretamente o <a href="https://www.ibgc.org.br" target="_blank">IBGC</a> ou o <a href="https://www.sebrae.com.br" target="_blank">Sebrae</a>, que publicam estudos periódicos sobre o tema com metodologia explícita. O dado do Family Business Institute sobre sobrevivência entre gerações — 30% para a segunda, 12% para a terceira — é amplamente citado na literatura internacional e pode ser verificado em: <a href="https://www.familybusinessinstitute.com" target="_blank">familybusinessinstitute.com</a>.</div>
+    </div>
+
+    <h3>A anatomia de um conflito patrimonial</h3>
+    <p>O primeiro elemento é a <strong>assimetria de expectativas</strong>. Cada herdeiro constrói, ao longo dos anos, uma percepção sobre o que receberá e sobre o papel que desempenhará na continuidade do negócio ou na gestão do patrimônio. Essas expectativas raramente são explicitadas — e raramente coincidem entre si.</p>
+    <p>O segundo elemento é a <strong>sobreposição entre patrimônio pessoal e patrimônio empresarial</strong>. Em famílias empresárias brasileiras, é comum que a fronteira entre o que pertence ao indivíduo e o que pertence à empresa seja tênue ou inexistente. Quando essa confusão patrimonial encontra um processo de inventário ou uma dissolução societária, o resultado é um labirinto jurídico de difícil resolução.</p>
+    <p>O terceiro elemento é a <strong>ausência de fóruns de decisão</strong>. Famílias empresárias bem-sucedidas geralmente têm processos claros para tomar decisões de negócio. Raramente têm processos igualmente claros para tomar decisões familiares sobre o patrimônio.</p>
+
+    <h3>O custo real de uma briga</h3>
+    <p>O custo mais difícil de quantificar é o custo de oportunidade: as decisões que não foram tomadas enquanto a família estava paralisada pelo conflito. O investimento que não foi feito. A expansão que foi postergada. O talento que saiu da empresa porque o ambiente se tornou insustentável.</p>
+    <p>Há também o custo reputacional. Em mercados regionais — onde empresas familiares frequentemente operam —, a informação sobre conflitos internos circula com velocidade e afeta relações comerciais, acesso a crédito e capacidade de atrair parceiros.</p>
+    <p>E há o custo que nenhuma planilha consegue capturar: o desgaste das relações que definiram a vida de uma família por décadas. Irmãos que deixam de se falar. Pais e filhos que se tornam adversários em processos judiciais. O patrimônio que sobrevive à briga raramente é suficiente para compensar o que foi perdido pelo caminho.</p>
+
+    <h3>O que distingue as famílias que atravessam transições com integridade</h3>
+    <p>Famílias que conseguem transferir patrimônio entre gerações sem destruir relações e valor têm características em comum: a antecipação das conversas difíceis, a formalização de acordos que existem apenas na memória do patriarca, a separação entre instâncias de decisão familiar e empresarial, e o envolvimento de profissionais especializados.</p>
+    <p><strong>Planejamento patrimonial não é um produto que se compra. É um processo que se constrói — com tempo, com intenção e com a disposição de ter as conversas que ninguém quer ter enquanto ainda é possível tê-las com serenidade.</strong></p>
+
+    <div class="distrib">
+      <div class="distrib-title">Mapa de distribuição — Bloco 02</div>
+      <div class="distrib-grid">
+        <div class="distrib-item">
+          <div class="di-format">Reel · Despertar</div>
+          <div class="di-desc">Gancho: "Apenas 30% das empresas familiares sobrevivem à segunda geração. O motivo raramente é financeiro."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Carrossel · Instagram</div>
+          <div class="di-desc">A anatomia de um conflito patrimonial — 3 elementos que tornam a briga quase inevitável sem planejamento.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Artigo · LinkedIn</div>
+          <div class="di-desc">O custo real de uma briga familiar — o que nenhuma planilha consegue capturar.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Quadro Fixo · Além do Capital</div>
+          <div class="di-desc">Episódio: "O que distingue famílias que atravessam transições com integridade."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Substack</div>
+          <div class="di-desc">Aprofundamento sobre governança familiar e a anatomia dos conflitos entre herdeiros.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Threads</div>
+          <div class="di-desc">"Brigas de família raramente começam com má-fé. Começam com ambiguidade."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="refs">
+      <div class="refs-title">Referências</div>
+      <div class="ref-item">FAMILY BUSINESS INSTITUTE. <em>Succession Planning</em>. Raleigh: FBI, 2023. Disponível em: <a href="https://www.familybusinessinstitute.com" target="_blank">familybusinessinstitute.com</a></div>
+      <div class="ref-item">IBGC. <em>Governança em Empresas Familiares</em>. São Paulo: IBGC, 2021. Disponível em: <a href="https://www.ibgc.org.br" target="_blank">ibgc.org.br</a></div>
+      <div class="ref-item">GERSICK, Kelin E. et al. <em>De Geração para Geração: ciclos de vida das empresas familiares</em>. São Paulo: Negócio Editora, 1997.</div>
+      <div class="ref-item">LODI, João Bosco. <em>A Empresa Familiar</em>. 5. ed. São Paulo: Pioneira, 1998.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCO 3 -->
+<section class="bloco reveal" id="b3">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 03 · Diagnóstico</div>
+    <h2 class="bloco-title">Você tem patrimônio,<br><em>mas não tem estrutura.</em></h2>
+  </div>
+  <div class="corpo">
+    <p>Existe uma distinção fundamental que raramente é feita com clareza suficiente: a diferença entre acumular patrimônio e estruturar patrimônio.</p>
+    <p>Acumular é o que a maioria dos empresários brasileiros bem-sucedidos fez — e fez bem. Décadas de reinvestimento disciplinado, decisões certas no momento certo, tolerância ao risco quando era necessário.</p>
+    <p>Estruturar é outra coisa. É o conjunto de decisões jurídicas, fiscais e societárias que organiza esse patrimônio de forma a protegê-lo, perpetuá-lo e transferi-lo com eficiência. E é o que a maioria desses mesmos empresários ainda não fez — não por negligência, mas porque o sistema financeiro tradicional raramente tem incentivo para colocar essa conversa na agenda.</p>
+
+    <h3>Os cinco sinais de um patrimônio desestruturado</h3>
+    <p>O primeiro sinal é a <strong>ausência de separação clara entre pessoa física e pessoa jurídica</strong>. Quando não se consegue responder com precisão onde termina o patrimônio pessoal e onde começa o patrimônio da empresa, há um problema estrutural com consequências jurídicas reais.</p>
+    <p>O segundo sinal é a <strong>concentração excessiva em ativos ilíquidos</strong>. Um patrimônio de R$20 milhões composto majoritariamente por imóveis e participações societárias é, na prática, um patrimônio com severas restrições de mobilidade. Essa rigidez tem consequências em situações de crise, de oportunidade — e especialmente de sucessão.</p>
+    <p>O terceiro sinal é a <strong>inexistência de um mapa patrimonial consolidado</strong>. Não uma estimativa aproximada. Uma visão precisa de todos os ativos — financeiros, imobiliários, societários, internacionais — com valores de mercado atualizados, estruturas jurídicas mapeadas e posição fiscal clara.</p>
+    <p>O quarto sinal é a <strong>ausência de planejamento sucessório formalizado</strong>. Intenções não formalizadas não produzem efeito jurídico. O que o patriarca quer que aconteça com seu patrimônio e o que efetivamente acontecerá na ausência de instrumentos jurídicos adequados são frequentemente duas coisas muito diferentes.</p>
+    <p>O quinto sinal é a <strong>exposição fiscal desnecessária</strong>. Patrimônio mal estruturado frequentemente gera carga tributária superior à necessária — desde tributação de rendimentos em estruturas ineficientes até ITCMD sobre transmissões que poderiam ter sido realizadas em vida com menor custo.</p>
+
+    <h3>Por que o patrimônio cresce mais rápido do que a estrutura</h3>
+    <p>Enquanto o empresário está no modo de construção, a energia está direcionada para o crescimento. A estruturação é percebida como uma preocupação prematura. <em>"Quando o patrimônio for maior, a gente organiza."</em> Essa frase é pronunciada com frequência surpreendente por pessoas que já ultrapassaram qualquer limiar razoável para começar.</p>
+    <p>Cada ano sem estrutura é um ano de exposição desnecessária a riscos mitigáveis. E quando a urgência finalmente chega — por doença, separação, conflito societário ou mudança tributária —, a estruturação precisa ser feita sob pressão, em condições desfavoráveis e com custos muito superiores.</p>
+
+    <div class="pull-quote">
+      <div class="pq-text">"A janela ideal para estruturar patrimônio é sempre antes de precisar. E essa janela, por definição, está sempre no passado para quem ainda não começou."</div>
+      <div class="pq-source">André Finguer · Gestor Patrimonial</div>
+    </div>
+
+    <h3>O que um diagnóstico patrimonial revela</h3>
+    <p>Um diagnóstico patrimonial bem conduzido não é burocracia. É um processo de clareza — frequentemente desconfortável, invariavelmente necessário. Ele revela o que existe de fato, o que está exposto, o que falta e o que é possível. Esse diagnóstico é o ponto de partida de qualquer processo sério de planejamento patrimonial.</p>
+
+    <div class="distrib">
+      <div class="distrib-title">Mapa de distribuição — Bloco 03</div>
+      <div class="distrib-grid">
+        <div class="distrib-item">
+          <div class="di-format">Reel · Autoridade</div>
+          <div class="di-desc">Gancho: "A diferença entre acumular patrimônio e estruturar patrimônio — e por que a maioria fez bem o primeiro e ignorou o segundo."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Carrossel · Instagram</div>
+          <div class="di-desc">Os 5 sinais de um patrimônio desestruturado — você se reconhece em algum?</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Artigo · LinkedIn</div>
+          <div class="di-desc">Por que o patrimônio cresce mais rápido do que a estrutura — e o custo dessa assimetria.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Quadro Fixo · Além do Capital</div>
+          <div class="di-desc">Episódio: "O que um diagnóstico patrimonial revela — e por que a maioria evita fazer."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Substack</div>
+          <div class="di-desc">Aprofundamento sobre o mapa patrimonial consolidado e como construir um.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Threads</div>
+          <div class="di-desc">"A janela ideal para estruturar patrimônio é sempre antes de precisar."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="refs">
+      <div class="refs-title">Referências</div>
+      <div class="ref-item">RECEITA FEDERAL DO BRASIL. <em>Declaração de Capitais Brasileiros no Exterior (CBE)</em>. Disponível em: <a href="https://www.gov.br/receitafederal" target="_blank">gov.br/receitafederal</a></div>
+      <div class="ref-item">MAMEDE, Gladston; MAMEDE, Eduarda Cotta. <em>Holding Familiar e suas Vantagens</em>. 14. ed. São Paulo: Atlas, 2022.</div>
+      <div class="ref-item">IBGC. <em>Governança em Empresas Familiares</em>. São Paulo: IBGC, 2021. Disponível em: <a href="https://www.ibgc.org.br" target="_blank">ibgc.org.br</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCO 4 -->
+<section class="bloco reveal" id="b4">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 04 · Estrutura técnica</div>
+    <h2 class="bloco-title">Holding familiar:<br><em>proteção, não apenas economia de imposto.</em></h2>
+  </div>
+  <div class="corpo">
+    <p>A holding é o instrumento de planejamento patrimonial mais constituído — e mais mal utilizado — entre famílias empresárias brasileiras.</p>
+    <p>Não porque seja mal desenhado. Mas porque, na maioria dos casos, foi constituída com um único objetivo em mente — redução de carga tributária — e nunca foi revisitada. O resultado é uma estrutura que resolve o problema para o qual foi criada e ignora os demais.</p>
+    <p>A holding familiar bem estruturada é, antes de tudo, um instrumento de proteção e organização patrimonial. A eficiência tributária é uma consequência relevante — não o propósito central.</p>
+
+    <h3>O que a holding bem estruturada protege</h3>
+    <p>O <strong>risco empresarial</strong>: dívidas e passivos das empresas operacionais da família não alcançam automaticamente os ativos da holding, desde que a separação patrimonial seja genuína — não apenas formal. Em situações de crise empresarial, essa separação pode ser a diferença entre perder o negócio e perder o patrimônio acumulado ao longo de décadas.</p>
+    <p>O <strong>risco de dissolução conjugal</strong>: com cláusulas de incomunicabilidade e impenhorabilidade nas doações realizadas aos herdeiros, é possível proteger ativos familiares de processos de divórcio. Essa proteção não é automática — depende de como a estrutura foi constituída e de como as doações foram formalizadas.</p>
+    <p>O <strong>risco de litígios</strong>: em atividades profissionais com maior exposição a ações de responsabilidade civil, a concentração do patrimônio em uma holding bem estruturada pode reduzir significativamente a superfície de ataque de credores.</p>
+    <p>Há um limite jurídico que precisa ser compreendido: a desconsideração da personalidade jurídica é aplicável quando há abuso de forma, confusão patrimonial ou fraude. <strong>Uma holding constituída apenas no papel, sem separação real entre o patrimônio pessoal e o empresarial, não protege nada.</strong></p>
+
+    <h3>Eficiência tributária: o benefício correto, no contexto correto</h3>
+    <p>A holding pode oferecer vantagens tributárias reais em determinadas situações — na tributação de rendimentos de aluguéis e na transmissão patrimonial via doação em vida com reserva de usufruto, por exemplo. Todas essas vantagens são reais. Nenhuma é automática. Todas dependem de estruturação adequada e manutenção das obrigações fiscais e contábeis.</p>
+
+    <h3>O que uma holding não faz</h3>
+    <p>Uma holding não elimina tributos — pode reduzi-los ou diferí-los dentro dos limites do planejamento tributário lícito. Não resolve conflitos familiares preexistentes. Não substitui testamento, acordo de sócios ou protocolo familiar. E não dispensa manutenção.</p>
+    <p><em>Esse é, talvez, o erro mais comum: constituir a holding como evento único e tratá-la como solução permanente sem revisão.</em></p>
+
+    <div class="distrib">
+      <div class="distrib-title">Mapa de distribuição — Bloco 04</div>
+      <div class="distrib-grid">
+        <div class="distrib-item">
+          <div class="di-format">Reel · Autoridade</div>
+          <div class="di-desc">Gancho: "A maioria das holdings que chegam até mim foram constituídas corretamente — o problema está no que aconteceu depois."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Carrossel · Instagram</div>
+          <div class="di-desc">O que a holding protege — e seus limites reais. 3 riscos que ela mitiga e 3 coisas que ela não faz.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Artigo · LinkedIn</div>
+          <div class="di-desc">Holding constituída vs. holding mantida — a diferença que a maioria ignora.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Quadro Fixo · Além do Capital</div>
+          <div class="di-desc">Episódio: "O que uma holding não faz — e por que isso importa mais do que o que ela faz."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Substack</div>
+          <div class="di-desc">Tributação comparada: pessoa física vs. pessoa jurídica na gestão de imóveis e investimentos.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Threads</div>
+          <div class="di-desc">"Uma holding constituída apenas no papel não protege nada."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="refs">
+      <div class="refs-title">Referências</div>
+      <div class="ref-item">MAMEDE, Gladston; MAMEDE, Eduarda Cotta. <em>Holding Familiar e suas Vantagens</em>. 14. ed. São Paulo: Atlas, 2022.</div>
+      <div class="ref-item">BRASIL. <em>Lei nº 10.406/2002 — Código Civil</em>. Disponível em: <a href="https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm" target="_blank">planalto.gov.br</a></div>
+      <div class="ref-item">BRASIL. <em>Lei Complementar nº 104/2001</em>. Disponível em: <a href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp104.htm" target="_blank">planalto.gov.br</a></div>
+      <div class="ref-item">CARF. <em>Jurisprudência selecionada</em>. Disponível em: <a href="https://carf.fazenda.gov.br" target="_blank">carf.fazenda.gov.br</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCO 5 -->
+<section class="bloco reveal" id="b5">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 05 · Estrutura técnica</div>
+    <h2 class="bloco-title">Sucessão e governança:<br><em>as regras que a família precisa antes de precisar delas.</em></h2>
+  </div>
+  <div class="corpo">
+    <p>Há uma característica comum a praticamente todos os processos sucessórios que correm mal: a ausência de regras previamente acordadas. Não a ausência de boas intenções — essas existem em abundância. O que falta são mecanismos formais capazes de funcionar independentemente das circunstâncias emocionais do momento.</p>
+    <p>Governança familiar e planejamento sucessório são duas faces da mesma questão. A governança define como a família toma decisões sobre o patrimônio enquanto o patriarca está presente. O planejamento sucessório define o que acontece quando ele não estiver mais. As duas precisam ser construídas juntas.</p>
+
+    <h3>Planejamento sucessório não é inventário antecipado</h3>
+    <p>O inventário é o mecanismo pelo qual o Estado organiza a transferência de patrimônio na ausência de planejamento prévio. O planejamento sucessório é o oposto — é o conjunto de decisões e instrumentos pelo qual o titular organiza a transferência de acordo com sua vontade, com eficiência fiscal e com o menor impacto possível sobre as relações familiares.</p>
+    <p><strong>A diferença entre os dois não é de timing. É de controle.</strong> No planejamento sucessório bem conduzido, o patriarca define as regras. No inventário sem planejamento, as regras são definidas pela legislação — que nem sempre reflete o que ele teria desejado.</p>
+    <p>Os principais instrumentos disponíveis — testamento, doação em vida com reserva de usufruto, acordo de sócios, protocolo familiar e previdência privada com beneficiários designados — têm aplicações específicas e limitações claras. A combinação adequada depende da natureza do patrimônio e dos objetivos da família.</p>
+
+    <h3>Governança: estrutura para decisões que a família ainda não precisou tomar</h3>
+    <p>O conselho de família — instância de diálogo e deliberação, distinta dos órgãos de gestão das empresas — é o espaço onde a família discute valores, expectativas e decisões que afetam o conjunto. A diferença entre uma família que tem esse fórum e uma que não tem se manifesta com mais clareza precisamente nos momentos de crise.</p>
+    <p>O acordo de sócios é, em contextos familiares, um dos instrumentos mais importantes para prevenir conflitos — e um dos mais frequentemente negligenciados. <strong>Regras sobre transferência de quotas, direitos de preferência e mecanismos de saída precisam estar formalizadas antes de serem necessárias.</strong></p>
+
+    <h3>O desafio real da segunda geração</h3>
+    <p>A primeira geração constrói com motivação clara. A segunda geração herda o patrimônio e a responsabilidade de mantê-lo sem ter passado pelo processo que o criou. Essa assimetria de experiência é uma das fontes mais comuns de conflito entre gerações.</p>
+    <p>O planejamento sucessório bem conduzido endereça isso diretamente — separando claramente os papéis de proprietário, de membro do conselho e de gestor executivo. Um herdeiro sem perfil para a gestão operacional pode continuar sendo proprietário sem comprometer a eficiência da gestão. <em>Confundir esses papéis é uma das receitas mais seguras para o conflito.</em></p>
+
+    <div class="distrib">
+      <div class="distrib-title">Mapa de distribuição — Bloco 05</div>
+      <div class="distrib-grid">
+        <div class="distrib-item">
+          <div class="di-format">Reel · Despertar</div>
+          <div class="di-desc">Gancho: "No planejamento sucessório, o patriarca define as regras. No inventário, o Estado define."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Carrossel · Instagram</div>
+          <div class="di-desc">Os instrumentos do planejamento sucessório — quando usar cada um.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Artigo · LinkedIn</div>
+          <div class="di-desc">O desafio real da segunda geração — e como a estrutura correta faz a diferença.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Quadro Fixo · Além do Capital</div>
+          <div class="di-desc">Episódio: "Governança familiar na prática — o que é e por que a maioria das famílias não tem."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Substack</div>
+          <div class="di-desc">Acordo de sócios em contexto familiar — o instrumento mais ignorado do planejamento patrimonial.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Threads</div>
+          <div class="di-desc">"Intenções não vinculam herdeiros. Instrumentos jurídicos, sim."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="refs">
+      <div class="refs-title">Referências</div>
+      <div class="ref-item">BRASIL. <em>Lei nº 10.406/2002 — Código Civil</em>, art. 1.784 a 2.027. Disponível em: <a href="https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm" target="_blank">planalto.gov.br</a></div>
+      <div class="ref-item">IBGC. <em>Governança em Empresas Familiares</em>. São Paulo: IBGC, 2021. Disponível em: <a href="https://www.ibgc.org.br" target="_blank">ibgc.org.br</a></div>
+      <div class="ref-item">GERSICK, Kelin E. et al. <em>De Geração para Geração</em>. São Paulo: Negócio Editora, 1997.</div>
+      <div class="ref-item">SUSEP. <em>Circular SUSEP nº 563/2017</em>. Disponível em: <a href="https://www.gov.br/susep" target="_blank">gov.br/susep</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCO 6 -->
+<section class="bloco reveal" id="b6">
+  <div class="bloco-header">
+    <div class="bloco-num">Bloco 06 · Estrutura técnica</div>
+    <h2 class="bloco-title">Offshore, FIDC e gestão imobiliária:<br><em>quando o patrimônio ultrapassa fronteiras.</em></h2>
+  </div>
+  <div class="corpo">
+    <p>Existe um ponto de inflexão na trajetória de acumulação patrimonial a partir do qual a gestão deixa de ser uma questão predominantemente doméstica. Esse ponto não é definido por um número absoluto — é definido pela combinação de volume, diversificação e exposição a riscos que transcendem as fronteiras de um único país.</p>
+    <p>Para famílias empresárias brasileiras com patrimônio relevante, esse ponto frequentemente já foi ultrapassado — mesmo quando a percepção ainda é a de um patrimônio essencialmente local. O problema não é ter essa dimensão. <strong>O problema é continuar gerindo um patrimônio internacionalmente complexo com ferramentas desenhadas para um patrimônio local simples.</strong></p>
+
+    <h3>Estruturas offshore: o que protegem e o que a lei mudou</h3>
+    <p>Estruturas offshore constituídas com observância das obrigações de declaração previstas pela legislação brasileira são instrumentos legítimos e amplamente utilizados. A Receita Federal exige a declaração de ativos no exterior na Declaração de Ajuste Anual. O Banco Central exige a CBE quando o total de ativos no exterior supera o equivalente a US$1 milhão.</p>
+    <p>As aplicações mais relevantes incluem a diversificação geográfica de risco, o acesso a mercados financeiros globais, o planejamento sucessório internacional e a proteção patrimonial adicional dentro dos limites jurídicos aplicáveis.</p>
+    <p>A <strong>Lei nº 14.754 de 2023</strong> introduziu mudanças significativas na tributação de investimentos no exterior, incluindo a tributação periódica de offshores controladas por residentes fiscais no Brasil. O que era eficiente antes da reforma pode exigir reestruturação — e essa é precisamente a situação em que a manutenção contínua da estrutura faz a diferença.</p>
+
+    <h3>FIDC: o instrumento que a empresa já tem dentro de casa</h3>
+    <p>Empresas com carteiras de recebíveis de qualidade frequentemente financiam capital de giro com crédito bancário enquanto têm, dentro do próprio balanço, ativos que poderiam resolver esse problema de forma mais eficiente.</p>
+    <p>O FIDC — Fundo de Investimento em Direitos Creditórios, regulado pela Resolução CVM nº 175 de 2022 — transforma esses recebíveis em liquidez presente. A empresa cede seus créditos futuros a um fundo que emite cotas lastreadas nesses créditos. A empresa recebe o valor antecipado, sem precisar oferecer garantias reais e, em muitos casos, com custo inferior ao crédito bancário convencional.</p>
+
+    <h3>Gestão imobiliária: do ativo sentimental ao ativo gerido</h3>
+    <p>O problema não é o imóvel como ativo. O problema é a gestão improvisada de carteiras imobiliárias que se tornaram complexas demais para ser administradas informalmente. Uma família com dez imóveis em diferentes cidades está gerindo uma carteira que exige processos profissionais — não uma planilha e um administrador informal.</p>
+    <p>A estratégia internacional merece atenção específica. A aquisição de imóveis nos Estados Unidos envolve complexidades que não existem no mercado doméstico: estrutura offshore adequada, implicações do <em>estate tax</em> americano para não residentes, gestão do câmbio e administração remota. Esses aspectos precisam ser considerados antes da compra, não depois.</p>
+
+    <h3>A visão integrada que distingue gestão patrimonial de gestão financeira</h3>
+    <p>Gestão financeira otimiza o desempenho de uma carteira de investimentos. Gestão patrimonial otimiza o conjunto — ativos financeiros, imobiliários, societários e internacionais — considerando as interações entre eles, a exposição fiscal consolidada, os riscos jurídicos e a coerência com os objetivos de longo prazo da família.</p>
+    <p><strong>O banco private otimiza o relacionamento com o banco. O MFO otimiza o patrimônio.</strong> Para patrimônios que cruzaram o ponto de inflexão onde a dimensão doméstica já não captura a complexidade do que foi construído, essa distinção não é detalhe de marketing. É a diferença entre gestão adequada e gestão insuficiente.</p>
+
+    <div class="distrib">
+      <div class="distrib-title">Mapa de distribuição — Bloco 06</div>
+      <div class="distrib-grid">
+        <div class="distrib-item">
+          <div class="di-format">Reel · Autoridade</div>
+          <div class="di-desc">Gancho: "Offshore não é evasão fiscal — é o que patrimônios acima de R$20M deveriam ter, estruturado do jeito certo."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Carrossel · Instagram</div>
+          <div class="di-desc">Gestão financeira vs. gestão patrimonial — o que muda quando o patrimônio ultrapassa fronteiras.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Artigo · LinkedIn</div>
+          <div class="di-desc">O ponto de inflexão patrimonial — quando a gestão local deixa de ser suficiente.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Quadro Fixo · Além do Capital</div>
+          <div class="di-desc">Episódio: "Real Estate nos EUA para brasileiros — o que a estrutura precisa ter antes da compra."</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Substack</div>
+          <div class="di-desc">A Lei 14.754 e seus impactos nas offshores — o que mudou e o que precisa ser revisado.</div>
+        </div>
+        <div class="distrib-item">
+          <div class="di-format">Threads</div>
+          <div class="di-desc">"O banco private otimiza o relacionamento com o banco. O MFO otimiza o patrimônio."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="refs">
+      <div class="refs-title">Referências</div>
+      <div class="ref-item">BANCO CENTRAL DO BRASIL. <em>Declaração de Capitais Brasileiros no Exterior — CBE</em>. Disponível em: <a href="https://www.bcb.gov.br/estabilidadefinanceira/cbe" target="_blank">bcb.gov.br</a></div>
+      <div class="ref-item">BRASIL. <em>Lei nº 14.754/2023 — Tributação de Offshores</em>. Disponível em: <a href="https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/l14754.htm" target="_blank">planalto.gov.br</a></div>
+      <div class="ref-item">CVM. <em>Resolução CVM nº 175/2022</em>. Disponível em: <a href="https://www.gov.br/cvm" target="_blank">gov.br/cvm</a></div>
+      <div class="ref-item">RECEITA FEDERAL DO BRASIL. <em>Tributação de Investimentos no Exterior</em>. Disponível em: <a href="https://www.gov.br/receitafederal" target="_blank">gov.br/receitafederal</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<div class="closing reveal">
+  <h2 class="closing-title">
+    36 peças.<br><em>Um único tema.</em>
+  </h2>
+  <p class="closing-sub">
+    Cada bloco deste copyzão é matéria-prima para Reel, carrossel, artigo, episódio do quadro fixo, post de Substack e Threads. O conteúdo existe. O próximo passo é a distribuição.
+  </p>
+  <a href="index.html" class="btn-back">← Voltar ao início</a>
+  <div class="closing-meta">
+    André Finguer · Além do Capital · 2026<br>
+    Planejamento Patrimonial · Copyzão v1
+  </div>
+</div>
+
+<script>
+// Progress bar
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+});
+
+// TOC
+function toggleTOC(){
+  document.getElementById('toc').classList.toggle('open');
+}
+function goTo(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+document.addEventListener('click',e=>{
+  const toc=document.getElementById('toc');
+  if(toc.classList.contains('open')&&!toc.contains(e.target)&&!e.target.closest('.nav-toc-btn')){
+    toc.classList.remove('open');
+  }
+});
+
+// Counter
+const blocos=document.querySelectorAll('.bloco');
+const counter=document.getElementById('counter');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const idx=Array.from(blocos).indexOf(e.target)+1;
+      if(idx>0)counter.textContent=`Bloco ${idx} de 6`;
+    }
+  });
+},{threshold:.3});
+blocos.forEach(b=>obs.observe(b));
+
+// Reveal
+const reveals=document.querySelectorAll('.reveal');
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('visible'),i*60);
+      revObs.unobserve(e.target);
+    }
+  });
+},{threshold:.06});
+reveals.forEach(el=>revObs.observe(el));
+</script>
+</body>
+</html>
