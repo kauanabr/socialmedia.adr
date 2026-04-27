@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estratégia de Social Media — André Finguer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --carbon: #1F1F1F;
+  --carbon-mid: #2a2a2a;
+  --carbon-light: #333;
+  --gold: #DCB559;
+  --gold-dark: #b8952e;
+  --gold-light: #e8c97a;
+  --gold-faint: rgba(220,181,89,0.08);
+  --prussian: #163446;
+  --prussian-light: #1e4a64;
+  --white: #FFFFFF;
+  --off-white: #F5F0E8;
+  --silver: rgba(255,255,255,0.5);
+  --silver-faint: rgba(255,255,255,0.07);
+  --border: rgba(220,181,89,0.15);
+  --border-subtle: rgba(255,255,255,0.06);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--carbon);
+  color: var(--white);
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  line-height: 1.8;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+/* GRAIN OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  background: rgba(31,31,31,0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--silver);
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.nav-links a:hover { color: var(--gold-light); }
+
+/* PROGRESS BAR */
+.progress-bar {
+  position: fixed;
+  top: 60px; left: 0;
+  height: 2px;
+  background: var(--gold);
+  z-index: 101;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 60px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-line {
+  position: absolute;
+  top: 0; right: 120px;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--border) 30%, var(--border) 70%, transparent);
+}
+
+.hero-number {
+  position: absolute;
+  top: 50%;
+  right: 60px;
+  transform: translateY(-50%);
+  font-family: 'Playfair Display', serif;
+  font-size: 280px;
+  font-weight: 700;
+  color: rgba(220,181,89,0.04);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  user-select: none;
+}
+
+.hero-tag {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 1s 0.3s forwards;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(44px, 6vw, 80px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  max-width: 720px;
+  opacity: 0;
+  animation: fadeUp 1s 0.5s forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.hero-intro {
+  margin-top: 32px;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--silver);
+  max-width: 560px;
+  line-height: 1.85;
+  opacity: 0;
+  animation: fadeUp 1s 0.7s forwards;
+}
+
+.hero-meta {
+  margin-top: 52px;
+  display: flex;
+  gap: 0;
+  opacity: 0;
+  animation: fadeUp 1s 0.9s forwards;
+}
+
+.hero-stat {
+  padding: 20px 32px;
+  border: 1px solid var(--border);
+  border-right: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.hero-stat:last-child { border-right: 1px solid var(--border); }
+
+.hero-stat-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.hero-stat-l {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+
+/* SECTIONS */
+.section {
+  padding: 100px 60px;
+  position: relative;
+}
+
+.section-inner {
+  max-width: 860px;
+}
+
+.section-tag {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-tag::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--gold-dark);
+  opacity: 0.5;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 400;
+  line-height: 1.12;
+  margin-bottom: 40px;
+  letter-spacing: -0.01em;
+}
+
+.section-title em { font-style: italic; color: var(--gold); }
+
+.body-text {
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.9;
+  margin-bottom: 24px;
+}
+
+.body-text strong {
+  color: var(--white);
+  font-weight: 400;
+}
+
+/* DIVIDER */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: 80px 0;
+}
+
+/* PULL QUOTE */
+.pull-quote {
+  border-left: 2px solid var(--gold);
+  padding: 20px 0 20px 32px;
+  margin: 40px 0;
+}
+
+.pull-quote-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.pull-quote-source {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* KISO INSIGHT BOX */
+.kiso-box {
+  background: rgba(22,52,70,0.3);
+  border: 1px solid rgba(22,52,70,0.8);
+  border-left: 3px solid var(--prussian-light);
+  padding: 28px 32px;
+  margin: 32px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.kiso-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #5DA8C8;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kiso-label::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5DA8C8;
+  flex-shrink: 0;
+}
+
+.kiso-text {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.8;
+}
+
+.kiso-text strong { color: var(--white); font-weight: 400; }
+
+/* APPLICATION BOX */
+.apply-box {
+  background: var(--gold-faint);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  padding: 28px 32px;
+  margin: 16px 0 32px;
+  border-radius: 0 4px 4px 0;
+}
+
+.apply-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.apply-label::before {
+  content: '→';
+  color: var(--gold);
+  font-size: 12px;
+}
+
+.apply-text {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.8;
+}
+
+.apply-text strong { color: var(--white); font-weight: 400; }
+
+/* NUMBERED INSIGHT */
+.insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 40px 0;
+}
+
+.insight-item {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 0;
+  border: 1px solid var(--border-subtle);
+  transition: border-color 0.3s;
+}
+
+.insight-item:hover { border-color: var(--border); }
+
+.insight-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--gold);
+  opacity: 0.25;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 0 0;
+  border-right: 1px solid var(--border-subtle);
+  line-height: 1;
+}
+
+.insight-content {
+  padding: 24px 28px;
+}
+
+.insight-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.insight-body {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.75;
+}
+
+/* PILLAR GRID */
+.pillar-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin: 40px 0;
+}
+
+.pillar-card {
+  padding: 32px 28px;
+  background: var(--silver-faint);
+  border: 1px solid var(--border-subtle);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.pillar-card:hover { border-color: var(--border); }
+
+.pillar-accent {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.pillar-card-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 12px;
+  color: rgba(255,255,255,0.06);
+}
+
+.pillar-card-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.pillar-card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.pillar-card-pct {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.pillar-card-body {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.7;
+}
+
+/* PLATFORM TABLE */
+.platform-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 40px 0;
+}
+
+.platform-table th {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.platform-table td {
+  padding: 16px;
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.7);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+.platform-table tr:hover td { background: var(--silver-faint); }
+
+.platform-table td:first-child {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+.plat-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  margin-bottom: 6px;
+}
+
+.pb-1 { background: rgba(220,181,89,0.15); color: var(--gold-light); }
+.pb-2 { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.5); }
+.pb-3 { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.3); }
+
+/* FUNNEL VISUAL */
+.funnel-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 40px 0;
+}
+
+.funnel-row {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 0;
+  border: 1px solid var(--border-subtle);
+  align-items: stretch;
+  transition: border-color 0.3s;
+}
+
+.funnel-row:hover { border-color: var(--border); }
+
+.funnel-pct {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  border-right: 1px solid var(--border-subtle);
+}
+
+.funnel-body {
+  padding: 20px 24px;
+}
+
+.funnel-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+
+.funnel-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+
+.funnel-examples {
+  padding: 20px 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  min-width: 180px;
+}
+
+.example-tag {
+  font-size: 10px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.4);
+  padding: 3px 8px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* QUADRO SECTION */
+.quadro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin: 40px 0;
+  align-items: start;
+}
+
+.episode-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.episode-step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  border: 1px solid var(--border-subtle);
+  transition: border-color 0.3s;
+}
+
+.episode-step:hover { border-color: var(--border); }
+
+.step-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--gold);
+  opacity: 0.3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 18px 0 0;
+  border-right: 1px solid var(--border-subtle);
+  line-height: 1;
+}
+
+.step-body { padding: 18px 20px; }
+
+.step-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 3px;
+}
+
+.step-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+
+.step-time {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-top: 4px;
+  letter-spacing: 0.06em;
+}
+
+/* RULES GRID */
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin: 40px 0;
+}
+
+.rule-card {
+  padding: 28px 24px;
+  border: 1px solid var(--border-subtle);
+  position: relative;
+  transition: border-color 0.3s;
+}
+
+.rule-card:hover { border-color: var(--border); }
+
+.rule-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.rule-card:hover::before { opacity: 1; }
+
+.rule-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--gold);
+  opacity: 0.12;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.rule-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.rule-body {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
+}
+
+/* CLOSING */
+.closing {
+  padding: 120px 60px;
+  text-align: center;
+  position: relative;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.closing-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--white);
+  margin-bottom: 20px;
+  line-height: 1.1;
+}
+
+.closing-title em { color: var(--gold); font-style: normal; }
+
+.closing-sub {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--silver);
+  max-width: 520px;
+  margin: 0 auto 48px;
+  line-height: 1.8;
+}
+
+.closing-meta {
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.1em;
+}
+
+/* ALTERNATING BG */
+.section.alt { background: rgba(22,52,70,0.08); }
+.section.dark { background: rgba(0,0,0,0.25); }
+
+/* REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero, .section, .closing { padding-left: 24px; padding-right: 24px; }
+  .pillar-grid, .quadro-grid, .rules-grid { grid-template-columns: 1fr; }
+  .funnel-row { grid-template-columns: 60px 1fr; }
+  .funnel-examples { display: none; }
+  .hero-meta { flex-wrap: wrap; }
+  .hero-stat { flex: 1 1 40%; }
+  .hero-stat:last-child { border-right: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<nav>
+  <div class="nav-logo">André Finguer · Estratégia de Social Media</div>
+  <ul class="nav-links">
+    <li><a onclick="scroll('posicionamento')">Posicionamento</a></li>
+    <li><a onclick="scroll('funil')">Funil</a></li>
+    <li><a onclick="scroll('pilares')">Pilares</a></li>
+    <li><a onclick="scroll('plataformas')">Plataformas</a></li>
+    <li><a onclick="scroll('kiso')">Kiso</a></li>
+    <li><a onclick="scroll('quadro')">Quadro Fixo</a></li>
+    <li><a onclick="scroll('regras')">Regras de Produção</a></li>
+    <li><a onclick="scroll('formatos')">Formatos de Reel</a></li>
+    <li><a onclick="scroll('temas')">Temas</a></li>
+    <li><a href="guia-producao.html" style="color:var(--gold)!important;">Guia de Produção ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-line"></div>
+  <div class="hero-number">AF</div>
+  <div class="hero-tag">Estratégia Editorial · Social Media · 2026</div>
+  <h1 class="hero-title">
+    Presença que<br>
+    <em>converte confiança</em><br>
+    em conversa.
+  </h1>
+  <p class="hero-intro">
+    Este documento reúne o pensamento estratégico completo para o posicionamento digital de André Finguer — Gestor Patrimonial, Somma Multi-Family Office — com foco em patrimônios acima de R$50 milhões no Sul do Brasil. A estratégia combina análise de perfil, lógica de funil editorial e os princípios de marketing baseado em dados de Rafael Kiso.
+  </p>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <div class="hero-stat-n">R$18Bi</div>
+      <div class="hero-stat-l">AUM Somma</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">1.881</div>
+      <div class="hero-stat-l">Seguidores hoje</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">R$50M+</div>
+      <div class="hero-stat-l">Patrimônio ICP</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">29</div>
+      <div class="hero-stat-l">Peças em maio</div>
+    </div>
+  </div>
+</section>
+
+<!-- POSICIONAMENTO -->
+<section class="section reveal" id="posicionamento">
+  <div class="section-inner">
+    <div class="section-tag">01 · Posicionamento</div>
+    <h2 class="section-title">O André que as redes<br><em>ainda não mostram.</em></h2>
+
+    <p class="body-text">
+      André Finguer foi contratado para ser o rosto da Somma em Jaraguá do Sul. Essa é a premissa que orienta toda a estratégia: um gestor com acesso à estrutura de um Multi-Family Office com R$18 bilhões sob gestão, mas com a proximidade e o contexto de quem está inserido no ecossistema do empresário local. <strong>Autoridade institucional com presença humana.</strong> Esse é o ativo mais raro do perfil — e é o que a estratégia precisa comunicar.
+    </p>
+
+    <p class="body-text">
+      O perfil atual tem fundação sólida: certificação CFP®, verificação, coluna ativa no EconomiaSC, Linktree com materiais de valor. O problema não é ausência de conteúdo — é ausência de coerência editorial. O feed mistura autoridade técnica com conteúdo viral genérico, e o resultado é uma identidade sem fio condutor. A estratégia não recomeça do zero. Ela estabelece a linha.
+    </p>
+
+    <div class="pull-quote">
+      <div class="pull-quote-text">"Protejo e estruturo o patrimônio de famílias empresárias. Multi-Family Office · Sul do Brasil. Holding · Sucessão · Offshore · Real Estate EUA."</div>
+      <div class="pull-quote-source">Nova bio proposta — Instagram e LinkedIn</div>
+    </div>
+
+    <p class="body-text">
+      A bio atual descreve o que André faz. A nova bio comunica <strong>para quem ele faz — e onde</strong>. A diferença parece pequena na forma, mas é enorme no efeito: uma lista de serviços não cria conexão, não diferencia, não posiciona. Uma declaração de propósito com recorte geográfico e público claro faz o ICP pensar "esse cara é para mim".
+    </p>
+  </div>
+</section>
+
+<!-- FUNIL -->
+<section class="section alt reveal" id="funil">
+  <div class="section-inner">
+    <div class="section-tag">02 · Lógica de Funil</div>
+    <h2 class="section-title">O público certo<br><em>já sabe o que é holding.</em></h2>
+
+    <p class="body-text">
+      O empresário com patrimônio acima de R$50 milhões tem nível de consciência alto. Ele já tem contador, já tem gerente de banco, já ouviu falar de offshore e holding. Conteúdo 101 — "o que é uma holding", "o que é FIDC" — não converte esse público. Atrai curiosos, estudantes e profissionais em formação. São pessoas que amplificam, mas não compram.
+    </p>
+
+    <p class="body-text">
+      A pergunta certa não é "o que é holding?" — é <strong>"sua holding está estruturada do jeito certo?"</strong>. A primeira educa quem não sabe. A segunda instala uma dúvida em quem já tem. Essa distinção define o tom de toda a linha editorial.
+    </p>
+
+    <div class="funnel-visual">
+      <div class="funnel-row">
+        <div class="funnel-pct" style="color:#97C459">14%</div>
+        <div class="funnel-body">
+          <div class="funnel-name">Topo — Autoridade e Encontrabilidade</div>
+          <div class="funnel-desc">Colunas do EconomiaSC distribuídas como collab com ponto de vista próprio do André. Conteúdo que já existe, já indexa no Google, e amplia o nome com o peso editorial do veículo. Atrai estudantes e profissionais que mencionam e amplificam — sem ser o foco comercial.</div>
+        </div>
+        <div class="funnel-examples">
+          <div class="example-tag">Coluna EconomiaSC</div>
+          <div class="example-tag">Análise de cenário</div>
+          <div class="example-tag">Dado de mercado</div>
+        </div>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-pct" style="color:#85B7EB">48%</div>
+        <div class="funnel-body">
+          <div class="funnel-name">Meio — Qualificação do ICP</div>
+          <div class="funnel-desc">Conteúdo que fala com quem já tem patrimônio relevante e está avaliando opções. Não explica conceitos básicos — questiona se a estrutura atual é suficiente. Instala a dúvida certa no momento certo.</div>
+        </div>
+        <div class="funnel-examples">
+          <div class="example-tag">Sua holding está certa?</div>
+          <div class="example-tag">MFO vs. banco private</div>
+          <div class="example-tag">3 sinais desatualizados</div>
+        </div>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-pct" style="color:#DCB559">17%</div>
+        <div class="funnel-body">
+          <div class="funnel-name">Família — Legado com Propósito</div>
+          <div class="funnel-desc">Uma peça por semana com âncora temática. Nunca foto solta. O ICP com R$50M+ vive a mesma tensão entre construir e proteger. Ver o André com o filho cria identificação que nenhum carrossel técnico cria. Sempre com legenda que conecta o humano ao profissional.</div>
+        </div>
+        <div class="funnel-examples">
+          <div class="example-tag">Filho + legado</div>
+          <div class="example-tag">Liberdade que se constrói</div>
+          <div class="example-tag">Decisão pelo futuro</div>
+        </div>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-pct" style="color:#AFA9EC">21%</div>
+        <div class="funnel-body">
+          <div class="funnel-name">Fundo — Confiança e Conversão</div>
+          <div class="funnel-desc">Conteúdo que não converte por argumento, mas por identificação. O prospect vê o André em Jaraguá, ouvindo, resolvendo, explicando com clareza. Pensa: "esse cara entende o que estou protegendo." É aí que ele manda mensagem.</div>
+        </div>
+        <div class="funnel-examples">
+          <div class="example-tag">André se apresenta</div>
+          <div class="example-tag">Rotina em Jaraguá</div>
+          <div class="example-tag">A pergunta mais difícil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILARES -->
+<section class="section reveal" id="pilares">
+  <div class="section-inner">
+    <div class="section-tag">03 · Pilares Editoriais</div>
+    <h2 class="section-title">Quatro pilares.<br><em>Um fio condutor.</em></h2>
+
+    <p class="body-text">
+      A linha editorial é construída sobre quatro pilares que se complementam. Nenhuma semana é puramente técnica ou puramente pessoal. A alternância entre pilares é intencional: mantém o perfil multidimensional, impede que o público classifique o André como "mais um especialista financeiro", e garante que o feed transmita tanto autoridade quanto humanidade.
+    </p>
+
+    <div class="pillar-grid">
+      <div class="pillar-card">
+        <div class="pillar-accent" style="background:#85B7EB"></div>
+        <div class="pillar-card-num">01</div>
+        <div class="pillar-card-label" style="color:#85B7EB">Meio de Funil</div>
+        <div class="pillar-card-name">Qualificação do ICP</div>
+        <div class="pillar-card-pct" style="color:#378ADD">48%</div>
+        <div class="pillar-card-body">Questiona, não explica. Fala com quem já tem patrimônio e está avaliando se tem a estrutura certa. O maior volume do calendário porque é o trabalho de construir percepção de valor antes da venda.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-accent" style="background:#AFA9EC"></div>
+        <div class="pillar-card-num">02</div>
+        <div class="pillar-card-label" style="color:#AFA9EC">Fundo de Funil</div>
+        <div class="pillar-card-name">Confiança e Conversão</div>
+        <div class="pillar-card-pct" style="color:#7F77DD">21%</div>
+        <div class="pillar-card-body">Bastidores reais, rotina em Jaraguá, a voz e a presença do André. Humaniza sem perder autoridade. É o que faz o prospect dar o próximo passo — mandar mensagem, agendar conversa.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-accent" style="background:var(--gold)"></div>
+        <div class="pillar-card-num">03</div>
+        <div class="pillar-card-label" style="color:var(--gold)">Família com Propósito</div>
+        <div class="pillar-card-name">Legado e Identificação</div>
+        <div class="pillar-card-pct" style="color:var(--gold)">17%</div>
+        <div class="pillar-card-body">Uma peça por semana com âncora temática obrigatória. Nunca foto solta. A família do André é prova viva do que ele defende: quem cuida de patrimônio cuida de legado.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-accent" style="background:#97C459"></div>
+        <div class="pillar-card-num">04</div>
+        <div class="pillar-card-label" style="color:#97C459">Topo de Funil</div>
+        <div class="pillar-card-name">Autoridade e Encontrabilidade</div>
+        <div class="pillar-card-pct" style="color:#639922">14%</div>
+        <div class="pillar-card-body">Colunas do EconomiaSC distribuídas como collab. Conteúdo que já existe, já indexa no Google, e distribui autoridade com o peso do veículo. André traz ponto de vista próprio — não republica passivamente.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATAFORMAS -->
+<section class="section dark reveal" id="plataformas">
+  <div class="section-inner">
+    <div class="section-tag">04 · Plataformas</div>
+    <h2 class="section-title">Cada canal<br><em>com um papel.</em></h2>
+
+    <p class="body-text">
+      Três plataformas ativas — LinkedIn, Instagram e Threads — com papéis distintos e cadências específicas. A decisão de não iniciar com YouTube ou TikTok é estratégica: o objetivo desta fase é estabelecer presença consistente e qualificada onde o ICP já está, não dispersar esforço de produção em canais que ainda não foram validados para esse público.
+    </p>
+
+    <table class="platform-table">
+      <thead>
+        <tr>
+          <th>Plataforma</th>
+          <th>Papel estratégico</th>
+          <th>Cadência</th>
+          <th>Formatos prioritários</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            LinkedIn<br>
+            <span class="plat-badge pb-1">Prioridade 1</span>
+          </td>
+          <td>Canal de autoridade técnica e análise de mercado. Onde está o decisor — o empresário de 45 a 65 anos que toma decisões patrimoniais. Artigos e carrosséis longos que indexam no LinkedIn Search e no Google.</td>
+          <td>2× semana</td>
+          <td>Artigo, carrossel, collab EconomiaSC, post pessoal de posicionamento</td>
+        </tr>
+        <tr>
+          <td>
+            Instagram<br>
+            <span class="plat-badge pb-2">Prioridade 2</span>
+          </td>
+          <td>Canal de humanização e qualificação visual. O prospect descobre o André pelo LinkedIn e vai ao Instagram para "sentir" quem ele é antes de marcar reunião. Reels atraem novos públicos; carrosséis qualificam; feed familiar humaniza.</td>
+          <td>3× semana</td>
+          <td>Reels 45–90s, carrossel, feed familiar com âncora temática, collab visual EconomiaSC</td>
+        </tr>
+        <tr>
+          <td>
+            Threads<br>
+            <span class="plat-badge pb-3">Prioridade 3</span>
+          </td>
+          <td>Canal de reflexão e presença com baixo custo de produção. Reaproveitamento inteligente do LinkedIn e posts pessoais de fechamento. Mantém o André presente sem demandar produção extra significativa.</td>
+          <td>2× semana</td>
+          <td>Reflexões curtas de mercado, posts pessoais de legado, fechamentos semanais</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="kiso-box">
+      <div class="kiso-label">Por que essa cadência — dado do Kiso</div>
+      <div class="kiso-text">
+        Estudos da Nielsen, Meta e Kantar citados por Rafael Kiso mostram que <strong>impactar a mesma pessoa de 3 a 4 vezes por semana aumenta em até 95% a lembrança da marca e a intenção de compra</strong>. A cadência combinada das três plataformas coloca o André dentro dessa janela ideal para o seu seguidor que está presente nas três redes. O jogo não é frequência de postagem — é frequência de impacto sobre a mesma pessoa.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KISO -->
+<section class="section alt reveal" id="kiso">
+  <div class="section-inner">
+    <div class="section-tag">05 · Fundamentos de Rafael Kiso</div>
+    <h2 class="section-title">O que os dados<br><em>mudam na prática.</em></h2>
+
+    <p class="body-text">
+      Rafael Kiso é fundador e CMO da mLabs — plataforma líder de gestão de mídias sociais no Brasil, usada por mais de 130 mil marcas — e criador do método Unbound Marketing. Sua abordagem é baseada em dados reais de comportamento de plataforma, não em intuição de mercado. Cinco princípios da visão do Kiso foram incorporados diretamente à estratégia do André.
+    </p>
+
+    <div class="insights-list">
+      <div class="insight-item">
+        <div class="insight-num">1</div>
+        <div class="insight-content">
+          <div class="insight-title">Frequência de impacto, não de postagem</div>
+          <div class="insight-body">A métrica certa não é quantas vezes você posta por semana — é quantas vezes a mesma pessoa te vê. Para calcular: divida o número de visualizações pelo número de contas alcançadas nos últimos 7 dias. Resultado abaixo de 2 → aumentar volume. Resultado acima de 6 → priorizar Reels para trazer pessoas novas e equilibrar a base. Isso vira um indicador mensal de ajuste de cadência do André.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">2</div>
+        <div class="insight-content">
+          <div class="insight-title">Viralizar fora do nicho destrói o alcance no médio prazo</div>
+          <div class="insight-body">Um post viral fora do território atrai seguidores pelo motivo errado. Quem segue por uma curiosidade de tênis ou geopolítica não interage com conteúdo patrimonial depois. O algoritmo lê essa queda de engajamento como perda de relevância e reduz a entrega. Isso não é apenas uma questão de posicionamento — é matemática de algoritmo. Confirma e reforça a eliminação dos posts de clickbait genérico do calendário.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">3</div>
+        <div class="insight-content">
+          <div class="insight-title">O Instagram tem 4 algoritmos com funções distintas</div>
+          <div class="insight-body">Feed, Stories, Explorar e Reels têm lógicas diferentes. O algoritmo do Explorar ranqueia por likes, salvamentos e compartilhamentos. O algoritmo de Reels distribui para não-seguidores somente vídeos que retêm acima de 95% da média. Isso significa que cada formato precisa de CTA intencional: carrossel termina com estímulo ao salvamento, Reel termina com estímulo ao compartilhamento. Sinais diferentes para algoritmos diferentes.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">4</div>
+        <div class="insight-content">
+          <div class="insight-title">Retenção é o fator decisivo para Reels chegarem a novos públicos</div>
+          <div class="insight-body">Vídeos que mantêm espectadores assistindo até 70–80% da duração têm significativamente mais chances de ser distribuídos para não-seguidores. Um bom título atrai olhares — mas é a estrutura interna do vídeo que retém. Os roteiros dos Reels do André precisam seguir arquitetura deliberada: gancho emocional nos primeiros 3 segundos, desenvolvimento com dado ou analogia que sustente atenção, virada ou conclusão que justifique ter assistido até o final.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">5</div>
+        <div class="insight-content">
+          <div class="insight-title">Infotenimento — informação e entretenimento como unidade</div>
+          <div class="insight-body">Kiso defende que perguntas que conectem emocionalmente são os melhores ganchos — estimulam reflexão e criam conexão autêntica antes do primeiro segundo de conteúdo. O tempo de atenção médio em redes sociais é de 1,7 segundo. O gancho não pode ser um título descritivo — precisa ser uma provocação ou pergunta que o ICP sente na pele. "Sua holding está do jeito certo?" performa melhor que "Como estruturar uma holding". Isso muda a formulação de todos os ganchos na produção de copies.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUADRO FIXO -->
+<section class="section reveal" id="quadro">
+  <div class="section-inner">
+    <div class="section-tag">06 · Quadro Fixo</div>
+    <h2 class="section-title">Um formato próprio.<br><em>Nome a definir com André.</em></h2>
+
+    <p class="body-text">
+      Formatos fixos recorrentes são o principal mecanismo de construção de audiência fiel. Quando o público sabe o que esperar — dia, formato, duração, abertura — ele começa a antecipar. É o que transforma seguidor em audiência. O quadro fixo do André nasce de um ativo que já existe: a palavra que ele usa naturalmente com clientes — <strong>racional</strong> — e a facilidade com câmera que já demonstrou no podcast com o amigo da área.
+    </p>
+
+    <div class="pull-quote">
+      <div class="pull-quote-text">"Tem uma coisa que seu banco sabe mas raramente te explica. Hoje o racional é esse:"</div>
+      <div class="pull-quote-source">Abertura padrão proposta — mesma frase em todos os episódios</div>
+    </div>
+
+    <div class="quadro-grid">
+      <div>
+        <p class="body-text" style="font-size:14px;">
+          O quadro é quinzenal — duas vezes por mês — o que garante consistência sem sobrecarregar a produção. Começa solo, no escritório da Somma, e eventualmente traz convidados da área. 2 a 3 minutos sem enrolação: gancho, desenvolvimento com analogia ou dado real, fechamento padrão que devolve o poder de decisão para o espectador.
+        </p>
+        <p class="body-text" style="font-size:14px;">
+          A distribuição começa em Instagram Reels e LinkedIn, com abertura para escalar para YouTube Shorts e eventualmente formato longo — caminho natural para um formato que o André já experimentou em podcast.
+        </p>
+        <p class="body-text" style="font-size:14px; margin-top: 16px;">
+          O nome do quadro está em aberto e será definido com André — as direções mapeadas giram em torno da palavra <em>racional</em>, com energia e personalidade, não somente como descrição técnica.
+        </p>
+      </div>
+      <div class="episode-steps">
+        <div class="episode-step">
+          <div class="step-n">1</div>
+          <div class="step-body">
+            <div class="step-title">Gancho de abertura</div>
+            <div class="step-desc">Frase padrão que vira marca registrada — provoca e instala a curiosidade. Mesma estrutura em todos os episódios, tema diferente. Baseado no princípio Kiso de pergunta emocional como gancho.</div>
+            <div class="step-time">10 a 15 seg</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-n">2</div>
+          <div class="step-body">
+            <div class="step-title">O racional</div>
+            <div class="step-desc">André desenvolve o tema com analogia, dado real ou caso concreto. Sem jargão. A linguagem dele — direta, com contexto e história — é o diferencial. Estrutura de retenção deliberada até o final.</div>
+            <div class="step-time">90 a 120 seg</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-n">3</div>
+          <div class="step-body">
+            <div class="step-title">Fechamento padrão</div>
+            <div class="step-desc">Frase de encerramento que também vira marca — devolve o poder de decisão para o espectador. Não vende, posiciona. CTA sutil para agendamento. Estímulo ao compartilhamento — "manda para quem precisa ouvir isso."</div>
+            <div class="step-time">10 a 15 seg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGRAS DE PRODUÇÃO -->
+<section class="section dark reveal" id="regras">
+  <div class="section-inner">
+    <div class="section-tag">07 · Regras de Produção</div>
+    <h2 class="section-title">O que entra em<br><em>cada peça.</em></h2>
+
+    <p class="body-text">
+      A estratégia de funil e pilares define <em>o que</em> produzir. As regras de produção definem <em>como</em> produzir — incorporando os princípios do Kiso em cada decisão de copy e roteiro. São três regras não negociáveis que se aplicam a todas as peças do calendário.
+    </p>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-num">1</div>
+        <div class="rule-title">CTA intencional por algoritmo</div>
+        <div class="rule-body">Carrossel termina sempre com estímulo ao salvamento — "salve para consultar quando precisar". Reel termina sempre com estímulo ao compartilhamento — "manda para quem precisa ouvir isso". Sinais diferentes ativam algoritmos diferentes. Não é detalhe — é o que determina se o conteúdo chega a novos públicos.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">2</div>
+        <div class="rule-title">Gancho como pergunta ou provocação</div>
+        <div class="rule-body">Nenhum post começa com título descritivo. "MFO vs. banco private" vira "Seu banco realmente trabalha para você?". "Real Estate FL" vira "Por que brasileiros com R$30M+ estão comprando imóveis em Miami — e o que poucos sabem sobre a estrutura disso." O gancho emocional nos primeiros 3 segundos é o que determina se o algoritmo distribui ou ignora.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">3</div>
+        <div class="rule-title">Template de retenção para Reels</div>
+        <div class="rule-body">Todo roteiro de Reel segue a mesma arquitetura: problema ou provocação nos primeiros 5 segundos, desenvolvimento com dado ou analogia que sustente atenção, virada ou conclusão que justifique ter assistido até o final. Reels que retêm acima de 70–80% da duração têm mais chances de ser distribuídos para não-seguidores pelo algoritmo.</div>
+      </div>
+    </div>
+
+    <div class="kiso-box" style="margin-top: 40px;">
+      <div class="kiso-label">O que não entra — nunca</div>
+      <div class="kiso-text">
+        Conteúdo viral genérico fora do território patrimonial — geopolítica solta, curiosidades de mercado sem conexão com ICP, clickbait de alcance. Pelo Kiso: um viral fora do território atrai seguidores pelo motivo errado. Quando o algoritmo percebe que esses seguidores não engajam com o restante do conteúdo, <strong>derruba o score médio do perfil e reduz a entrega de todas as publicações</strong>. O passado do feed explica em parte o alcance atual.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<!-- FORMATOS DE REEL -->
+<section class="section reveal" id="formatos">
+  <div class="section-inner">
+    <div class="section-tag">08 · Formatos de Reel</div>
+    <h2 class="section-title">Dois formatos.<br><em>Funções distintas.</em></h2>
+
+    <p class="body-text">
+      Os Reels do André seguem dois formatos com arquiteturas internas definidas. Cada formato serve a uma etapa diferente do funil e produz um efeito diferente no espectador. Nomear e distinguir os formatos garante que cada roteiro seja produzido com intenção clara — e que o calendário seja equilibrado entre alcance e conversão.
+    </p>
+
+    <div class="pillar-grid" style="margin-top:40px;">
+      <div class="pillar-card">
+        <div class="pillar-accent" style="background:var(--gold)"></div>
+        <div class="pillar-card-num">01</div>
+        <div class="pillar-card-label" style="color:var(--gold)">Formato</div>
+        <div class="pillar-card-name">Autoridade</div>
+        <div class="pillar-card-label" style="color:rgba(255,255,255,0.3);margin-top:8px;">Funil</div>
+        <div style="font-size:13px;font-weight:400;color:rgba(255,255,255,0.5);margin-bottom:12px;">Fundo — confiança e conversão</div>
+        <div class="pillar-card-body">André raciocina em voz alta sobre o mercado. O posicionamento emerge do raciocínio — nunca é declarado diretamente. O espectador chega à conclusão de que André é diferente antes de André dizer isso. Ideal para quem já o conhece e está avaliando dar o próximo passo.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-accent" style="background:#85B7EB"></div>
+        <div class="pillar-card-num">02</div>
+        <div class="pillar-card-label" style="color:#85B7EB;">Formato</div>
+        <div class="pillar-card-name">Despertar</div>
+        <div class="pillar-card-label" style="color:rgba(255,255,255,0.3);margin-top:8px;">Funil</div>
+        <div style="font-size:13px;font-weight:400;color:rgba(255,255,255,0.5);margin-bottom:12px;">Topo e meio — alcance e afinidade</div>
+        <div class="pillar-card-body">André apresenta uma observação contraintuitiva com dado ou prova histórica. Reframe uma crença do ICP. Fecha com provocação que gera engajamento nos comentários. Constrói afinidade e alcança novos públicos — quem ainda não conhece o André para para pensar.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px;">
+      <div class="section-tag" style="margin-bottom:24px;">Estrutura interna — Autoridade</div>
+
+      <div class="episode-steps">
+        <div class="episode-step">
+          <div class="step-n">1</div>
+          <div class="step-body">
+            <div class="step-title">Gancho — pergunta ou contradição do mercado</div>
+            <div class="step-desc">Uma observação sobre o mercado patrimonial que instala uma contradição. Não é sobre o André — é sobre o mundo do ICP. O espectador pensa "é verdade, nunca parei para pensar nisso." Ex: "Se todo banco private promete gestão de longo prazo, por que o gerente troca a cada dois anos?"</div>
+            <div class="step-time">0 a 6 segundos</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-n">2</div>
+          <div class="step-body">
+            <div class="step-title">Diagnóstico — André valida com dado ou comportamento de mercado</div>
+            <div class="step-desc">Não é opinião — é diagnóstico. Ele descreve o padrão que vê no mercado, com dado concreto ou observação de comportamento real. Cria credibilidade sem citar currículo.</div>
+            <div class="step-time">6 a 26 segundos</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-n">3</div>
+          <div class="step-body">
+            <div class="step-title">Virada — onde a lógica se inverte</div>
+            <div class="step-desc">O ponto onde a análise muda de direção. "E é exatamente por isso que..." — a escassez, a oportunidade, ou a consequência que poucos percebem. É aqui que o André começa a emergir como referência, sem dizer isso diretamente.</div>
+            <div class="step-time">26 a 50 segundos</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-n">4</div>
+          <div class="step-body">
+            <div class="step-title">Posicionamento — consequência natural do raciocínio</div>
+            <div class="step-desc">O que André faz aparece como consequência lógica do que acabou de analisar — não como pitch. O espectador já concluiu que André pensa diferente antes de André dizer qualquer coisa sobre si mesmo.</div>
+            <div class="step-time">50 a 80 segundos</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-n">5</div>
+          <div class="step-body">
+            <div class="step-title">Declaração de propósito — fechamento sem venda</div>
+            <div class="step-desc">Encerra com o porquê — não financeiro, mas de construção e propósito. CTA sutil: "se quiser conversar sobre isso, o link está na bio." Estímulo ao compartilhamento: "manda para quem precisa ouvir isso."</div>
+            <div class="step-time">80 a 110 segundos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px;">
+      <div class="section-tag" style="margin-bottom:24px;">Estrutura interna — Despertar</div>
+
+      <div class="episode-steps">
+        <div class="episode-step">
+          <div class="step-n">1</div>
+          <div class="step-body">
+            <div class="step-title">Gancho — afirmação contraintuitiva</div>
+            <div class="step-desc">Não é pergunta — é uma observação que parece aleatória mas gera curiosidade imediata. O espectador não sabe para onde vai, mas precisa descobrir. Ex: "Empresários que construíram patrimônio acima de R$10M geralmente têm uma coisa em comum: nunca planejaram ter tanto assim."</div>
+            <div class="step-time">0 a 5 segundos</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-n">2</div>
+          <div class="step-body">
+            <div class="step-title">Prova — dado, nome conhecido ou referência histórica</div>
+            <div class="step-desc">Valida a afirmação com algo concreto e reconhecível. Pode ser dado de mercado, nome de empresa, comportamento documentado. Cria credibilidade imediata e mantém o espectador assistindo.</div>
+            <div class="step-time">5 a 20 segundos</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-n">3</div>
+          <div class="step-body">
+            <div class="step-title">Explicação — o mecanismo por trás</div>
+            <div class="step-desc">André entrega o porquê com clareza. É aqui que o espectador aprende algo que não sabia. O aprendizado cria afinidade — a pessoa associa o sentimento de "aprendi algo" ao rosto do André.</div>
+            <div class="step-time">20 a 40 segundos</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-n">4</div>
+          <div class="step-body">
+            <div class="step-title">Reframe — inverte a percepção</div>
+            <div class="step-desc">O que parecia problema vira característica. O que parecia obvio vira oportunidade. É o momento "ah, nunca havia pensado assim." Gera salvamento e compartilhamento orgânico.</div>
+            <div class="step-time">40 a 50 segundos</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-n">5</div>
+          <div class="step-body">
+            <div class="step-title">Fechamento com provocação — gera engajamento</div>
+            <div class="step-desc">Pergunta ou afirmação que convida o espectador a responder nos comentários ou marcar alguém. Não é CTA de venda — é convite à conversa. Ex: "E você, já parou para pensar onde está o seu patrimônio daqui a 20 anos?"</div>
+            <div class="step-time">50 a 55 segundos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px;">
+      <div class="section-tag" style="margin-bottom:20px;">Reels de maio — classificados por formato</div>
+
+      <table class="platform-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Tema</th>
+            <th>Formato</th>
+            <th>Funil</th>
+            <th>Objetivo principal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-size:13px;font-family:'Lato',sans-serif;font-weight:400;white-space:nowrap;">29/04</td>
+            <td>André se apresenta — quem é, onde atua, por que Jaraguá</td>
+            <td><span class="plat-badge pb-1">Autoridade</span></td>
+            <td style="color:rgba(255,255,255,0.4);font-size:12px;">Fundo</td>
+            <td style="font-size:12px;">Estabelecer quem é o André antes de qualquer outra coisa</td>
+          </tr>
+          <tr>
+            <td style="font-size:13px;font-family:'Lato',sans-serif;font-weight:400;white-space:nowrap;">13/05</td>
+            <td>O erro mais caro que empresários cometem ao planejar a sucessão</td>
+            <td><span class="plat-badge" style="background:rgba(55,138,221,0.15);color:#85B7EB;">Despertar</span></td>
+            <td style="color:rgba(255,255,255,0.4);font-size:12px;">Meio</td>
+            <td style="font-size:12px;">Ampliar alcance — quem ainda não conhece o André para para pensar</td>
+          </tr>
+          <tr>
+            <td style="font-size:13px;font-family:'Lato',sans-serif;font-weight:400;white-space:nowrap;">20/05</td>
+            <td>Rotina em Jaraguá — André no escritório e no campo</td>
+            <td><span class="plat-badge pb-1">Autoridade</span></td>
+            <td style="color:rgba(255,255,255,0.4);font-size:12px;">Fundo</td>
+            <td style="font-size:12px;">Humanizar e mostrar presença local — constrói confiança</td>
+          </tr>
+          <tr>
+            <td style="font-size:13px;font-family:'Lato',sans-serif;font-weight:400;white-space:nowrap;">27/05</td>
+            <td>A pergunta mais difícil que recebo de empresários</td>
+            <td><span class="plat-badge pb-1">Autoridade</span></td>
+            <td style="color:rgba(255,255,255,0.4);font-size:12px;">Fundo</td>
+            <td style="font-size:12px;">Mostrar domínio e humanidade — faz o prospect querer conversar</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="apply-box" style="margin-top:32px;">
+      <div class="apply-label">Equilíbrio por mês</div>
+      <div class="apply-text">
+        Maio tem mais <strong>Autoridade</strong> porque é o mês de estabelecer quem é o André. A partir de junho, o <strong>Despertar</strong> ganha mais espaço — quando o perfil já tem posicionamento estabelecido, o objetivo passa a ser ampliar alcance e atrair novos públicos para dentro do território patrimonial.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt reveal" id="temas">
+  <div class="section-inner">
+    <div class="section-tag">09 · Temas Prioritários e Voz</div>
+    <h2 class="section-title">O território do André.<br><em>Planejamento patrimonial como guarda-chuva.</em></h2>
+
+    <p class="body-text">
+      André definiu o território editorial com clareza: <strong>planejamento patrimonial é o guarda-chuva</strong> — e todos os outros temas convergem para ele. Morte, sucessão e brigas familiares são os gatilhos emocionais reais que movem o ICP a agir. São os temas que ninguém quer abordar, mas que todo empresário com patrimônio relevante precisa resolver.
+    </p>
+
+    <div class="funnel-wrap" style="margin-top:32px;">
+      <div class="funnel-visual">
+        <div class="funnel-tier" style="background:rgba(220,181,89,0.12);border-left:3px solid var(--gold);">
+          <div class="funnel-tier-label" style="color:var(--gold-light);">Guarda-chuva central</div>
+          <div class="funnel-tier-pct" style="color:var(--gold);">Planejamento Patrimonial</div>
+          <div class="funnel-tier-desc">Morte · Sucessão · Brigas familiares · Holding · Governança familiar · Estruturação</div>
+        </div>
+        <div class="funnel-tier ft-meio">
+          <div class="funnel-tier-label">Subtema</div>
+          <div class="funnel-tier-pct" style="font-size:20px;">Estruturação de FIDC</div>
+          <div class="funnel-tier-desc">Eficiência tributária · Securitização de recebíveis · Para empresa estruturada</div>
+        </div>
+        <div class="funnel-tier ft-fundo">
+          <div class="funnel-tier-label">Subtema</div>
+          <div class="funnel-tier-pct" style="font-size:20px;">MFO — Multi-Family Office</div>
+          <div class="funnel-tier-desc">Serviços da Somma · Isenção de conflito · O que banco não faz</div>
+        </div>
+        <div class="funnel-tier" style="background:rgba(0,115,116,0.1);border-left:3px solid var(--teal);">
+          <div class="funnel-tier-label" style="color:#24C6C1;">Subtema</div>
+          <div class="funnel-tier-pct" style="font-size:20px;color:var(--white);">Gestão Imobiliária</div>
+          <div class="funnel-tier-desc">Real Estate EUA · Estrutura offshore · Inventário americano</div>
+        </div>
+      </div>
+      <div class="funnel-detail">
+        <div class="funnel-item">
+          <div class="funnel-item-header">
+            <div class="funnel-dot" style="background:var(--gold)"></div>
+            <div class="funnel-item-title">Como abordar morte e sucessão — direto sem drama</div>
+          </div>
+          <div class="funnel-item-text">O André é direto e não faz rodeios. O tema pesado entra pela porta da realidade, não do medo. Não é "seu pai vai morrer e você não está preparado" — é "a maioria das brigas de inventário não começou na morte. Começou anos antes, quando ninguém quis ter essa conversa."</div>
+        </div>
+        <div class="funnel-item">
+          <div class="funnel-item-header">
+            <div class="funnel-dot" style="background:#378ADD"></div>
+            <div class="funnel-item-title">A voz do André — o que aprendemos</div>
+          </div>
+          <div class="funnel-item-text">Frases curtas com impacto crescente. Reframe como estrutura natural. Bullets como sequência de raciocínio. Negrito no ponto central, não para decorar. Tom de conversa com cliente. O Guia de Produção documenta tudo com exemplos reais.</div>
+          <div class="funnel-examples" style="margin-top:10px;">
+            <span class="example-pill">Frases curtas com impacto crescente</span>
+            <span class="example-pill">Reframe como estrutura</span>
+            <span class="example-pill">Sem urgência artificial</span>
+            <span class="example-pill">Tom de conversa, não de pitch</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="closing reveal">
+  <h2 class="closing-title">
+    Frequência não é projeto.<br>
+    <em>É disciplina.</em>
+  </h2>
+  <p class="closing-sub">
+    A presença digital do André não se constrói com um post perfeito. Constrói-se com consistência de posicionamento, semana após semana, dentro do mesmo território, para o mesmo público. O primeiro mês é o teste. Os próximos meses são o método.
+  </p>
+  <a href="checklist.html" style="display:inline-block;margin-bottom:16px;padding:14px 36px;border:1px solid var(--gold);color:var(--gold);font-size:11px;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:background 0.2s,color 0.2s;" onmouseover="this.style.background='rgba(220,181,89,0.1)'" onmouseout="this.style.background='transparent'">
+    Ver checklist de ativação →
+  </a>
+  <br>
+  <a href="guia-producao.html" style="display:inline-block;margin-bottom:40px;padding:14px 36px;border:1px solid rgba(220,181,89,0.4);color:rgba(220,181,89,0.7);font-size:11px;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(220,181,89,0.06)'" onmouseout="this.style.background='transparent'">
+    Guia de produção →
+  </a>
+  <div class="closing-meta">
+    André Finguer · Somma Multi-Family Office · Estratégia 2026<br>
+    Desenvolvimento: Social Media Strategy + Princípios Rafael Kiso (Unbound Marketing)
+  </div>
+</div>
+
+<script>
+function scroll(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progress.style.width = pct + '%';
+});
+
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06 });
+reveals.forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>

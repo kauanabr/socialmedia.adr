@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Social Media — André Finguer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #4D6571;
+    --dark: #373C3C;
+    --deep: #2E3E44;
+    --slate: #4B646F;
+    --mist: #6F8E9A;
+    --frost: #E9EBF0;
+    --silver: #C3C4C6;
+    --gold: #CC8B15;
+    --gold-light: #E2A849;
+    --teal: #007374;
+    --white: #FAFAF8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--white);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(55,60,60,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(195,196,198,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--silver);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--silver);
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+
+  .nav-links a:hover { color: var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 80px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 40%, rgba(0,115,116,0.06) 100%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 7vw, 88px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    max-width: 700px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.35s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--mist);
+  }
+
+  .hero-subtitle {
+    margin-top: 28px;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--silver);
+    max-width: 520px;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero-meta {
+    margin-top: 48px;
+    display: flex;
+    gap: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.65s forwards;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hero-stat-n {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+
+  .hero-stat-l {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--silver);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero-divider {
+    width: 1px;
+    height: 48px;
+    background: rgba(195,196,198,0.2);
+    align-self: center;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 40px;
+    left: 80px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(195,196,198,0.4);
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .scroll-line {
+    width: 40px;
+    height: 1px;
+    background: rgba(195,196,198,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: var(--gold);
+    animation: slideLine 2s 1.5s infinite;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 100px 80px;
+    position: relative;
+  }
+
+  section:nth-child(even) {
+    background: rgba(46,62,68,0.3);
+  }
+
+  .section-tag {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 48px;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--mist);
+  }
+
+  /* POSICIONAMENTO */
+  .positioning-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 48px;
+  }
+
+  .pos-card {
+    background: rgba(55,60,60,0.6);
+    border: 1px solid rgba(195,196,198,0.08);
+    padding: 36px;
+    transition: border-color 0.3s, background 0.3s;
+    cursor: default;
+  }
+
+  .pos-card:hover {
+    border-color: rgba(204,139,21,0.3);
+    background: rgba(55,60,60,0.9);
+  }
+
+  .pos-card-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .pos-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .pos-card-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.8;
+  }
+
+  .bio-box {
+    background: rgba(0,115,116,0.08);
+    border: 1px solid rgba(0,115,116,0.2);
+    border-left: 3px solid var(--teal);
+    padding: 28px 32px;
+    border-radius: 0 4px 4px 0;
+    margin-top: 8px;
+  }
+
+  .bio-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  .bio-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.7;
+  }
+
+  /* PILARES */
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .pillar-card {
+    padding: 28px 24px;
+    border: 1px solid rgba(195,196,198,0.1);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+    cursor: default;
+  }
+
+  .pillar-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(195,196,198,0.25);
+  }
+
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .pillar-card.p1::before { background: #378ADD; }
+  .pillar-card.p2::before { background: #7F77DD; }
+  .pillar-card.p3::before { background: var(--gold); }
+  .pillar-card.p4::before { background: var(--teal); }
+
+  .pillar-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 12px;
+    opacity: 0.15;
+    color: var(--white);
+  }
+
+  .pillar-name {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .pillar-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+
+  .p1 .pillar-tag { background: rgba(55,138,221,0.15); color: #85B7EB; }
+  .p2 .pillar-tag { background: rgba(127,119,221,0.15); color: #AFA9EC; }
+  .p3 .pillar-tag { background: rgba(204,139,21,0.15); color: var(--gold-light); }
+  .p4 .pillar-tag { background: rgba(0,115,116,0.15); color: #24C6C1; }
+
+  .pillar-desc {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.7;
+  }
+
+  /* FUNIL */
+  .funnel-wrap {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .funnel-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .funnel-tier {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: opacity 0.2s;
+    cursor: default;
+  }
+
+  .funnel-tier:hover { opacity: 0.9; }
+
+  .ft-topo { background: rgba(99,153,34,0.15); border-left: 3px solid #639922; }
+  .ft-meio { background: rgba(55,138,221,0.15); border-left: 3px solid #378ADD; }
+  .ft-fundo { background: rgba(127,119,221,0.15); border-left: 3px solid #7F77DD; }
+  .ft-familia { background: rgba(204,139,21,0.12); border-left: 3px solid var(--gold); }
+
+  .funnel-tier-label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .ft-topo .funnel-tier-label { color: #97C459; }
+  .ft-meio .funnel-tier-label { color: #85B7EB; }
+  .ft-fundo .funnel-tier-label { color: #AFA9EC; }
+  .ft-familia .funnel-tier-label { color: var(--gold-light); }
+
+  .funnel-tier-pct {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .funnel-tier-desc {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.5;
+  }
+
+  .funnel-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .funnel-item {
+    padding: 24px 28px;
+    border: 1px solid rgba(195,196,198,0.08);
+    border-radius: 4px;
+    background: rgba(55,60,60,0.4);
+  }
+
+  .funnel-item-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .funnel-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .funnel-item-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  .funnel-item-text {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.7;
+    padding-left: 20px;
+  }
+
+  .funnel-examples {
+    margin-top: 10px;
+    padding-left: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .example-pill {
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--silver);
+    background: rgba(195,196,198,0.06);
+    border: 1px solid rgba(195,196,198,0.12);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* PLATAFORMAS */
+  .platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .platform-card {
+    border: 1px solid rgba(195,196,198,0.1);
+    padding: 32px 28px;
+    position: relative;
+    transition: border-color 0.3s;
+    cursor: default;
+  }
+
+  .platform-card:hover { border-color: rgba(195,196,198,0.25); }
+
+  .platform-priority {
+    position: absolute;
+    top: 20px; right: 20px;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  .pri-1 { background: rgba(204,139,21,0.15); color: var(--gold-light); }
+  .pri-2 { background: rgba(111,142,154,0.15); color: var(--mist); }
+  .pri-3 { background: rgba(195,196,198,0.1); color: var(--silver); }
+
+  .platform-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .platform-cadence {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
+
+  .platform-formats {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .format-item {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--silver);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .format-item::before {
+    content: '—';
+    color: rgba(195,196,198,0.3);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* CADÊNCIA */
+  .cadence-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0;
+    border-bottom: 1px solid rgba(195,196,198,0.06);
+  }
+
+  .cadence-row:first-child { border-top: 1px solid rgba(195,196,198,0.06); }
+
+  .cadence-day {
+    padding: 16px 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(195,196,198,0.06);
+    display: flex;
+    align-items: center;
+  }
+
+  .cadence-posts {
+    padding: 16px 20px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .cadence-pill {
+    font-size: 10px;
+    font-weight: 400;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(195,196,198,0.12);
+    color: var(--silver);
+    background: rgba(55,60,60,0.6);
+  }
+
+  .cp-li { border-color: rgba(55,138,221,0.3); color: #85B7EB; }
+  .cp-ig { border-color: rgba(127,119,221,0.3); color: #AFA9EC; }
+  .cp-th { border-color: rgba(195,196,198,0.2); color: var(--silver); }
+  .cp-fam { border-color: rgba(204,139,21,0.3); color: var(--gold-light); }
+
+  /* QUADRO FIXO */
+  .quadro-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .quadro-concept {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .concept-block {
+    border-left: 2px solid rgba(195,196,198,0.15);
+    padding-left: 24px;
+  }
+
+  .concept-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .concept-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.8;
+  }
+
+  .concept-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.5;
+  }
+
+  .quadro-structure {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .episode-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px 24px;
+    background: rgba(55,60,60,0.4);
+    border: 1px solid rgba(195,196,198,0.06);
+    transition: border-color 0.3s;
+    cursor: default;
+  }
+
+  .episode-step:hover { border-color: rgba(204,139,21,0.2); }
+
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--gold);
+    opacity: 0.5;
+    line-height: 1;
+    min-width: 32px;
+    flex-shrink: 0;
+  }
+
+  .step-content {}
+
+  .step-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .step-desc {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.6;
+  }
+
+  .step-time {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--gold);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+  }
+
+  .temas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 32px;
+  }
+
+  .tema-pill {
+    padding: 14px 18px;
+    background: rgba(55,60,60,0.5);
+    border: 1px solid rgba(195,196,198,0.08);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--silver);
+    border-radius: 4px;
+    transition: border-color 0.2s, color 0.2s;
+    cursor: default;
+    line-height: 1.5;
+  }
+
+  .tema-pill:hover {
+    border-color: rgba(204,139,21,0.25);
+    color: var(--white);
+  }
+
+  /* CALENDÁRIO */
+  .cal-note {
+    background: rgba(0,115,116,0.08);
+    border: 1px solid rgba(0,115,116,0.15);
+    padding: 20px 28px;
+    border-radius: 4px;
+    margin-bottom: 36px;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.7;
+  }
+
+  .cal-note strong { color: var(--white); font-weight: 500; }
+
+  .cal-week {
+    margin-bottom: 32px;
+  }
+
+  .cal-week-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(195,196,198,0.08);
+  }
+
+  .cal-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .cal-post {
+    display: grid;
+    grid-template-columns: 80px 80px 1fr 80px;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(55,60,60,0.3);
+    border: 1px solid rgba(195,196,198,0.05);
+    border-radius: 3px;
+    transition: border-color 0.2s;
+    cursor: default;
+  }
+
+  .cal-post:hover { border-color: rgba(195,196,198,0.15); }
+
+  .cal-date {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--silver);
+    letter-spacing: 0.04em;
+  }
+
+  .cal-plat {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 20px;
+    text-align: center;
+  }
+
+  .plat-li { background: rgba(55,138,221,0.12); color: #85B7EB; border: 1px solid rgba(55,138,221,0.2); }
+  .plat-ig { background: rgba(127,119,221,0.12); color: #AFA9EC; border: 1px solid rgba(127,119,221,0.2); }
+  .plat-th { background: rgba(195,196,198,0.07); color: var(--silver); border: 1px solid rgba(195,196,198,0.12); }
+
+  .cal-tema {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--white);
+  }
+
+  .cal-funil {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  .cf-topo { color: #97C459; }
+  .cf-meio { color: #85B7EB; }
+  .cf-fundo { color: #AFA9EC; }
+  .cf-familia { color: var(--gold-light); }
+
+  /* PRÓXIMOS PASSOS */
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .next-step {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 20px;
+    align-items: center;
+    padding: 24px 28px;
+    background: rgba(55,60,60,0.4);
+    border: 1px solid rgba(195,196,198,0.06);
+    transition: border-color 0.3s;
+    cursor: default;
+  }
+
+  .next-step:hover { border-color: rgba(204,139,21,0.2); }
+
+  .next-step-n {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 300;
+    color: var(--gold);
+    opacity: 0.4;
+    line-height: 1;
+  }
+
+  .next-step-text {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.5;
+  }
+
+  .next-step-text span {
+    display: block;
+    font-size: 11px;
+    color: var(--silver);
+    margin-top: 4px;
+  }
+
+  .next-step-tag {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(195,196,198,0.12);
+    color: var(--silver);
+    white-space: nowrap;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 60px 80px;
+    border-top: 1px solid rgba(195,196,198,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(195,196,198,0.4);
+  }
+
+  .footer-note {
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(195,196,198,0.3);
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideLine {
+    from { left: -100%; }
+    to { left: 200%; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    section { padding: 60px 24px; }
+    .hero { padding: 100px 24px 60px; }
+    .scroll-cue { left: 24px; }
+    .positioning-grid,
+    .pillars-grid,
+    .platforms-grid,
+    .funnel-wrap,
+    .quadro-wrap,
+    .temas-grid { grid-template-columns: 1fr; }
+    .cal-post { grid-template-columns: 60px 60px 1fr; }
+    .cal-funil { display: none; }
+    footer { flex-direction: column; gap: 12px; }
+    .footer-note { text-align: left; }
+    .hero-meta { flex-wrap: wrap; gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">André Finguer · Social Media</div>
+  <ul class="nav-links">
+    <li><a onclick="document.getElementById('posicionamento').scrollIntoView({behavior:'smooth'})">Posicionamento</a></li>
+    <li><a onclick="document.getElementById('pilares').scrollIntoView({behavior:'smooth'})">Pilares</a></li>
+    <li><a onclick="document.getElementById('plataformas').scrollIntoView({behavior:'smooth'})">Plataformas</a></li>
+    <li><a onclick="document.getElementById('quadro').scrollIntoView({behavior:'smooth'})">Quadro Fixo</a></li>
+    <li><a onclick="document.getElementById('calendario').scrollIntoView({behavior:'smooth'})">Maio</a></li>
+    <li><a onclick="document.getElementById('proximos').scrollIntoView({behavior:'smooth'})">Próximos Passos</a></li>
+    <li><a onclick="document.getElementById('formatos').scrollIntoView({behavior:'smooth'})">Formatos Reel</a></li>
+    <li><a href="banco-temas.html" style="color:var(--gold)!important;">Banco de Temas ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Plano de Social Media · 2026</div>
+  <h1 class="hero-title">
+    Presença que<br><em>converte confiança</em><br>em conversa.
+  </h1>
+  <p class="hero-subtitle">
+    Estratégia editorial para posicionar André Finguer como o gestor patrimonial de referência no Sul do Brasil — com foco em patrimônios acima de R$50 milhões.
+  </p>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <div class="hero-stat-n">1.881</div>
+      <div class="hero-stat-l">seguidores hoje</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">4</div>
+      <div class="hero-stat-l">pilares editoriais</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">29</div>
+      <div class="hero-stat-l">peças em maio</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-n">3</div>
+      <div class="hero-stat-l">plataformas ativas</div>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <div class="scroll-line"></div>
+    Role para ver o plano
+  </div>
+</section>
+
+<!-- POSICIONAMENTO -->
+<section id="posicionamento">
+  <div class="section-tag">01 · Posicionamento</div>
+  <h2 class="section-title">O André que as redes<br><em>ainda não mostram.</em></h2>
+
+  <div class="positioning-grid reveal">
+    <div class="pos-card">
+      <div class="pos-card-label">O diferencial</div>
+      <div class="pos-card-title">Gestor local com visão global</div>
+      <div class="pos-card-text">André foi contratado para ser o rosto da Somma em Jaraguá do Sul — um gestor inserido no ecossistema do empresário local, com acesso à estrutura de um MFO com R$18Bi sob gestão. Esse é o ativo mais raro do perfil: autoridade institucional com proximidade humana.</div>
+    </div>
+    <div class="pos-card">
+      <div class="pos-card-label">O público</div>
+      <div class="pos-card-title">Empresários com patrimônio acima de R$50M</div>
+      <div class="pos-card-text">Patriarcas de 45 a 65 anos, Sul e Sudeste do Brasil, que já construíram — mas ainda não estruturaram. Têm contador, têm gerente de banco, mas não têm um gestor dedicado que pense no patrimônio como um todo. Esse é o espaço do André.</div>
+    </div>
+    <div class="pos-card">
+      <div class="pos-card-label">O que permanece</div>
+      <div class="pos-card-title">CFP® · Colunista EconomiaSC · 12+ anos</div>
+      <div class="pos-card-text">A certificação CFP® fica no nome. A coluna no EconomiaSC se torna ativo de distribuição — conteúdo que já existe, já indexa no Google, e vira collab com alcance ampliado. A trajetória de mais de 12 anos é a credencial que nenhum perfil comprado tem.</div>
+    </div>
+    <div class="pos-card">
+      <div class="pos-card-label">O que muda</div>
+      <div class="pos-card-title">De lista de serviços para voz de autoridade</div>
+      <div class="pos-card-text">A bio atual descreve o que André faz. A nova bio comunica para quem ele faz — e por quê importa. O feed deixa de misturar conteúdo viral genérico com autoridade técnica. A linha editorial passa a ter fio condutor claro e público definido.</div>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top: 8px;">
+    <div class="bio-label">Bio proposta — Instagram e LinkedIn</div>
+    <div class="bio-box">
+      <div class="bio-text">
+        Protejo e estruturo o patrimônio de famílias empresárias.<br>
+        Multi-Family Office · Sul do Brasil<br>
+        Holding · Sucessão · Offshore · Real Estate EUA<br>
+        ↓ Conteúdos e materiais gratuitos
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILARES -->
+<section id="pilares">
+  <div class="section-tag">02 · Pilares Editoriais</div>
+  <h2 class="section-title">Quatro pilares.<br><em>Um fio condutor.</em></h2>
+
+  <div class="pillars-grid reveal">
+    <div class="pillar-card p1">
+      <div class="pillar-num">01</div>
+      <div class="pillar-name">Meio de Funil</div>
+      <div class="pillar-tag">Qualificação ICP</div>
+      <div class="pillar-desc">Conteúdo que fala com quem já tem patrimônio e está avaliando opções. Não explica conceitos básicos — questiona se a estrutura atual é suficiente. "Sua holding está do jeito certo?" "O que o R$50M+ está fazendo com offshore agora?"</div>
+    </div>
+    <div class="pillar-card p2">
+      <div class="pillar-num">02</div>
+      <div class="pillar-name">Fundo de Funil</div>
+      <div class="pillar-tag">Confiança · Conversão</div>
+      <div class="pillar-desc">Bastidores reais, rotina em Jaraguá, a voz e a presença do André. Conteúdo que faz o prospect pensar "quero conversar com esse cara". Inclui apresentação pessoal, Reels de rotina e aprendizados de conversas com clientes.</div>
+    </div>
+    <div class="pillar-card p3">
+      <div class="pillar-num">03</div>
+      <div class="pillar-name">Família com Propósito</div>
+      <div class="pillar-tag">Legado · Humanização</div>
+      <div class="pillar-desc">Uma peça por semana com âncora temática — nunca foto solta. André com o filho conecta diretamente ao que ele defende: quem cuida de patrimônio cuida de legado. O ICP se identifica porque vive a mesma tensão entre construir e proteger.</div>
+    </div>
+    <div class="pillar-card p4">
+      <div class="pillar-num">04</div>
+      <div class="pillar-name">Topo de Funil</div>
+      <div class="pillar-tag">Autoridade · Collab EconomiaSC</div>
+      <div class="pillar-desc">Colunas do EconomiaSC distribuídas como collab — conteúdo que já existe, já indexa no Google, e amplia o alcance do André com o peso editorial do veículo. Atrai estudantes e profissionais que amplificam e mencionam, sem ser o foco.</div>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top: 48px;">
+    <div class="section-tag" style="margin-bottom:20px;">Lógica de funil</div>
+    <div class="funnel-wrap">
+      <div class="funnel-visual">
+        <div class="funnel-tier ft-topo">
+          <div class="funnel-tier-label">Topo</div>
+          <div class="funnel-tier-pct">14%</div>
+          <div class="funnel-tier-desc">Collab EconomiaSC · autoridade ampliada</div>
+        </div>
+        <div class="funnel-tier ft-meio">
+          <div class="funnel-tier-label">Meio</div>
+          <div class="funnel-tier-pct">48%</div>
+          <div class="funnel-tier-desc">Qualificação · ICP R$50M+</div>
+        </div>
+        <div class="funnel-tier ft-familia">
+          <div class="funnel-tier-label">Família</div>
+          <div class="funnel-tier-pct">17%</div>
+          <div class="funnel-tier-desc">Legado com propósito · humanização</div>
+        </div>
+        <div class="funnel-tier ft-fundo">
+          <div class="funnel-tier-label">Fundo</div>
+          <div class="funnel-tier-pct">21%</div>
+          <div class="funnel-tier-desc">Confiança · conversão em reunião</div>
+        </div>
+      </div>
+      <div class="funnel-detail">
+        <div class="funnel-item">
+          <div class="funnel-item-header">
+            <div class="funnel-dot" style="background:#378ADD"></div>
+            <div class="funnel-item-title">O que o conteúdo de meio de funil não faz</div>
+          </div>
+          <div class="funnel-item-text">Não explica o que é holding, offshore ou FIDC para quem nunca ouviu falar. O ICP com R$50M+ já sabe o que são esses instrumentos. O conteúdo questiona se a estrutura atual dele é suficiente — e instala a dúvida certa.</div>
+          <div class="funnel-examples">
+            <span class="example-pill">Sua holding está certa?</span>
+            <span class="example-pill">O que o R$50M+ faz com offshore</span>
+            <span class="example-pill">MFO vs. banco private</span>
+            <span class="example-pill">3 sinais de estrutura desatualizada</span>
+          </div>
+        </div>
+        <div class="funnel-item">
+          <div class="funnel-item-header">
+            <div class="funnel-dot" style="background:#7F77DD"></div>
+            <div class="funnel-item-title">Como o fundo de funil converte</div>
+          </div>
+          <div class="funnel-item-text">Não por argumento — por identificação. O empresário vê o André em Jaraguá, ouvindo, resolvendo, explicando com clareza. Pensa: "esse cara entende o que eu estou protegendo." É aí que ele manda mensagem.</div>
+          <div class="funnel-examples">
+            <span class="example-pill">André se apresenta</span>
+            <span class="example-pill">Rotina em Jaraguá</span>
+            <span class="example-pill">A pergunta mais difícil</span>
+            <span class="example-pill">Aprendizado de uma conversa</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATAFORMAS -->
+<section id="plataformas">
+  <div class="section-tag">03 · Plataformas</div>
+  <h2 class="section-title">Cada canal<br><em>com um papel.</em></h2>
+
+  <div class="platforms-grid reveal">
+    <div class="platform-card">
+      <div class="platform-priority pri-1">Prioridade 1</div>
+      <div class="platform-name">LinkedIn</div>
+      <div class="platform-cadence">2× por semana</div>
+      <div class="platform-formats">
+        <div class="format-item">Artigos e análises de mercado</div>
+        <div class="format-item">Collab EconomiaSC com ponto de vista próprio</div>
+        <div class="format-item">Post pessoal de apresentação e contexto</div>
+        <div class="format-item">Carrosséis técnicos para ICP qualificado</div>
+      </div>
+    </div>
+    <div class="platform-card">
+      <div class="platform-priority pri-2">Prioridade 2</div>
+      <div class="platform-name">Instagram</div>
+      <div class="platform-cadence">3× por semana</div>
+      <div class="platform-formats">
+        <div class="format-item">Reels de 45 a 90 segundos — André falando</div>
+        <div class="format-item">Carrosséis visuais de qualificação</div>
+        <div class="format-item">Feed familiar com legenda de propósito</div>
+        <div class="format-item">Collab EconomiaSC em formato visual</div>
+      </div>
+    </div>
+    <div class="platform-card">
+      <div class="platform-priority pri-3">Prioridade 3</div>
+      <div class="platform-name">Threads</div>
+      <div class="platform-cadence">2× por semana</div>
+      <div class="platform-formats">
+        <div class="format-item">Reflexões curtas de mercado — sem clickbait</div>
+        <div class="format-item">Momentos pessoais e de legado</div>
+        <div class="format-item">Reaproveitamento inteligente do LinkedIn</div>
+        <div class="format-item">Fechamentos semanais e mensais</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="section-tag" style="margin-bottom:16px;">Cadência semanal típica</div>
+    <div class="cal-posts">
+      <div class="cadence-row">
+        <div class="cadence-day">Seg</div>
+        <div class="cadence-posts">
+          <span class="cadence-pill cp-li">LinkedIn · artigo ou análise</span>
+        </div>
+      </div>
+      <div class="cadence-row">
+        <div class="cadence-day">Ter</div>
+        <div class="cadence-posts">
+          <span class="cadence-pill cp-ig">Instagram · Reel</span>
+        </div>
+      </div>
+      <div class="cadence-row">
+        <div class="cadence-day">Qua</div>
+        <div class="cadence-posts">
+          <span class="cadence-pill cp-ig">Instagram · carrossel</span>
+          <span class="cadence-pill cp-li">LinkedIn · collab ou carrossel</span>
+        </div>
+      </div>
+      <div class="cadence-row">
+        <div class="cadence-day">Qui</div>
+        <div class="cadence-posts">
+          <span class="cadence-pill cp-ig">Instagram · feed familiar</span>
+        </div>
+      </div>
+      <div class="cadence-row">
+        <div class="cadence-day">Sex</div>
+        <div class="cadence-posts">
+          <span class="cadence-pill cp-th">Threads · reflexão ou bastidor</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUADRO FIXO -->
+<section id="quadro">
+  <div class="section-tag">04 · Quadro Fixo</div>
+  <h2 class="section-title">Um formato próprio.<br><em>Nome a definir com André.</em></h2>
+
+  <div class="quadro-wrap reveal">
+    <div class="quadro-concept">
+      <div class="concept-block">
+        <div class="concept-label">O conceito</div>
+        <div class="concept-quote">"Tem uma coisa que seu banco sabe mas raramente te explica."</div>
+      </div>
+      <div class="concept-block">
+        <div class="concept-label">A ideia</div>
+        <div class="concept-text">Um quadro quinzenal em vídeo onde André pega um tema do universo patrimonial e entrega o racional por trás — em 2 a 3 minutos, sem enrolação. Gravado no escritório da Somma ou em outros ambientes, solo ou com convidados. A palavra que define o André — <em>racional</em> — é o fio condutor do formato.</div>
+      </div>
+      <div class="concept-block">
+        <div class="concept-label">Estrutura de abertura</div>
+        <div class="concept-text">Sempre a mesma frase de gancho que se torna marca registrada. André entra direto no tema — sem vinheta longa, sem apresentação corporativa. Encerra com um fechamento padrão que devolve o poder de decisão para o espectador.</div>
+      </div>
+      <div class="concept-block">
+        <div class="concept-label">Onde vive</div>
+        <div class="concept-text">Instagram Reels · LinkedIn · YouTube Shorts — com abertura para escalar para YouTube longo e formato podcast de vídeo no futuro, como o André já experimentou com o podcast com o amigo da área.</div>
+      </div>
+      <div class="concept-block">
+        <div class="concept-label">Frequência</div>
+        <div class="concept-text">Quinzenal — duas vezes por mês. Sustentável, consistente, sem depender de produção pesada. O impacto vem da regularidade do formato, não do volume.</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-tag" style="margin-bottom:16px;">Estrutura de cada episódio</div>
+      <div class="quadro-structure">
+        <div class="episode-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-name">Gancho de abertura</div>
+            <div class="step-desc">Frase padrão que vira marca registrada — provoca e instala a curiosidade sem clickbait. Sempre a mesma estrutura, tema diferente a cada episódio.</div>
+            <div class="step-time">10 a 15 segundos</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-name">O racional</div>
+            <div class="step-desc">André desenvolve o tema com analogia, dado real ou caso concreto. Sem jargão excessivo. A linguagem dele — direta, com contexto e história — é o diferencial.</div>
+            <div class="step-time">90 a 120 segundos</div>
+          </div>
+        </div>
+        <div class="episode-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-name">Fechamento padrão</div>
+            <div class="step-desc">Frase de encerramento que também vira marca — devolve o poder de decisão para o espectador. Não vende, posiciona. CTA sutil para o link na bio.</div>
+            <div class="step-time">10 a 15 segundos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-tag" style="margin-top:32px;margin-bottom:12px;">Temas mapeados para os primeiros episódios</div>
+      <div class="temas-grid">
+        <div class="tema-pill">Por que holding familiar não é só para rico</div>
+        <div class="tema-pill">O que seu banco não mostra no extrato</div>
+        <div class="tema-pill">Offshore: proteção ou evasão?</div>
+        <div class="tema-pill">O custo real de não planejar a sucessão</div>
+        <div class="tema-pill">Real Estate na Flórida — o que vejo de perto</div>
+        <div class="tema-pill">FIDC: quando faz sentido para você</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALENDÁRIO MAIO -->
+<section id="calendario">
+  <div class="section-tag">05 · Calendário Editorial</div>
+  <h2 class="section-title">Maio 2026 —<br><em>O primeiro mês.</em></h2>
+
+  <div class="cal-note reveal">
+    <strong>Ponto de partida:</strong> 28 de abril. O mês abre com o André se apresentando — quem é, por que Jaraguá, o que faz na Somma. Fecha com um Reel da pergunta mais difícil e uma reflexão pessoal de encerramento. Quem entrar no perfil no começo do mês e voltar no final vai perceber um posicionamento coerente, não posts soltos.
+  </div>
+
+  <div class="cal-week reveal">
+    <div class="cal-week-label">Semana 1 — 28 abr a 4 mai</div>
+    <div class="cal-posts">
+      <div class="cal-post">
+        <div class="cal-date">28/04</div>
+        <div class="cal-plat plat-li">LinkedIn</div>
+        <div class="cal-tema">André se apresenta — quem é, onde atua, por que Jaraguá</div>
+        <div class="cal-funil cf-fundo">fundo</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">29/04</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Reel · quem é André — apresentação pessoal e profissional</div>
+        <div class="cal-funil cf-fundo">fundo</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">30/04</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Carrossel · sua holding está estruturada do jeito certo?</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">02/05</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Feed familiar · o que estou construindo — filho + propósito</div>
+        <div class="cal-funil cf-familia">família</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cal-week reveal">
+    <div class="cal-week-label">Semana 2 — 5 a 11 mai</div>
+    <div class="cal-posts">
+      <div class="cal-post">
+        <div class="cal-date">05/05</div>
+        <div class="cal-plat plat-li">LinkedIn</div>
+        <div class="cal-tema">O que patrimônios acima de R$50M estão fazendo com offshore</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">06/05</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Collab EconomiaSC · 86% dos patrimônios não preparados para sucessão</div>
+        <div class="cal-funil cf-topo">topo</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">07/05</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Carrossel · 3 sinais de que sua estrutura patrimonial está desatualizada</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">08/05</div>
+        <div class="cal-plat plat-li">LinkedIn</div>
+        <div class="cal-tema">Collab EconomiaSC · Banco Master — o que revela para quem tem patrimônio</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">09/05</div>
+        <div class="cal-plat plat-th">Threads</div>
+        <div class="cal-tema">Reflexão · observação de pai — legado e o que construímos</div>
+        <div class="cal-funil cf-familia">família</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cal-week reveal">
+    <div class="cal-week-label">Semana 3 — 12 a 18 mai</div>
+    <div class="cal-posts">
+      <div class="cal-post">
+        <div class="cal-date">12/05</div>
+        <div class="cal-plat plat-li">LinkedIn</div>
+        <div class="cal-tema">MFO vs. banco private — o que seu banco não faz pelo seu patrimônio</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">13/05</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Reel · o erro mais caro que empresários cometem ao planejar sucessão</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">14/05</div>
+        <div class="cal-plat plat-li">LinkedIn</div>
+        <div class="cal-tema">Collab EconomiaSC · EUA para investidores brasileiros — visão de dentro</div>
+        <div class="cal-funil cf-topo">topo</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">15/05</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Carrossel · perguntas que você deveria fazer ao seu gestor atual</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">16/05</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Feed familiar · liberdade que se constrói — lazer com propósito</div>
+        <div class="cal-funil cf-familia">família</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cal-week reveal">
+    <div class="cal-week-label">Semana 4 — 19 a 25 mai</div>
+    <div class="cal-posts">
+      <div class="cal-post">
+        <div class="cal-date">19/05</div>
+        <div class="cal-plat plat-li">LinkedIn</div>
+        <div class="cal-tema">Real Estate na Flórida — o que a Somma vê de perto</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">20/05</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Reel · rotina em Jaraguá — André no escritório e no campo</div>
+        <div class="cal-funil cf-fundo">fundo</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">21/05</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Carrossel · gestor dedicado vs. gerente de banco — diferenças concretas</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">22/05</div>
+        <div class="cal-plat plat-li">LinkedIn</div>
+        <div class="cal-tema">Collab EconomiaSC · cenário econômico de maio e patrimônio estruturado</div>
+        <div class="cal-funil cf-topo">topo</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">23/05</div>
+        <div class="cal-plat plat-th">Threads</div>
+        <div class="cal-tema">Uma decisão que tomei pensando no futuro do meu filho</div>
+        <div class="cal-funil cf-familia">família</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cal-week reveal">
+    <div class="cal-week-label">Semana 5 — 26 a 29 mai</div>
+    <div class="cal-posts">
+      <div class="cal-post">
+        <div class="cal-date">26/05</div>
+        <div class="cal-plat plat-li">LinkedIn</div>
+        <div class="cal-tema">O que acontece com seu patrimônio sem estrutura — dado real</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">27/05</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Reel · a pergunta mais difícil que recebo de empresários</div>
+        <div class="cal-funil cf-fundo">fundo</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">28/05</div>
+        <div class="cal-plat plat-ig">Instagram</div>
+        <div class="cal-tema">Carrossel · dolarização — quanto faz sentido para R$20M+</div>
+        <div class="cal-funil cf-meio">meio</div>
+      </div>
+      <div class="cal-post">
+        <div class="cal-date">29/05</div>
+        <div class="cal-plat plat-th">Threads</div>
+        <div class="cal-tema">Maio — o que ficou · fechamento pessoal e profissional</div>
+        <div class="cal-funil cf-familia">família</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRÓXIMOS PASSOS -->
+<section id="proximos">
+  <div class="section-tag">06 · Próximos Passos</div>
+  <h2 class="section-title">O que acontece<br><em>agora.</em></h2>
+
+  <div class="steps-list reveal">
+    <div class="next-step">
+      <div class="next-step-n">1</div>
+      <div class="next-step-text">
+        Validar e ajustar este plano com André
+        <span>Alinhamento de tom, temas sensíveis, preferências de formato e confirmação da cadência das colunas EconomiaSC em maio.</span>
+      </div>
+      <div class="next-step-tag">Esta semana</div>
+    </div>
+    <div class="next-step">
+      <div class="next-step-n">2</div>
+      <div class="next-step-text">
+        Atualizar bio no Instagram e LinkedIn
+        <span>Aplicar a nova bio proposta e reorganizar o Linktree com agendamento em primeiro lugar.</span>
+      </div>
+      <div class="next-step-tag">Antes de 28/04</div>
+    </div>
+    <div class="next-step">
+      <div class="next-step-n">3</div>
+      <div class="next-step-text">
+        Produzir os copies e roteiros da Semana 1
+        <span>LinkedIn de apresentação (28/04), Reel de apresentação (29/04), carrossel holding (30/04) e post familiar (02/05).</span>
+      </div>
+      <div class="next-step-tag">Antes de 28/04</div>
+    </div>
+    <div class="next-step">
+      <div class="next-step-n">4</div>
+      <div class="next-step-text">
+        Gravar o Reel de apresentação no escritório da Somma
+        <span>Primeiro conteúdo em vídeo — define o tom visual e verbal do perfil. Ponto de referência para tudo que vem depois.</span>
+      </div>
+      <div class="next-step-tag">Semana de 28/04</div>
+    </div>
+    <div class="next-step">
+      <div class="next-step-n">5</div>
+      <div class="next-step-text">
+        Definir o nome do quadro fixo com André
+        <span>Apresentar as direções mapeadas — "O Racional", "Faz Sentido?", "Na Lata", "A Outra Conta" — e fechar o conceito com a palavra e energia dele.</span>
+      </div>
+      <div class="next-step-tag">Maio</div>
+    </div>
+    <div class="next-step">
+      <div class="next-step-n">6</div>
+      <div class="next-step-text">
+        Gravar o primeiro episódio do quadro fixo
+        <span>Formato híbrido, solo, no escritório da Somma. 2 a 3 minutos. Distribuição: Instagram Reels, LinkedIn e YouTube Shorts.</span>
+      </div>
+      <div class="next-step-tag">Maio — quinzenal</div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATOS DE REEL -->
+<section id="formatos">
+  <div class="section-tag">07 · Formatos de Reel</div>
+  <h2 class="section-title">Dois formatos.<br><em>Funções distintas.</em></h2>
+
+  <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;">
+    <div class="pos-card" style="border-top:2px solid var(--gold);">
+      <div class="pos-card-label">Formato 01</div>
+      <div class="pos-card-title">Autoridade</div>
+      <div class="pos-card-text">André raciocina em voz alta sobre o mercado. O posicionamento emerge do raciocínio — nunca é declarado diretamente. O espectador chega à conclusão de que André é diferente antes de André dizer isso. <strong style="color:#F0EDE8;">Fundo de funil — constrói confiança e diferenciação.</strong></div>
+    </div>
+    <div class="pos-card" style="border-top:2px solid var(--mist);">
+      <div class="pos-card-label">Formato 02</div>
+      <div class="pos-card-title">Despertar</div>
+      <div class="pos-card-text">André apresenta uma observação contraintuitiva com dado ou prova. Reframe uma crença do ICP. Fecha com provocação que gera engajamento nos comentários. <strong style="color:#F0EDE8;">Topo e meio de funil — constrói afinidade e amplia alcance.</strong></div>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-bottom:12px;">
+    <div class="pos-card-label" style="color:var(--gold);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">Reels de maio — por formato</div>
+    <div class="steps-list">
+      <div class="next-step">
+        <div class="next-step-n" style="font-size:13px;font-weight:500;min-width:48px;">29/04</div>
+        <div class="next-step-text">
+          André se apresenta — quem é, onde atua, por que Jaraguá
+          <span>Fundo de funil · Objetivo: estabelecer quem é o André antes de qualquer outra coisa</span>
+        </div>
+        <div class="next-step-tag" style="background:rgba(204,139,21,0.15);color:var(--gold);border-color:rgba(204,139,21,0.3);">Autoridade</div>
+      </div>
+      <div class="next-step">
+        <div class="next-step-n" style="font-size:13px;font-weight:500;min-width:48px;">13/05</div>
+        <div class="next-step-text">
+          O erro mais caro que empresários cometem ao planejar a sucessão
+          <span>Meio de funil · Objetivo: ampliar alcance — quem não conhece o André para para pensar</span>
+        </div>
+        <div class="next-step-tag" style="background:rgba(111,142,154,0.15);color:var(--mist);border-color:rgba(111,142,154,0.3);">Despertar</div>
+      </div>
+      <div class="next-step">
+        <div class="next-step-n" style="font-size:13px;font-weight:500;min-width:48px;">20/05</div>
+        <div class="next-step-text">
+          Rotina em Jaraguá — André no escritório e no campo
+          <span>Fundo de funil · Objetivo: humanizar e mostrar presença local — constrói confiança</span>
+        </div>
+        <div class="next-step-tag" style="background:rgba(204,139,21,0.15);color:var(--gold);border-color:rgba(204,139,21,0.3);">Autoridade</div>
+      </div>
+      <div class="next-step">
+        <div class="next-step-n" style="font-size:13px;font-weight:500;min-width:48px;">27/05</div>
+        <div class="next-step-text">
+          A pergunta mais difícil que recebo de empresários
+          <span>Fundo de funil · Objetivo: mostrar domínio e humanidade — faz o prospect querer conversar</span>
+        </div>
+        <div class="next-step-tag" style="background:rgba(204,139,21,0.15);color:var(--gold);border-color:rgba(204,139,21,0.3);">Autoridade</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal" style="background:rgba(0,115,116,0.08);border:1px solid rgba(0,115,116,0.15);padding:20px 28px;border-radius:4px;margin-top:16px;">
+    <div class="pos-card-label" style="color:#24C6C1;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;">Equilíbrio por fase</div>
+    <div style="font-size:13px;font-weight:300;color:var(--silver);line-height:1.7;">
+      <strong style="color:var(--white);font-weight:400;">Maio tem mais Autoridade</strong> porque é o mês de estabelecer quem é o André. A partir de junho, o <strong style="color:var(--white);font-weight:400;">Despertar</strong> ganha mais espaço — quando o perfil já tem posicionamento estabelecido, o objetivo passa a ampliar alcance e atrair novos públicos para dentro do território patrimonial.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">André Finguer · Somma MFO · 2026</div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <a href="banco-temas.html" style="display:inline-block;padding:10px 24px;border:1px solid var(--gold);color:var(--gold);font-size:10px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(204,139,21,0.1)'" onmouseout="this.style.background='transparent'">Banco de Temas →</a>
+  </div>
+  <div class="footer-note">
+    Estratégia elaborada para posicionamento digital<br>
+    ICP: patrimônio familiar acima de R$50 milhões
+  </div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

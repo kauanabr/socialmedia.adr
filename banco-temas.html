@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banco de Temas — André Finguer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --carbon: #1F1F1F;
+  --gold: #DCB559;
+  --gold-dark: #b8952e;
+  --gold-light: #e8c97a;
+  --prussian: #163446;
+  --white: #FFFFFF;
+  --off-white: #F5F0E8;
+  --silver: rgba(255,255,255,0.5);
+  --border: rgba(220,181,89,0.15);
+  --border-subtle: rgba(255,255,255,0.06);
+  --muted: rgba(255,255,255,0.35);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--carbon);
+  color: var(--white);
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* NAV */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(31,31,31,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 13px; font-style: italic; color: var(--gold); }
+.nav-filters { display: flex; gap: 8px; }
+.filter-btn {
+  font-size: 10px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 5px 14px; border: 1px solid var(--border-subtle); background: transparent;
+  color: var(--muted); cursor: pointer; transition: all 0.2s; border-radius: 2px;
+}
+.filter-btn:hover, .filter-btn.active { border-color: var(--gold); color: var(--gold-light); background: rgba(220,181,89,0.06); }
+
+/* HERO */
+.hero {
+  padding: 110px 48px 60px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 48px;
+}
+.hero-left { max-width: 560px; }
+.hero-tag { font-size: 10px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: clamp(32px,4vw,52px); font-weight: 400; line-height: 1.1; margin-bottom: 16px; }
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-sub { font-size: 14px; font-weight: 300; color: var(--silver); line-height: 1.8; }
+.hero-stats { display: flex; gap: 32px; flex-shrink: 0; }
+.hero-stat { text-align: center; }
+.hero-stat-n { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 400; color: var(--gold); line-height: 1; }
+.hero-stat-l { font-size: 10px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+/* REGRA */
+.rule-bar {
+  margin: 0 48px;
+  padding: 20px 28px;
+  background: rgba(22,52,70,0.3);
+  border: 1px solid rgba(22,52,70,0.7);
+  border-left: 3px solid var(--prussian);
+  display: flex; gap: 40px; align-items: flex-start;
+  margin-top: 32px; margin-bottom: 8px;
+}
+.rule-item { flex: 1; }
+.rule-label { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #5DA8C8; margin-bottom: 5px; }
+.rule-text { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.65); line-height: 1.6; }
+.rule-text strong { color: var(--white); font-weight: 400; }
+
+/* GRID */
+.grid-wrap { padding: 0 48px 80px; }
+.category-header {
+  padding: 40px 0 16px;
+  display: flex; align-items: center; gap: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 16px;
+}
+.cat-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+.cat-count { font-size: 10px; font-weight: 300; color: var(--muted); }
+
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2px; }
+
+/* CARD */
+.tema-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border-subtle);
+  padding: 24px;
+  position: relative;
+  transition: border-color 0.25s, background 0.25s;
+  cursor: default;
+}
+.tema-card:hover { border-color: var(--border); background: rgba(255,255,255,0.04); }
+.tema-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  opacity: 0; transition: opacity 0.25s;
+}
+.tema-card:hover::before { opacity: 1; }
+
+/* CARD TOP */
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; gap: 8px; }
+.card-badges { display: flex; gap: 5px; flex-wrap: wrap; }
+.badge {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 7px; border-radius: 2px;
+}
+.b-meio { background: rgba(55,138,221,0.15); color: #85B7EB; }
+.b-fundo { background: rgba(127,119,221,0.15); color: #AFA9EC; }
+.b-topo { background: rgba(99,153,34,0.15); color: #97C459; }
+.b-familia { background: rgba(220,181,89,0.15); color: var(--gold-light); }
+.b-auto { background: rgba(220,181,89,0.1); color: var(--gold); border: 1px solid rgba(220,181,89,0.2); }
+.b-desp { background: rgba(55,138,221,0.08); color: #85B7EB; border: 1px solid rgba(55,138,221,0.2); }
+.b-carr { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border-subtle); }
+.b-reel { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border-subtle); }
+.b-art { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border-subtle); }
+
+.card-source { font-size: 9px; font-weight: 300; color: var(--muted); letter-spacing: 0.06em; white-space: nowrap; }
+
+/* BLOG ORIGINAL */
+.blog-original {
+  font-size: 10px; font-weight: 300; color: var(--muted);
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.03);
+  border-left: 1px solid var(--border-subtle);
+  margin-bottom: 10px;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* TEMA TÍTULO */
+.card-tema {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px; font-weight: 400; color: var(--white);
+  line-height: 1.25; margin-bottom: 10px;
+}
+
+/* GANCHO */
+.card-gancho-label { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+.card-gancho {
+  font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.82);
+  font-style: italic; line-height: 1.55; margin-bottom: 12px;
+  padding-left: 10px; border-left: 2px solid rgba(220,181,89,0.3);
+}
+
+/* SERVICO ANCORA */
+.card-servico { font-size: 10px; font-weight: 400; letter-spacing: 0.08em; color: rgba(255,255,255,0.35); margin-top: 8px; display: flex; align-items: center; gap: 6px; }
+.servico-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0.4; flex-shrink: 0; }
+
+/* CAT COLORS */
+.cat-planejamento .tema-card::before { background: var(--gold); }
+.cat-investimentos .tema-card::before { background: #378ADD; }
+.cat-mercado .tema-card::before { background: #97C459; }
+.cat-gestao .tema-card::before { background: #AFA9EC; }
+.cat-familia .tema-card::before { background: #E2A849; }
+
+/* HIDDEN */
+.hidden { display: none !important; }
+
+/* SEARCH */
+.search-wrap { padding: 0 48px; margin: 24px 0 0; }
+.search-input {
+  width: 100%; padding: 12px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--white); font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 300;
+  outline: none; transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--border); }
+.search-input::placeholder { color: var(--muted); }
+
+@media (max-width:768px) {
+  nav { padding: 0 16px; }
+  .nav-filters { display: none; }
+  .hero, .grid-wrap, .search-wrap, .rule-bar { padding-left: 16px; padding-right: 16px; }
+  .hero { flex-direction: column; }
+  .cards-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Banco de Temas · André Finguer</div>
+  <div class="nav-filters">
+    <button class="filter-btn active" onclick="filter('all')">Todos</button>
+    <button class="filter-btn" onclick="filter('planejamento')">Planejamento</button>
+    <button class="filter-btn" onclick="filter('investimentos')">Investimentos</button>
+    <button class="filter-btn" onclick="filter('mercado')">Mercado</button>
+    <button class="filter-btn" onclick="filter('gestao')">Gestão</button>
+    <button class="filter-btn" onclick="filter('familia')">Família</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Biblioteca de Ideias · Social Media 2026</div>
+    <h1 class="hero-title">Temas que existem.<br><em>Linguagem que é do André.</em></h1>
+    <p class="hero-sub">Cada tema foi extraído do blog da Somma, dos serviços do MFO ou das colunas do EconomiaSC — e reescrito na abordagem, no nível de consciência e na voz do André. O conteúdo é original. A matéria-prima é institucional.</p>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-n">28</div><div class="hero-stat-l">temas mapeados</div></div>
+    <div class="hero-stat"><div class="hero-stat-n">3</div><div class="hero-stat-l">fontes</div></div>
+    <div class="hero-stat"><div class="hero-stat-n">∞</div><div class="hero-stat-l">meses de conteúdo</div></div>
+  </div>
+</div>
+
+<div class="rule-bar">
+  <div class="rule-item">
+    <div class="rule-label">A transformação</div>
+    <div class="rule-text">Blog Somma responde <strong>"o que é"</strong>. André responde <strong>"o que isso significa para quem já tem e ainda não estruturou"</strong>. Mesmo tema, nível de consciência completamente diferente.</div>
+  </div>
+  <div class="rule-item">
+    <div class="rule-label">A regra de ouro</div>
+    <div class="rule-text">Nenhum post começa com título descritivo. O gancho é sempre uma <strong>pergunta ou afirmação que instala uma dúvida</strong> em quem já tem patrimônio — não explica para quem não sabe.</div>
+  </div>
+  <div class="rule-item">
+    <div class="rule-label">Serviço âncora</div>
+    <div class="rule-text">Cada tema converge implicitamente para <strong>um serviço real da Somma MFO</strong> — sem citar a Somma. O ICP absorve a oferta sem sentir que está sendo vendido.</div>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input type="text" class="search-input" placeholder="Buscar por tema, gancho ou serviço..." oninput="search(this.value)">
+</div>
+
+<div class="grid-wrap">
+
+  <!-- PLANEJAMENTO PATRIMONIAL -->
+  <div class="category-header cat-planejamento" data-cat="planejamento">
+    <div class="cat-label">Planejamento Patrimonial e Sucessório</div>
+    <div class="cat-count">9 temas</div>
+  </div>
+  <div class="cards-grid cat-planejamento" data-cat="planejamento">
+
+    <div class="tema-card" data-cat="planejamento" data-text="holding familiar planejamento sucessório estrutura">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-auto">Autoridade</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Blog Somma</div>
+      </div>
+      <div class="blog-original">Origem: "Holding Familiar: o que é e quais as vantagens no planejamento sucessório"</div>
+      <div class="card-tema">Sua holding foi criada para proteger — ou só para economizar imposto na época?</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Muita gente cria holding pensando em redução de carga tributária. Mas holding mal estruturada não protege patrimônio — só adia o problema."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Planejamento Patrimonial · Organização e governança familiar</div>
+    </div>
+
+    <div class="tema-card" data-cat="planejamento" data-text="sucessão planejamento 72% famílias">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-desp">Despertar</span><span class="badge b-reel">Reel</span></div>
+        <div class="card-source">Site MFO</div>
+      </div>
+      <div class="blog-original">Origem: Dados do MFO — "72% das famílias buscam MFO por planejamento sucessório"</div>
+      <div class="card-tema">72% das famílias que contratam gestão patrimonial profissional têm uma motivação em comum.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Não é rentabilidade. Não é diversificação. É sucessão. E a maioria dessas famílias chegou depois de um susto."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Planejamento Sucessório · Governança familiar</div>
+    </div>
+
+    <div class="tema-card" data-cat="planejamento" data-text="reforma tributária ITCMD imposto herança empresário">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-auto">Autoridade</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Blog Somma</div>
+      </div>
+      <div class="blog-original">Origem: "Reforma Tributária: o que muda para investidores e empresários de alta renda"</div>
+      <div class="card-tema">A reforma tributária não é problema só para quem ganha muito. É problema para quem tem muito — e ainda não organizou.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Patrimônio desorganizado sob nova tributação vai custar caro. E o custo não é só financeiro — é tempo de inventário, bloqueio de ativos, conflito familiar."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Planejamento Tributário · Organização patrimonial</div>
+    </div>
+
+    <div class="tema-card" data-cat="planejamento" data-text="inventário custo tempo bloqueio ativos">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-desp">Despertar</span><span class="badge b-reel">Reel</span></div>
+        <div class="card-source">EconomiaSC</div>
+      </div>
+      <div class="blog-original">Origem: "1 milhão de processos, 10 anos de espera: o custo real da falta de planejamento patrimonial"</div>
+      <div class="card-tema">1 milhão de processos. 10 anos de espera. Esse é o custo médio da falta de planejamento patrimonial no Brasil.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"E o pior: a maioria dessas famílias sabia que precisava planejar. Só foi deixando para depois."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Planejamento Sucessório · Estruturação holding</div>
+    </div>
+
+    <div class="tema-card" data-cat="planejamento" data-text="governança familiar próxima geração envolvimento filhos">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-auto">Autoridade</span><span class="badge b-art">Artigo LI</span></div>
+        <div class="card-source">Site MFO</div>
+      </div>
+      <div class="blog-original">Origem: Serviço MFO — "Envolvimento das próximas gerações / Governança familiar"</div>
+      <div class="card-tema">Seu filho vai herdar o negócio. Mas ele sabe o que está herdando?</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Governança familiar não é reunião de família com ata. É o conjunto de regras que define quem decide, quem opera e quem recebe — antes de precisar decidir na urgência."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Governança familiar · Planejamento multigeracional</div>
+    </div>
+
+    <div class="tema-card" data-cat="planejamento" data-text="holding criação estrutura quando vale a pena">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-desp">Despertar</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Blog Somma</div>
+      </div>
+      <div class="blog-original">Origem: "Holding familiar: como funciona e quais as vantagens no planejamento patrimonial e sucessório"</div>
+      <div class="card-tema">Nem todo patrimônio precisa de holding. Mas o seu — provavelmente sim.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"A holding não é um produto que se compra. É uma estrutura que se desenha. E quando mal desenhada, cria mais problema do que resolve."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Organização patrimonial · Holding familiar</div>
+    </div>
+
+    <div class="tema-card" data-cat="planejamento" data-text="86% patrimônios não preparados sucessão dado">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-topo">Topo</span><span class="badge b-auto">Autoridade</span><span class="badge b-art">Collab EconomiaSC</span></div>
+        <div class="card-source">EconomiaSC</div>
+      </div>
+      <div class="blog-original">Origem: Coluna André — "86% dos patrimônios familiares não estão preparados para sucessão"</div>
+      <div class="card-tema">86% dos patrimônios familiares não estão preparados para sucessão. O seu está nessa conta?</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Não é negligência. É adiamento. E o problema do adiamento é que o patrimônio não espera você estar pronto para cuidar dele."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Planejamento Sucessório</div>
+    </div>
+
+    <div class="tema-card" data-cat="planejamento" data-text="acompanhamento contínuo monitoramento patrimônio ativo">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-fundo">Fundo</span><span class="badge b-auto">Autoridade</span><span class="badge b-art">Artigo LI</span></div>
+        <div class="card-source">Site MFO</div>
+      </div>
+      <div class="blog-original">Origem: Serviço MFO — "Acompanhamento contínuo / Estruturas Offshore"</div>
+      <div class="card-tema">Planejamento patrimonial não é um evento. É um processo. E quem para de olhar, perde o que construiu.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"A maioria das estruturas que vejo chegar até mim foram desenhadas uma vez e nunca mais revisadas. O mercado mudou, a lei mudou, a família mudou. A estrutura ficou igual."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Acompanhamento contínuo · Gestão patrimonial</div>
+    </div>
+
+    <div class="tema-card" data-cat="planejamento" data-text="art como legado valorização perpetuação">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-desp">Despertar</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Blog Somma</div>
+      </div>
+      <div class="blog-original">Origem: "Arte como Legado: o papel da arte na valorização e perpetuação do patrimônio"</div>
+      <div class="card-tema">Os clientes mais sofisticados que conheço tratam arte como ativo — não como decoração.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Arte tem liquidez baixa e subjetividade alta. Mas como ativo de legado — o que você deixa para filhos e netos — ela carrega algo que nenhum CDB carrega: história."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Gestão patrimonial · Legado multigeracional</div>
+    </div>
+
+  </div><!-- /planejamento -->
+
+  <!-- INVESTIMENTOS E OFFSHORE -->
+  <div class="category-header cat-investimentos" data-cat="investimentos">
+    <div class="cat-label">Investimentos, Offshore e Dolarização</div>
+    <div class="cat-count">8 temas</div>
+  </div>
+  <div class="cards-grid cat-investimentos" data-cat="investimentos">
+
+    <div class="tema-card" data-cat="investimentos" data-text="offshore investimento exterior estrutura BVI trust">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-auto">Autoridade</span><span class="badge b-art">Artigo LI</span></div>
+        <div class="card-source">EconomiaSC</div>
+      </div>
+      <div class="blog-original">Origem: Coluna André — "Enquanto o Brasil complica, os EUA abrem as portas para quem quer empreender e investir"</div>
+      <div class="card-tema">Offshore não é evasão fiscal. É o que patrimônios acima de R$20M deveriam ter — e a maioria não tem estruturado direito.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"A diferença entre offshore feito certo e offshore feito errado não é o valor. É a estrutura jurídica por trás — e a maioria das pessoas nunca parou para verificar a dela."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Investimentos Offshore · Estruturas offshore</div>
+    </div>
+
+    <div class="tema-card" data-cat="investimentos" data-text="dolarização quanto do patrimônio moeda estrangeira dólar">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-desp">Despertar</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Linktree André</div>
+      </div>
+      <div class="blog-original">Origem: Material "Estudo Dolarização" disponível no Linktree</div>
+      <div class="card-tema">Quanto do seu patrimônio deveria estar em dólar? Tem uma resposta técnica para isso.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Não é uma questão de ser pessimista com o Brasil. É uma questão de gestão de risco. E risco concentrado em um único país — qualquer que seja — é risco demais."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Investimentos Offshore · Consolidação global</div>
+    </div>
+
+    <div class="tema-card" data-cat="investimentos" data-text="FIDC crédito privado estruturado empresa">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-auto">Autoridade</span><span class="badge b-art">Collab EconomiaSC</span></div>
+        <div class="card-source">EconomiaSC + Blog</div>
+      </div>
+      <div class="blog-original">Origem: Coluna André "O tal do FIDC" + Blog Somma "O que é FIDC, como funciona"</div>
+      <div class="card-tema">FIDC não é para qualquer empresa. Mas para a empresa certa, é uma das estruturas mais eficientes que existem.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Quando a empresa tem recebíveis e precisa de capital, há dois caminhos: pagar juros de banco ou securitizar sua própria carteira. Um é custo. O outro é estratégia."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: FIDC · Produtos Estruturados</div>
+    </div>
+
+    <div class="tema-card" data-cat="investimentos" data-text="Banco Master CDB crédito privado risco">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-topo">Topo</span><span class="badge b-auto">Autoridade</span><span class="badge b-art">Collab EconomiaSC</span></div>
+        <div class="card-source">EconomiaSC</div>
+      </div>
+      <div class="blog-original">Origem: Coluna André — "Com o caso do Banco Master, como saber se devo investir em CDB ou crédito privado?"</div>
+      <div class="card-tema">O caso do Banco Master deveria ter sido um alerta. Para muita gente, passou em branco.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"A pergunta não é 'qual banco é seguro'. A pergunta é: você sabe exatamente onde está cada centavo do seu patrimônio — e quem é responsável por ele?"</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Consolidação global · Acompanhamento tributário</div>
+    </div>
+
+    <div class="tema-card" data-cat="investimentos" data-text="carteira administrada fundo exclusivo personalizado">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-auto">Autoridade</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Site MFO</div>
+      </div>
+      <div class="blog-original">Origem: Serviço MFO — "Carteira administrada e fundos exclusivos"</div>
+      <div class="card-tema">Fundo de prateleira e carteira exclusiva têm o mesmo nome na declaração. O resultado é completamente diferente.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Quando você entra em um fundo de prateleira, está no mesmo barco que mil outros investidores. Quando tem carteira exclusiva, o barco é só seu — e a rota também."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Carteira administrada · Fundos exclusivos</div>
+    </div>
+
+    <div class="tema-card" data-cat="investimentos" data-text="wealth management gestão grandes patrimônios o que é">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-desp">Despertar</span><span class="badge b-reel">Reel</span></div>
+        <div class="card-source">Blog Somma</div>
+      </div>
+      <div class="blog-original">Origem: "Wealth Management: o que é e como funciona a gestão de grandes patrimônios"</div>
+      <div class="card-tema">Wealth management não é um serviço de banco. É uma filosofia de gestão que banco nenhum consegue entregar sozinho.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"O gerente do seu banco cuida de você. E também cuida de mais 300 clientes. Wealth management de verdade pressupõe que você é o foco — não um item da carteira."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: MFO · Gestão personalizada</div>
+    </div>
+
+    <div class="tema-card" data-cat="investimentos" data-text="Real Estate imóveis Florida EUA compra estrutura">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-auto">Autoridade</span><span class="badge b-art">Artigo LI</span></div>
+        <div class="card-source">Site MFO</div>
+      </div>
+      <div class="blog-original">Origem: Serviço MFO — "Gestão Imobiliária / Novos negócios" + Perfil André</div>
+      <div class="card-tema">Brasileiro comprando imóvel nos EUA sem estrutura jurídica adequada é o erro mais caro que vejo acontecer.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"O imóvel em Miami existe. O problema é o que acontece com ele quando o comprador morre — sem estrutura offshore, o inventário americano é lento, caro e público."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Gestão de Imóveis · Estruturas Offshore</div>
+    </div>
+
+    <div class="tema-card" data-cat="investimentos" data-text="consolidação patrimônio visão global ativos">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-fundo">Fundo</span><span class="badge b-auto">Autoridade</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Site MFO</div>
+      </div>
+      <div class="blog-original">Origem: Serviço MFO — "Consolidação global dos Investimentos"</div>
+      <div class="card-tema">Você sabe exatamente quanto vale seu patrimônio hoje — somando tudo, em todos os lugares?</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Imóveis, participações, investimentos, offshore, caixa. A maioria das pessoas tem uma ideia aproximada. Gestão patrimonial de verdade começa com a visão exata."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Consolidação global · Tecnologia MFO</div>
+    </div>
+
+  </div><!-- /investimentos -->
+
+  <!-- MERCADO E CENÁRIO -->
+  <div class="category-header cat-mercado" data-cat="mercado">
+    <div class="cat-label">Mercado, Cenário e Análise</div>
+    <div class="cat-count">5 temas</div>
+  </div>
+  <div class="cards-grid cat-mercado" data-cat="mercado">
+
+    <div class="tema-card" data-cat="mercado" data-text="cenário econômico selic juros impacto patrimônio">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-topo">Topo</span><span class="badge b-auto">Autoridade</span><span class="badge b-art">Collab EconomiaSC</span></div>
+        <div class="card-source">Blog Somma + EconomiaSC</div>
+      </div>
+      <div class="blog-original">Origem: Análises semanais Somma + Coluna André "O que você precisa saber para começar 2026"</div>
+      <div class="card-tema">O cenário econômico mudou. O que isso significa para quem tem patrimônio estruturado?</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Notícia de mercado é ruído. O que importa é entender o sinal por trás do ruído — e o que ele muda na sua estratégia de longo prazo."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Gestão de carteira · Acompanhamento tributário</div>
+    </div>
+
+    <div class="tema-card" data-cat="mercado" data-text="eleições 2026 impacto mercado patrimônio">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-desp">Despertar</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Blog Somma</div>
+      </div>
+      <div class="blog-original">Origem: "Segurança como fator influenciador das eleições brasileiras em 2026"</div>
+      <div class="card-tema">Ano eleitoral no Brasil sempre traz volatilidade. Patrimônio sem diversificação sofre mais.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"A questão não é em quem votar. É entender que independente do resultado, patrimônio concentrado no Brasil em ano eleitoral é aposta — não gestão."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Offshore · Diversificação</div>
+    </div>
+
+    <div class="tema-card" data-cat="mercado" data-text="volatilidade mercado proteger patrimônio crise">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-auto">Autoridade</span><span class="badge b-reel">Reel</span></div>
+        <div class="card-source">Blog Somma</div>
+      </div>
+      <div class="blog-original">Origem: Análise semanal — "Mercados globais têm nova semana volátil"</div>
+      <div class="card-tema">Mercado volátil não é o problema. O problema é patrimônio que não foi desenhado para sobreviver à volatilidade.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Patrimônio bem estruturado não elimina a volatilidade do mercado. Ele garante que a volatilidade não elimine o patrimônio."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Controle de riscos · Carteira administrada</div>
+    </div>
+
+    <div class="tema-card" data-cat="mercado" data-text="risco concentração Brasil diversificação geográfica">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-desp">Despertar</span><span class="badge b-art">Artigo LI</span></div>
+        <div class="card-source">EconomiaSC</div>
+      </div>
+      <div class="blog-original">Origem: Coluna André — "Enquanto o Brasil complica, os EUA abrem as portas"</div>
+      <div class="card-tema">Todo o seu patrimônio está sujeito às mesmas leis, ao mesmo câmbio, ao mesmo risco político. Isso é diversificação?</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Ter dinheiro em vários bancos brasileiros não é diversificação de risco. É concentração com mais gavetas."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Offshore · Diversificação global</div>
+    </div>
+
+    <div class="tema-card" data-cat="mercado" data-text="Selic queda taxa juros renda fixa estratégia">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-auto">Autoridade</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Blog Somma</div>
+      </div>
+      <div class="blog-original">Origem: Análise Somma — "Copom indica corte da taxa Selic para março"</div>
+      <div class="card-tema">Quando a Selic cai, patrimônio mal estruturado sente antes de entender o que aconteceu.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Renda fixa não é porto seguro eterno. É uma estratégia de momento. E quando o momento muda, quem não antecipou paga o preço."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Carteira administrada · Acompanhamento contínuo</div>
+    </div>
+
+  </div><!-- /mercado -->
+
+  <!-- GESTÃO MFO -->
+  <div class="category-header cat-gestao" data-cat="gestao">
+    <div class="cat-label">Gestão MFO e Serviços</div>
+    <div class="cat-count">4 temas</div>
+  </div>
+  <div class="cards-grid cat-gestao" data-cat="gestao">
+
+    <div class="tema-card" data-cat="gestao" data-text="MFO multi family office banco private diferença">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-auto">Autoridade</span><span class="badge b-reel">Reel</span></div>
+        <div class="card-source">Site MFO</div>
+      </div>
+      <div class="blog-original">Origem: Site MFO — "Qual a diferença do MFO para instituições financeiras?"</div>
+      <div class="card-tema">Banco private e Multi-Family Office não são a mesma coisa. A diferença não está no nome — está em quem o gestor representa.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Banco representa o banco. MFO representa você. Parece simples — mas essa distinção muda completamente o tipo de conselho que você recebe."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: MFO · Isenção de conflito de interesse</div>
+    </div>
+
+    <div class="tema-card" data-cat="gestao" data-text="tesouraria familiar holding liquidez fluxo caixa">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-desp">Despertar</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Site MFO</div>
+      </div>
+      <div class="blog-original">Origem: Serviço MFO — "Tesouraria familiar e holding / Controle de liquidez"</div>
+      <div class="card-tema">Família rica com holding pode ter problema de caixa. Parece contraditório — mas acontece mais do que você imagina.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Patrimônio imobilizado em imóveis e participações não paga conta. Tesouraria familiar bem estruturada é o que garante que riqueza no papel não vire aperto no mês."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Gestão de Contas · Tesouraria familiar</div>
+    </div>
+
+    <div class="tema-card" data-cat="gestao" data-text="seguros proteção patrimônio vida familiar">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-meio">Meio</span><span class="badge b-desp">Despertar</span><span class="badge b-carr">Carrossel</span></div>
+        <div class="card-source">Site MFO</div>
+      </div>
+      <div class="blog-original">Origem: Serviço MFO — "Seguros" dentro de Gestão de Contas</div>
+      <div class="card-tema">O empresário que mais conheço com patrimônio relevante e seguro de vida adequado é exceção — não regra.</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Seguro de vida não é para quem vai morrer. É para quem vai deixar herdeiros com dívidas, inventário e sem liquidez imediata para resolver."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Seguros · Planejamento sucessório</div>
+    </div>
+
+    <div class="tema-card" data-cat="gestao" data-text="tecnologia visão patrimônio software transparência">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-fundo">Fundo</span><span class="badge b-auto">Autoridade</span><span class="badge b-reel">Reel</span></div>
+        <div class="card-source">Site MFO</div>
+      </div>
+      <div class="blog-original">Origem: Site MFO — "Software para Visão do Patrimônio / Tecnologia própria"</div>
+      <div class="card-tema">Você consegue ver, em tempo real, tudo que tem — em todos os lugares — em uma única tela?</div>
+      <div class="card-gancho-label">Gancho</div>
+      <div class="card-gancho">"Gestão patrimonial sem visão consolidada é como pilotar avião sem painel. Você sabe mais ou menos onde está — mas não exatamente."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Tecnologia MFO · Consolidação global</div>
+    </div>
+
+  </div><!-- /gestao -->
+
+  <!-- FAMÍLIA E LEGADO -->
+  <div class="category-header cat-familia" data-cat="familia">
+    <div class="cat-label">Família, Legado e Propósito</div>
+    <div class="cat-count">2 temas</div>
+  </div>
+  <div class="cards-grid cat-familia" data-cat="familia">
+
+    <div class="tema-card" data-cat="familia" data-text="legado família construção filho gerações futuras">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-familia">Família</span><span class="badge b-desp">Despertar</span><span class="badge b-art">Feed IG</span></div>
+        <div class="card-source">Pilar familiar</div>
+      </div>
+      <div class="blog-original">Origem: Pilar familiar estratégico — ancoragem temática obrigatória</div>
+      <div class="card-tema">O que você está construindo — e para quem?</div>
+      <div class="card-gancho-label">Gancho / Legenda</div>
+      <div class="card-gancho">"Trabalho todos os dias para proteger o que famílias levaram décadas para construir. Em casa, faço a mesma coisa — só que o que protejo tem nome."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: Planejamento multigeracional · Legado</div>
+    </div>
+
+    <div class="tema-card" data-cat="familia" data-text="liberdade financeira qualidade de vida tempo família">
+      <div class="card-top">
+        <div class="card-badges"><span class="badge b-familia">Família</span><span class="badge b-auto">Autoridade</span><span class="badge b-art">Feed IG</span></div>
+        <div class="card-source">Pilar familiar</div>
+      </div>
+      <div class="blog-original">Origem: Site MFO — "Cuidar do patrimônio oferecendo mais tempo, tranquilidade e qualidade de vida"</div>
+      <div class="card-tema">O objetivo final não é o patrimônio. É o que o patrimônio permite.</div>
+      <div class="card-gancho-label">Gancho / Legenda</div>
+      <div class="card-gancho">"Quando o patrimônio está bem estruturado, você para de trabalhar para ele — e ele começa a trabalhar para você. Esse é o único objetivo que vale."</div>
+      <div class="card-servico"><div class="servico-dot"></div>Serviço âncora: MFO · Propósito e qualidade de vida</div>
+    </div>
+
+  </div><!-- /familia -->
+
+</div><!-- /grid-wrap -->
+
+<script>
+function filter(cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  const headers = document.querySelectorAll('.category-header');
+  const grids = document.querySelectorAll('.cards-grid');
+
+  if (cat === 'all') {
+    headers.forEach(h => h.classList.remove('hidden'));
+    grids.forEach(g => { g.classList.remove('hidden'); g.querySelectorAll('.tema-card').forEach(c => c.classList.remove('hidden')); });
+  } else {
+    headers.forEach(h => h.dataset.cat === cat ? h.classList.remove('hidden') : h.classList.add('hidden'));
+    grids.forEach(g => g.dataset.cat === cat ? (g.classList.remove('hidden'), g.querySelectorAll('.tema-card').forEach(c => c.classList.remove('hidden'))) : g.classList.add('hidden'));
+  }
+}
+
+function search(q) {
+  const term = q.toLowerCase().trim();
+  document.querySelectorAll('.tema-card').forEach(card => {
+    const text = card.dataset.text + ' ' + card.innerText.toLowerCase();
+    card.classList.toggle('hidden', term.length > 0 && !text.includes(term));
+  });
+  if (term.length > 0) {
+    document.querySelectorAll('.category-header').forEach(h => h.classList.remove('hidden'));
+    document.querySelectorAll('.cards-grid').forEach(g => g.classList.remove('hidden'));
+  }
+}
+</script>
+
+</body>
+</html>

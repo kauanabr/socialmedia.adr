@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Produção — André Finguer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --carbon:#1F1F1F;--gold:#DCB559;--gold-dark:#b8952e;--gold-light:#e8c97a;
+  --prussian:#163446;--white:#FFFFFF;--off-white:#F5F0E8;
+  --silver:rgba(255,255,255,0.55);--muted:rgba(255,255,255,0.3);
+  --border:rgba(220,181,89,0.15);--subtle:rgba(255,255,255,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--carbon);color:var(--white);font-family:'Lato',sans-serif;font-weight:300;font-size:15px;line-height:1.75}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:56px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 48px;
+  background:rgba(31,31,31,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;color:var(--gold)}
+.nav-tabs{display:flex;gap:4px}
+.tab-btn{
+  font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 14px;border:1px solid var(--subtle);background:transparent;
+  color:var(--muted);cursor:pointer;transition:all .2s;border-radius:2px;
+}
+.tab-btn:hover,.tab-btn.active{border-color:var(--gold);color:var(--gold-light);background:rgba(220,181,89,.06)}
+
+.page{display:none;padding:80px 48px 80px}
+.page.active{display:block}
+
+/* HERO */
+.page-tag{font-size:10px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:400;line-height:1.1;margin-bottom:16px}
+.page-title em{font-style:italic;color:var(--gold)}
+.page-sub{font-size:14px;color:var(--silver);max-width:580px;line-height:1.8;margin-bottom:40px}
+
+/* SECTION */
+.sec-title{
+  font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+  padding:32px 0 12px;display:flex;align-items:center;gap:12px;
+}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--subtle)}
+
+/* VOZ */
+.voz-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:32px}
+.voz-card{padding:24px;border:1px solid var(--subtle);transition:border-color .25s}
+.voz-card:hover{border-color:var(--border)}
+.voz-label{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+.voz-card.sim .voz-label{color:#97C459}
+.voz-card.nao .voz-label{color:#F09595}
+.voz-items{display:flex;flex-direction:column;gap:6px}
+.voz-item{font-size:13px;font-weight:300;color:var(--silver);line-height:1.5;display:flex;gap:8px;align-items:flex-start}
+.voz-item::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.voz-card.sim .voz-item::before{background:#639922}
+.voz-card.nao .voz-item::before{background:#E24B4A}
+
+.estrutura-box{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:32px;
+}
+.est-step{padding:20px 16px;border:1px solid var(--subtle)}
+.est-num{font-family:'Playfair Display',serif;font-size:32px;font-weight:400;color:var(--gold);opacity:.25;line-height:1;margin-bottom:8px}
+.est-name{font-size:12px;font-weight:700;color:var(--white);margin-bottom:4px}
+.est-desc{font-size:11px;font-weight:300;color:var(--muted);line-height:1.6}
+
+/* TEMPLATE */
+.template-box{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-left:3px solid var(--gold);padding:24px 28px;margin-bottom:24px;
+}
+.template-label{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.template-text{font-size:13px;font-weight:300;color:rgba(255,255,255,.8);line-height:1.9;white-space:pre-line}
+.template-note{font-size:11px;color:var(--muted);margin-top:10px;font-style:italic}
+
+/* COPY PRONTO */
+.copy-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.copy-meta{display:flex;gap:8px;align-items:center}
+.copy-badge{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:2px}
+.cb-auto{background:rgba(220,181,89,.15);color:var(--gold-light)}
+.cb-desp{background:rgba(55,138,221,.12);color:#85B7EB}
+.cb-li{background:rgba(55,138,221,.1);color:#85B7EB;border:1px solid rgba(55,138,221,.2)}
+.cb-ig{background:rgba(127,119,221,.1);color:#AFA9EC;border:1px solid rgba(127,119,221,.2)}
+.cb-fundo{background:rgba(127,119,221,.12);color:#AFA9EC}
+.cb-meio{background:rgba(55,138,221,.1);color:#85B7EB}
+.copy-date{font-size:10px;color:var(--muted)}
+.copy-box{
+  background:rgba(255,255,255,.025);border:1px solid var(--subtle);
+  padding:24px 28px;margin-bottom:4px;position:relative;
+}
+.copy-box:hover{border-color:var(--border)}
+.copy-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;color:var(--white);margin-bottom:12px}
+.copy-body{font-size:13px;font-weight:300;color:rgba(255,255,255,.75);line-height:1.85;white-space:pre-line}
+.copy-notas{
+  background:rgba(22,52,70,.25);border-left:2px solid #5DA8C8;
+  padding:12px 16px;margin-top:12px;
+}
+.copy-notas-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5DA8C8;margin-bottom:6px}
+.copy-notas-text{font-size:12px;font-weight:300;color:rgba(255,255,255,.6);line-height:1.7}
+
+/* ROTEIRO */
+.roteiro-box{
+  background:rgba(255,255,255,.025);border:1px solid var(--subtle);
+  padding:0;margin-bottom:4px;overflow:hidden;
+}
+.roteiro-header{
+  padding:20px 28px;cursor:pointer;display:flex;align-items:center;
+  justify-content:space-between;user-select:none;transition:background .2s;
+}
+.roteiro-header:hover{background:rgba(255,255,255,.03)}
+.roteiro-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:400;color:var(--white)}
+.roteiro-toggle{font-size:16px;color:var(--muted);transition:transform .3s}
+.roteiro-toggle.open{transform:rotate(180deg)}
+.roteiro-body{display:none;padding:0 28px 24px}
+.roteiro-body.open{display:block}
+.bloco{margin-bottom:20px}
+.bloco-label{
+  font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:8px;
+}
+.bloco-time{
+  font-size:9px;font-weight:400;color:var(--muted);
+  background:rgba(255,255,255,.05);padding:2px 6px;border-radius:2px;
+}
+.bloco-text{
+  font-size:13px;font-weight:300;color:rgba(255,255,255,.8);
+  line-height:1.85;padding-left:12px;border-left:1px solid var(--border);
+  font-style:italic;
+}
+.bloco-dir{font-size:11px;color:var(--muted);margin-top:6px;font-style:normal}
+
+/* WHATSAPP */
+.wa-card{
+  background:rgba(37,211,102,.06);border:1px solid rgba(37,211,102,.2);
+  border-left:3px solid rgba(37,211,102,.6);padding:24px 28px;margin-bottom:16px;
+}
+.wa-label{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(37,211,102,.9);margin-bottom:10px}
+.wa-text{font-size:13px;font-weight:300;color:rgba(255,255,255,.75);line-height:1.8}
+.wa-text strong{color:var(--white);font-weight:400}
+.wa-exemplo{
+  background:rgba(0,0,0,.3);border-radius:4px 16px 16px 16px;
+  padding:14px 16px;margin-top:12px;font-size:13px;font-weight:300;
+  color:rgba(255,255,255,.85);line-height:1.7;max-width:480px;
+  border:1px solid rgba(255,255,255,.06);
+}
+.wa-hora{font-size:10px;color:var(--muted);text-align:right;margin-top:6px}
+
+@media(max-width:768px){
+  nav{padding:0 16px}
+  .nav-tabs{display:none}
+  .page{padding:80px 16px 60px}
+  .voz-grid,.estrutura-box{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Guia de Produção · André Finguer</div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showPage('voz')">Voz e Copy</button>
+    <button class="tab-btn" onclick="showPage('formatos')">Formatos de Reel</button>
+    <button class="tab-btn" onclick="showPage('copies')">Copies Prontos</button>
+    <button class="tab-btn" onclick="showPage('whatsapp')">WhatsApp</button>
+  </div>
+</nav>
+
+<!-- VOZ E COPY -->
+<div class="page active" id="page-voz">
+  <div class="page-tag">Guia de Produção · 2026</div>
+  <h1 class="page-title">A voz do André.<br><em>Como escrever como ele.</em></h1>
+  <p class="page-sub">Tudo que aprendemos analisando as legendas e posts reais do André. Esse guia define o tom, o ritmo e o que evitar em qualquer peça produzida para o perfil.</p>
+
+  <div class="sec-title">O que define a voz dele</div>
+
+  <div class="voz-grid">
+    <div class="voz-card sim">
+      <div class="voz-label">Sim — é assim que ele escreve</div>
+      <div class="voz-items">
+        <div class="voz-item">Frases curtas com impacto crescente — cada frase empurra a próxima</div>
+        <div class="voz-item">Reframe como estrutura natural — pega uma crença e vira</div>
+        <div class="voz-item">Bullets como sequência de raciocínio, não como lista de tópicos</div>
+        <div class="voz-item">Negrito no ponto central, não para decorar</div>
+        <div class="voz-item">Tom de conversa com cliente — não de apresentação corporativa</div>
+        <div class="voz-item">Genuíno nos momentos pessoais — sem forçar conexão com trabalho</div>
+        <div class="voz-item">Direto ao ponto — sem rodeios, sem introdução longa</div>
+      </div>
+    </div>
+    <div class="voz-card nao">
+      <div class="voz-label">Não — o que evitar</div>
+      <div class="voz-items">
+        <div class="voz-item">Parágrafos longos com muita elaboração — soa como IA sem edição</div>
+        <div class="voz-item">Linguagem de consultoria — "implementar soluções", "agregar valor"</div>
+        <div class="voz-item">Urgência artificial — "não perca", "últimas vagas", "agora"</div>
+        <div class="voz-item">Explicar o básico — o ICP já sabe o que é holding</div>
+        <div class="voz-item">Stories sem conteúdo — "bom dia" e fotos soltas sem propósito</div>
+        <div class="voz-item">Conteúdo viral desconexo do território patrimonial</div>
+        <div class="voz-item">Tom de medo — falar de morte e sucessão com dramatismo excessivo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-title">Template de copy — estrutura padrão</div>
+
+  <div class="template-box">
+    <div class="template-label">Estrutura de qualquer post escrito</div>
+    <div class="template-text">1. GANCHO — pergunta ou afirmação que instala uma dúvida ou contradição. Uma frase. Sem introdução.
+
+2. DESENVOLVIMENTO — 2 a 4 bullets curtos ou frases que desenvolvem o raciocínio. Cada linha empurra a próxima.
+
+3. REFRAME — o ponto onde a lógica vira. "O problema não é X. É Y." Ou: "Cortar custo é fácil. Difícil é..."
+
+4. FECHAMENTO — 1 a 2 frases de encerramento. CTA sutil. Nunca venda direta.</div>
+    <div class="template-note">Esse é o padrão identificado nos posts mais autênticos do André — o post sobre o papel do financeiro e o post do evento SWJaraguá são os melhores exemplos.</div>
+  </div>
+
+  <div class="sec-title">Exemplos reais — a voz dele em ação</div>
+
+  <div class="template-box" style="border-left-color:rgba(255,255,255,.2)">
+    <div class="template-label">Post real — papel do financeiro</div>
+    <div class="template-text">Existe um estereótipo sobre o financeiro dentro das empresas.
+O de que ele está ali para dizer "não".
+Ou para aparecer quando o assunto é cortar custo.
+
+Isso é uma visão limitada.
+
+O verdadeiro papel do financeiro é outro.
+É estruturar capital, organizar o fluxo do dinheiro e encontrar caminhos para que bons projetos aconteçam sem comprometer a saúde da empresa.
+
+Cortar custo é fácil.
+Difícil é criar inteligência financeira para viabilizar crescimento.
+
+É aí que o financeiro deixa de ser apenas controle e passa a ser estratégia.</div>
+    <div class="template-note">Gancho → estereótipo → reframe → fechamento com autoridade. Zero pitch. Zero lista de serviços.</div>
+  </div>
+
+  <div class="template-box" style="border-left-color:rgba(255,255,255,.2)">
+    <div class="template-label">Post real — evento SWJaraguá (voz mais solta)</div>
+    <div class="template-text">A edição de IA deixou claro:
+– ideias viram produto em dias
+– a entrega é muito mais sofisticada
+– a personalização é absurda
+– surgem verdadeiros "agentes de bolso"
+
+Isso não é tendência. Já está acontecendo.
+
+E não por acaso, o projeto vencedor foi do mercado financeiro.
+
+O nível subiu. Rápido.
+E quem não está acompanhando… já ficou para trás.</div>
+    <div class="template-note">Bullets curtos como raciocínio sequencial. Frases de impacto isoladas. Tom de quem está no evento, não analisando de fora.</div>
+  </div>
+</div>
+
+<!-- FORMATOS DE REEL -->
+<div class="page" id="page-formatos">
+  <div class="page-tag">Formatos de Vídeo</div>
+  <h1 class="page-title">Dois formatos.<br><em>Uma arquitetura para cada um.</em></h1>
+  <p class="page-sub">Todo Reel do André segue um dos dois formatos abaixo. O formato define a estrutura interna do vídeo, o objetivo no funil e o CTA de encerramento.</p>
+
+  <div class="sec-title">Formato Autoridade — fundo de funil</div>
+  <p style="font-size:14px;color:var(--silver);line-height:1.8;margin-bottom:20px;">André raciocina em voz alta sobre o mercado. O posicionamento emerge do raciocínio — nunca é declarado diretamente. O espectador chega à conclusão de que André é diferente antes de André dizer isso.</p>
+
+  <div class="estrutura-box">
+    <div class="est-step">
+      <div class="est-num">1</div>
+      <div class="est-name">Gancho</div>
+      <div class="est-desc">Pergunta ou contradição do mercado. O espectador pensa: "é verdade, nunca parei pra pensar nisso."</div>
+      <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:500;">0 a 6 seg</div>
+    </div>
+    <div class="est-step">
+      <div class="est-num">2</div>
+      <div class="est-name">Diagnóstico</div>
+      <div class="est-desc">André valida com dado ou comportamento de mercado. Não é opinião — é diagnóstico de quem vê isso todo dia.</div>
+      <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:500;">6 a 26 seg</div>
+    </div>
+    <div class="est-step">
+      <div class="est-num">3</div>
+      <div class="est-name">Virada</div>
+      <div class="est-desc">A lógica se inverte. "E é exatamente por isso que..." André começa a emergir como referência sem dizer isso.</div>
+      <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:500;">26 a 50 seg</div>
+    </div>
+    <div class="est-step">
+      <div class="est-num">4</div>
+      <div class="est-name">Fechamento</div>
+      <div class="est-desc">Declaração de propósito. CTA sutil. "Manda para quem precisa ouvir isso." Nunca venda direta.</div>
+      <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:500;">50 a 60 seg</div>
+    </div>
+  </div>
+
+  <div class="sec-title">Formato Despertar — topo e meio de funil</div>
+  <p style="font-size:14px;color:var(--silver);line-height:1.8;margin-bottom:20px;">André apresenta uma observação contraintuitiva com dado ou prova. Reframe uma crença. Fecha com provocação que gera engajamento. Constrói afinidade e amplia alcance para quem ainda não o conhece.</p>
+
+  <div class="estrutura-box">
+    <div class="est-step">
+      <div class="est-num">1</div>
+      <div class="est-name">Afirmação</div>
+      <div class="est-desc">Observação que parece aleatória mas gera curiosidade imediata. O espectador precisa descobrir o porquê.</div>
+      <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:500;">0 a 5 seg</div>
+    </div>
+    <div class="est-step">
+      <div class="est-num">2</div>
+      <div class="est-name">Prova</div>
+      <div class="est-desc">Dado, nome conhecido ou referência concreta. Cria credibilidade imediata e mantém o espectador assistindo.</div>
+      <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:500;">5 a 20 seg</div>
+    </div>
+    <div class="est-step">
+      <div class="est-num">3</div>
+      <div class="est-name">Explicação</div>
+      <div class="est-desc">André entrega o porquê com clareza. O espectador aprende algo — e associa esse sentimento ao rosto do André.</div>
+      <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:500;">20 a 45 seg</div>
+    </div>
+    <div class="est-step">
+      <div class="est-num">4</div>
+      <div class="est-name">Provocação</div>
+      <div class="est-desc">Pergunta ou afirmação que convida à resposta nos comentários. Não é CTA de venda — é convite à conversa.</div>
+      <div style="font-size:10px;color:var(--gold);margin-top:6px;font-weight:500;">45 a 55 seg</div>
+    </div>
+  </div>
+
+  <div class="sec-title">Notas de gravação — sempre passar ao André</div>
+
+  <div class="template-box">
+    <div class="template-label">Antes de gravar</div>
+    <div class="template-text">• Não precisa decorar o roteiro — pode ter ao lado e adaptar com as próprias palavras
+• Tom de conversa com um cliente, não de apresentação corporativa
+• Pausa curta entre os blocos — não precisa correr
+• Gravar mais de uma take — escolher a mais natural, não a mais "correta"
+• Ambiente: escritório da Somma em Jaraguá como padrão
+• Posição: sentado, olhando direto para a câmera
+• Encerramento: sem sorrir forçado — natural</div>
+  </div>
+</div>
+
+<!-- COPIES PRONTOS -->
+<div class="page" id="page-copies">
+  <div class="page-tag">Maio 2026</div>
+  <h1 class="page-title">Copies prontos.<br><em>Aprovar, ajustar e publicar.</em></h1>
+  <p class="page-sub">Copies e roteiros finalizados para o André revisar. Cada peça já está no tom e no formato certo — ele ajusta com a própria voz onde sentir necessidade e aprova.</p>
+
+  <div class="sec-title">Semana 1 — 28 e 29 de abril</div>
+
+  <!-- COPY 1 LinkedIn -->
+  <div class="copy-header">
+    <div class="copy-meta">
+      <span class="copy-badge cb-auto">Autoridade</span>
+      <span class="copy-badge cb-li">LinkedIn</span>
+      <span class="copy-badge cb-fundo">Fundo de funil</span>
+    </div>
+    <div class="copy-date">28/04/2026 · Post de texto</div>
+  </div>
+  <div class="copy-box">
+    <div class="copy-title">Apresentação — quem é André Finguer</div>
+    <div class="copy-body">Existe um estereótipo sobre o gestor patrimonial.
+
+O de que ele está ali para recomendar produtos.
+Ou para aparecer quando o mercado cai e precisar de uma explicação.
+
+Isso é uma visão limitada.
+
+O verdadeiro papel do gestor patrimonial é outro.
+
+É estruturar o que você construiu para que continue existindo — com ou sem você.
+É organizar o patrimônio para que ele trabalhe para a família, não contra ela.
+É estar presente antes do problema, não depois.
+
+Faço isso como parte de um Multi-Family Office com R$18 bilhões sob gestão.
+Com acesso a estruturas que a maioria dos gestores não consegue entregar.
+E com a proximidade de quem conhece o empresário, a família e o negócio de perto.
+
+Sou André Finguer, CFP®.
+Atuo em Jaraguá do Sul — e atendo famílias empresárias em todo o Brasil.
+
+Se você tem patrimônio relevante e ainda não tem certeza se sua estrutura está adequada, faz sentido a gente conversar.
+
+Link na bio.</div>
+    <div class="copy-notas">
+      <div class="copy-notas-label">Notas de revisão para o André</div>
+      <div class="copy-notas-text">• Pode trocar "Jaraguá do Sul" por uma referência mais pessoal se quiser — fica a critério<br>• O "R$18 bilhões" pode ser ajustado se o AUM atual for diferente<br>• O tom está calibrado nos seus posts mais autênticos — não precisa de muito ajuste<br>• CTA: certifique que o link do Google Agenda está ativo na bio antes de publicar</div>
+    </div>
+  </div>
+
+  <div style="height:24px"></div>
+
+  <!-- REEL 29/04 -->
+  <div class="copy-header">
+    <div class="copy-meta">
+      <span class="copy-badge cb-auto">Autoridade</span>
+      <span class="copy-badge cb-ig">Instagram · Reel</span>
+      <span class="copy-badge cb-fundo">Fundo de funil</span>
+    </div>
+    <div class="copy-date">29/04/2026 · Vídeo 45–60 seg</div>
+  </div>
+
+  <div class="roteiro-box">
+    <div class="roteiro-header" onclick="toggleRoteiro(this)">
+      <div class="roteiro-title">Roteiro — Reel de apresentação</div>
+      <div class="roteiro-toggle">▾</div>
+    </div>
+    <div class="roteiro-body">
+      <div class="bloco">
+        <div class="bloco-label">Bloco 1 — Gancho <span class="bloco-time">0 a 6 seg</span></div>
+        <div class="bloco-text">"Existe um estereótipo sobre o gestor patrimonial. O de que ele está ali para recomendar onde investir. Essa é uma visão muito limitada."</div>
+        <div class="bloco-dir">Olhar direto para a câmera. Tom calmo, não urgente.</div>
+      </div>
+      <div class="bloco">
+        <div class="bloco-label">Bloco 2 — Raciocínio <span class="bloco-time">6 a 30 seg</span></div>
+        <div class="bloco-text">"O verdadeiro papel é outro. É garantir que o que você construiu vai continuar existindo — com ou sem você. É estruturar para que seu patrimônio trabalhe para a sua família, não contra ela. É estar presente antes do problema aparecer."</div>
+        <div class="bloco-dir">Pode gesticular levemente. Ritmo natural de conversa.</div>
+      </div>
+      <div class="bloco">
+        <div class="bloco-label">Bloco 3 — Posicionamento <span class="bloco-time">30 a 48 seg</span></div>
+        <div class="bloco-text">"Eu faço isso como parte de um Multi-Family Office. Atendo famílias empresárias em todo o Brasil que construíram muito — e ainda não têm a estrutura adequada para proteger o que construíram."</div>
+        <div class="bloco-dir">Sem mencionar a Somma pelo nome se preferir. "MFO" é suficiente.</div>
+      </div>
+      <div class="bloco">
+        <div class="bloco-label">Bloco 4 — Fechamento <span class="bloco-time">48 a 58 seg</span></div>
+        <div class="bloco-text">"Sou André Finguer. Se isso faz sentido pra você — o link tá na bio."</div>
+        <div class="bloco-dir">Encerra olhando para a câmera. Sem sorrir forçado. Natural.</div>
+      </div>
+      <div class="copy-notas" style="margin-top:16px">
+        <div class="copy-notas-label">Notas de gravação</div>
+        <div class="copy-notas-text">
+          • Não precisa decorar — roteiro ao lado, adaptar com as próprias palavras<br>
+          • Gravar 2 a 3 takes — escolher a mais natural<br>
+          • Escritório da Somma como cenário padrão<br>
+          • Sentado, câmera na altura dos olhos<br>
+          • Legenda no vídeo: "Sou André Finguer · Gestor Patrimonial" sobreposta nos primeiros 3 segundos
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHATSAPP -->
+<div class="page" id="page-whatsapp">
+  <div class="page-tag">Canal WhatsApp</div>
+  <h1 class="page-title">Comunidade WhatsApp.<br><em>Imóveis nos EUA.</em></h1>
+  <p class="page-sub">A comunidade já existe. O objetivo é ativá-la com cadência e conteúdo definidos — transformando um link esquecido no Linktree em canal de maior intimidade com o ICP.</p>
+
+  <div class="sec-title">Objetivo e posicionamento</div>
+
+  <div class="wa-card">
+    <div class="wa-label">Por que WhatsApp</div>
+    <div class="wa-text">
+      O ICP do André — empresário de 45 a 65 anos — não vai comentar no Instagram. Mas vai ler uma mensagem no WhatsApp. <strong>É o canal de maior intimidade e maior taxa de abertura que existe.</strong> Uma mensagem semanal bem feita vale mais do que três posts de feed para o mesmo público.
+    </div>
+  </div>
+
+  <div class="wa-card">
+    <div class="wa-label">Tema da comunidade</div>
+    <div class="wa-text">
+      <strong>Imóveis nos EUA</strong> — segmentação perfeita para o ICP. Quem entra na comunidade já demonstrou interesse em Real Estate americano. André se posiciona como referência nesse nicho específico, que converge diretamente com a oferta da Somma de estruturação de imóveis no exterior.
+    </div>
+  </div>
+
+  <div class="sec-title">Cadência e formato</div>
+
+  <div class="template-box">
+    <div class="template-label">Regras da comunidade</div>
+    <div class="template-text">Frequência: 1 mensagem por semana — toda segunda ou quinta
+Tamanho: 3 a 5 linhas máximo — nunca mensagem longa
+Tom: o mesmo do André — direto, dado ou observação, sem enrolação
+Horário: entre 8h e 9h da manhã — maior taxa de abertura
+
+Conteúdo válido:
+• Dado ou notícia do mercado imobiliário americano comentada pelo André
+• Mudança regulatória relevante para brasileiros comprando nos EUA
+• Bastidor de como a Somma estrutura essas operações (sem expor clientes)
+• Observação de mercado que conecta câmbio / offshore / imóvel
+
+Nunca:
+• Mensagens longas ou com links aleatórios
+• Conteúdo genérico sem relação com o tema
+• Promoções ou pitches de venda direta</div>
+  </div>
+
+  <div class="sec-title">Exemplos de mensagem semanal</div>
+
+  <div class="wa-card">
+    <div class="wa-label">Exemplo 1 — dado de mercado</div>
+    <div class="wa-exemplo">
+      Florida continua sendo o estado preferido de brasileiros comprando imóvel nos EUA — Miami e Orlando respondem por mais de 70% das transações.
+
+Mas o que poucos verificam antes de comprar: como esse imóvel fica registrado juridicamente e o que acontece com ele numa sucessão sem estrutura adequada.
+
+Essa conversa sempre vale antes da compra.
+      <div class="wa-hora">09:14 ✓✓</div>
+    </div>
+  </div>
+
+  <div class="wa-card">
+    <div class="wa-label">Exemplo 2 — observação de bastidor</div>
+    <div class="wa-exemplo">
+      Uma coisa que vejo acontecer: compra do imóvel feita, escritura assinada — mas a estrutura offshore por trás não foi planejada junto.
+
+Resultado: imóvel existe, proteção jurídica não.
+
+O imóvel e a estrutura precisam ser desenhados juntos — não em momentos separados.
+      <div class="wa-hora">08:47 ✓✓</div>
+    </div>
+  </div>
+
+  <div class="wa-card">
+    <div class="wa-label">Exemplo 3 — dado + observação curta</div>
+    <div class="wa-exemplo">
+      O dólar nessa faixa muda o cálculo de quem está avaliando imóvel nos EUA.
+
+Não porque o imóvel ficou mais caro em reais — mas porque a exposição cambial da carteira toda precisa ser revisada junto.
+
+Compra de imóvel no exterior não é decisão isolada.
+      <div class="wa-hora">08:52 ✓✓</div>
+    </div>
+  </div>
+
+  <div class="sec-title">Integração com o Instagram</div>
+
+  <div class="template-box">
+    <div class="template-label">Como o Instagram alimenta a comunidade</div>
+    <div class="template-text">• Todo post sobre Real Estate EUA no Instagram termina com "Link na bio — comunidade exclusiva sobre imóveis nos EUA"
+• O Highlight "Florida" no Instagram salva esses Stories e tem CTA para entrar na comunidade
+• O Linktree tem a comunidade como segundo item — logo após o agendamento</div>
+  </div>
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleRoteiro(header){
+  const body=header.nextElementSibling;
+  const toggle=header.querySelector('.roteiro-toggle');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  toggle.classList.toggle('open',!isOpen);
+}
+</script>
+
+<div style="position:fixed;bottom:0;left:0;right:0;background:rgba(31,31,31,0.96);backdrop-filter:blur(12px);border-top:1px solid rgba(220,181,89,0.12);padding:12px 48px;display:flex;gap:12px;z-index:99;">
+  <a href="checklist.html" style="display:inline-block;padding:8px 20px;border:1px solid rgba(220,181,89,0.4);color:rgba(220,181,89,0.8);font-size:10px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(220,181,89,0.08)'" onmouseout="this.style.background='transparent'">
+    ← Checklist de Ativação
+  </a>
+  <a href="estrategia.html" style="display:inline-block;padding:8px 20px;border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);font-size:10px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='transparent'">
+    ← Estratégia Completa
+  </a>
+</div>
+</body>
+</html>
