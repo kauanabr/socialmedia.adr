@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist de Ativação — André Finguer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --carbon: #1F1F1F;
+  --carbon-mid: #2a2a2a;
+  --gold: #DCB559;
+  --gold-dark: #b8952e;
+  --gold-light: #e8c97a;
+  --prussian: #163446;
+  --white: #FFFFFF;
+  --silver: rgba(255,255,255,0.5);
+  --muted: rgba(255,255,255,0.3);
+  --border: rgba(220,181,89,0.15);
+  --border-subtle: rgba(255,255,255,0.06);
+  --green: #4CAF50;
+  --green-faint: rgba(76,175,80,0.1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--carbon);
+  color: var(--white);
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* NAV */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  height: 56px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(31,31,31,0.96); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 13px; font-style: italic; color: var(--gold); }
+.nav-progress { display: flex; align-items: center; gap: 12px; }
+.progress-text { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+.progress-bar-wrap { width: 140px; height: 3px; background: var(--border-subtle); border-radius: 2px; }
+.progress-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.4s ease; }
+
+/* HERO */
+.hero {
+  padding: 90px 48px 48px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.hero-tag { font-size: 10px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,4vw,48px); font-weight: 400; line-height: 1.1; margin-bottom: 14px; }
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-sub { font-size: 14px; color: var(--silver); max-width: 540px; line-height: 1.8; margin-bottom: 24px; }
+
+/* SUMMARY CARDS */
+.summary-row { display: flex; gap: 2px; margin-bottom: 0; flex-wrap: wrap; }
+.sum-card {
+  flex: 1; min-width: 120px; padding: 16px 20px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.sum-n { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 400; color: var(--gold); line-height: 1; }
+.sum-l { font-size: 10px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+/* MAIN */
+.main { padding: 0 48px 80px; }
+
+/* PHASE */
+.phase {
+  margin-top: 48px;
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+.phase-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px; cursor: pointer;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background 0.2s;
+  user-select: none;
+}
+.phase-header:hover { background: rgba(255,255,255,0.04); }
+.phase-header-left { display: flex; align-items: center; gap: 16px; }
+.phase-num { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 400; color: var(--gold); opacity: 0.4; line-height: 1; }
+.phase-title { font-size: 15px; font-weight: 500; color: var(--white); }
+.phase-deadline { font-size: 11px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+.phase-header-right { display: flex; align-items: center; gap: 12px; }
+.phase-pct { font-size: 12px; color: var(--gold); font-weight: 400; }
+.phase-mini-bar { width: 80px; height: 3px; background: var(--border-subtle); border-radius: 2px; }
+.phase-mini-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.4s; }
+.phase-toggle { font-size: 18px; color: var(--muted); transition: transform 0.3s; }
+.phase-toggle.open { transform: rotate(180deg); }
+
+.phase-body { display: none; }
+.phase-body.open { display: block; }
+
+/* SECTION */
+.section-wrap { padding: 0 24px 8px; }
+.section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); padding: 20px 0 10px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border-subtle); }
+
+/* ITEM */
+.check-item {
+  display: grid; grid-template-columns: 28px 1fr auto;
+  gap: 12px; align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: opacity 0.2s;
+}
+.check-item:last-child { border-bottom: none; }
+.check-item.done { opacity: 0.45; }
+
+.check-box {
+  width: 20px; height: 20px; margin-top: 2px;
+  border: 1.5px solid rgba(220,181,89,0.3);
+  border-radius: 3px; cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; background: transparent;
+}
+.check-box:hover { border-color: var(--gold); }
+.check-box.checked { background: var(--gold); border-color: var(--gold); }
+.check-box.checked::after { content: '✓'; font-size: 11px; font-weight: 700; color: var(--carbon); }
+
+.item-content {}
+.item-title { font-size: 14px; font-weight: 400; color: var(--white); margin-bottom: 3px; line-height: 1.3; }
+.item-title.done-text { text-decoration: line-through; color: var(--muted); }
+.item-desc { font-size: 12px; font-weight: 300; color: var(--silver); line-height: 1.6; }
+.item-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 2px; flex-shrink: 0; white-space: nowrap; margin-top: 2px;
+  height: fit-content;
+}
+.tag-urgente { background: rgba(220,181,89,0.2); color: var(--gold-light); }
+.tag-semana1 { background: rgba(55,138,221,0.15); color: #85B7EB; }
+.tag-maio { background: rgba(127,119,221,0.15); color: #AFA9EC; }
+.tag-junho { background: rgba(99,153,34,0.15); color: #97C459; }
+.tag-free { background: rgba(76,175,80,0.12); color: #81C784; }
+.tag-avaliar { background: rgba(255,255,255,0.06); color: var(--muted); }
+
+/* SUGGESTION BOX */
+.suggestion {
+  margin: 12px 0 20px; padding: 14px 18px;
+  background: rgba(22,52,70,0.25);
+  border: 1px solid rgba(22,52,70,0.6);
+  border-left: 2px solid #5DA8C8;
+  font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.65); line-height: 1.7;
+}
+.suggestion strong { color: var(--white); font-weight: 400; }
+.suggestion-label { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #5DA8C8; margin-bottom: 6px; }
+
+/* GRADE EDITORIAL */
+.grade-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin: 12px 0 20px; }
+.grade-day { padding: 14px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); }
+.grade-day-name { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.grade-slot { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.6); margin-bottom: 4px; display: flex; gap: 5px; align-items: flex-start; }
+.grade-slot::before { content: '—'; color: var(--border-subtle); flex-shrink: 0; }
+
+/* KISO METRIC */
+.kiso-metric {
+  margin: 12px 0 20px; padding: 16px 20px;
+  background: rgba(220,181,89,0.05);
+  border: 1px solid var(--border);
+}
+.kiso-metric-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.kiso-formula {
+  font-family: monospace; font-size: 13px; color: var(--gold-light);
+  background: rgba(0,0,0,0.3); padding: 8px 12px; margin: 8px 0; display: block;
+}
+.kiso-rule { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.65); line-height: 1.7; margin-top: 6px; }
+.kiso-rule strong { color: var(--white); font-weight: 400; }
+
+/* MANYCHAT */
+.manychat-steps { margin: 12px 0 20px; display: flex; flex-direction: column; gap: 2px; }
+.mc-step { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); }
+.mc-n { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--gold); opacity: 0.4; line-height: 1; }
+.mc-text { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.65); line-height: 1.6; }
+.mc-text strong { color: var(--white); font-weight: 400; }
+
+/* CELEBRATION */
+.celebration {
+  margin: 48px 0 0; padding: 40px; text-align: center;
+  border: 1px solid var(--border); display: none;
+}
+.celebration.show { display: block; }
+.cel-title { font-family: 'Playfair Display', serif; font-size: 28px; font-style: italic; color: var(--gold); margin-bottom: 10px; }
+.cel-sub { font-size: 14px; color: var(--silver); }
+
+@media (max-width: 768px) {
+  nav { padding: 0 16px; }
+  .hero, .main { padding-left: 16px; padding-right: 16px; }
+  .grade-grid { grid-template-columns: 1fr 1fr; }
+  .check-item { grid-template-columns: 28px 1fr; }
+  .item-tag { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Checklist de Ativação · André Finguer</div>
+  <div class="nav-progress">
+    <div class="progress-text" id="progress-text">0 de 0 concluídos</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Próximos Passos · Social Media 2026</div>
+  <h1 class="hero-title">Do plano<br><em>à execução.</em></h1>
+  <p class="hero-sub">Checklist interativo com tudo que precisa acontecer para a estratégia do André sair do papel. Organizado por fase, com prioridade e contexto de cada ação. Marque conforme avança — o progresso é salvo automaticamente.</p>
+  <div class="summary-row" id="summary-row">
+    <div class="sum-card"><div class="sum-n" id="sum-urgente">0</div><div class="sum-l">urgente (antes 28/04)</div></div>
+    <div class="sum-card"><div class="sum-n" id="sum-semana1">0</div><div class="sum-l">semana 1</div></div>
+    <div class="sum-card"><div class="sum-n" id="sum-maio">0</div><div class="sum-l">ao longo de maio</div></div>
+    <div class="sum-card"><div class="sum-n" id="sum-junho">0</div><div class="sum-l">junho em diante</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- FASE 1 -->
+  <div class="phase" id="phase-1">
+    <div class="phase-header" onclick="togglePhase('phase-1')">
+      <div class="phase-header-left">
+        <div class="phase-num">1</div>
+        <div>
+          <div class="phase-title">Ativação imediata — antes de 28/04</div>
+          <div class="phase-deadline">Esta semana · Urgente</div>
+        </div>
+      </div>
+      <div class="phase-header-right">
+        <div class="phase-pct" id="pct-phase-1">0%</div>
+        <div class="phase-mini-bar"><div class="phase-mini-fill" id="bar-phase-1" style="width:0%"></div></div>
+        <div class="phase-toggle" id="toggle-phase-1">▾</div>
+      </div>
+    </div>
+    <div class="phase-body open" id="body-phase-1">
+      <div class="section-wrap">
+
+        <div class="section-title">Perfil e bio</div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Atualizar bio no Instagram</div>
+            <div class="item-desc">Substituir a lista de serviços pela nova bio: "Protejo e estruturo o patrimônio de famílias empresárias. Multi-Family Office · Sul do Brasil. Holding · Sucessão · Offshore · Real Estate EUA. ↓ Conteúdos e materiais"</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Atualizar bio no LinkedIn — headline e seção Sobre</div>
+            <div class="item-desc" style="line-height:1.8;">
+              <strong style="color:rgba(255,255,255,0.9);display:block;margin-bottom:6px;">① Headline (substituir a atual):</strong>
+              Gestor Patrimonial · CFP® · Holding · Sucessão · Offshore · Real Estate EUA · Multi-Family Office · Sul do Brasil
+              <br><br>
+              <strong style="color:rgba(255,255,255,0.9);display:block;margin-bottom:6px;">② Seção "Sobre" (substituir a atual):</strong>
+              Trabalho com famílias empresárias que construíram patrimônio relevante e ainda não têm a estrutura adequada para protegê-lo e perpetuá-lo.<br><br>
+              Sou Gestor Patrimonial com CFP® e mais de 12 anos de mercado financeiro. Atuo em Jaraguá do Sul como parte de um Multi-Family Office com R$18 bilhões sob gestão — o que me dá acesso a estruturas, produtos e inteligência que a maioria dos gestores não consegue entregar, com a proximidade de quem conhece o empresário, a família e o negócio de perto.<br><br>
+              Trabalho com: Holding familiar e planejamento sucessório · Offshore e estruturas internacionais · Real Estate nos EUA · Planejamento tributário · Investimentos e carteira exclusiva<br><br>
+              Se você tem patrimônio relevante e quer entender se sua estrutura atual está adequada — ou se ainda não tem estrutura e sabe que precisa começar — faz sentido a gente conversar.<br><br>
+              📎 linktr.ee/andrefinguer
+              <br><br>
+              <strong style="color:rgba(220,181,89,0.7);font-size:11px;">⚠ Alinhar com André: padronizar "mais de 12 anos" em todos os canais — Instagram, LinkedIn e Linktree.</strong>
+            </div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Reorganizar o Linktree</div>
+            <div class="item-desc">Nova ordem: 1. Agendar conversa (Google Agenda) · 2. Comunidade WhatsApp — Imóveis nos EUA · 3. Receba meus conteúdos · 4. Guia do FIDC · 5. Estudo de Dolarização · 6. Charles Schwab. Remover links fora do ar. Agendamento no topo — é o principal CTA.</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Configurar Google Agenda — agendamento público</div>
+            <div class="item-desc">Configurações → Appointment Scheduling → Criar página de agendamento. Duração sugerida: 30 min (Diagnóstico Patrimonial). Definir horários disponíveis e mensagem de confirmação automática. Link gerado vai para o primeiro item do Linktree.</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Ativar estratégia da Comunidade WhatsApp — Imóveis nos EUA</div>
+            <div class="item-desc">Comunidade já existe. Objetivo: André como referência em Real Estate americano. Cadência: 1 mensagem por semana (seg ou qui). Formato: 3 a 5 linhas — dado, notícia ou bastidor do mercado americano comentado pelo André. Nunca mensagens longas ou conteúdo genérico.</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Criar Highlights do Instagram do zero — 5 destaques</div>
+            <div class="item-desc">André ainda não tem highlights. Temas: Holding · Offshore · Florida · FIDC · Família. Visual: fundo carbon #1F1F1F + ícone dourado #DCB559, tamanho 1080×1920px. Usar Canva (template "Capa de Destaque Instagram") ou Gemini com os prompts do mockup. Destaque Florida pode ter CTA para a comunidade WhatsApp no último Story.</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="section-title">Produção — Semana 1</div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Aprovar e publicar copy LinkedIn 28/04 ✍ Copy pronto</div>
+            <div class="item-desc">Copy finalizado no Guia de Produção. André revisa, ajusta com a própria voz se necessário e publica. Formato Autoridade — frases curtas, reframe, fundo de funil.</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Gravar e publicar Reel Instagram 29/04 🎬 Roteiro pronto</div>
+            <div class="item-desc">Roteiro finalizado no Guia de Produção. Gravar no escritório da Somma. 45–60 segundos, formato Autoridade. André pode adaptar com as próprias palavras — roteiro é guia, não script decorado.</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Produzir carrossel Instagram 30/04 — brigas começam antes da morte</div>
+            <div class="item-desc">Tema: planejamento patrimonial — a maioria das brigas de inventário não começa na morte. Começa antes, quando ninguém quis ter essa conversa. CTA: salve para quando precisar ter essa conversa. Identidade visual: carbon + gold.</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Preparar post familiar 02/05</div>
+            <div class="item-desc">Foto com filho ou família. Legenda âncora: "O que estou construindo — e para quem?" Tom genuíno, sem pitch. Pilar familiar com propósito.</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="section-title">Apresentação do plano ao André</div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Apresentar a estratégia completa ao André</div>
+            <div class="item-desc">Usar o HTML da estratégia completa. Pontos a confirmar: tom aprovado, temas sensíveis, disponibilidade para gravar, cadência das colunas EconomiaSC em maio, e definição do nome do quadro fixo.</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-1" data-tag="urgente">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Definir nome do quadro fixo com André</div>
+            <div class="item-desc">Direções mapeadas: "O Racional", "Faz Sentido?", "Na Lata", "A Outra Conta". A palavra "racional" é dele — o nome deve ter energia e personalidade, não somente descrição técnica.</div>
+          </div>
+          <div class="item-tag tag-urgente">Urgente</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 2 -->
+  <div class="phase" id="phase-2">
+    <div class="phase-header" onclick="togglePhase('phase-2')">
+      <div class="phase-header-left">
+        <div class="phase-num">2</div>
+        <div>
+          <div class="phase-title">Semana 1 — métricas e automação</div>
+          <div class="phase-deadline">28/04 a 04/05</div>
+        </div>
+      </div>
+      <div class="phase-header-right">
+        <div class="phase-pct" id="pct-phase-2">0%</div>
+        <div class="phase-mini-bar"><div class="phase-mini-fill" id="bar-phase-2" style="width:0%"></div></div>
+        <div class="phase-toggle" id="toggle-phase-2">▾</div>
+      </div>
+    </div>
+    <div class="phase-body" id="body-phase-2">
+      <div class="section-wrap">
+
+        <div class="section-title">Métricas — fórmula Kiso</div>
+
+        <div class="kiso-metric">
+          <div class="kiso-metric-title">Frequência de impacto semanal — medir toda segunda-feira</div>
+          <code class="kiso-formula">Visualizações totais da semana ÷ Contas alcançadas = Frequência de impacto</code>
+          <div class="kiso-rule">
+            <strong>Abaixo de 2:</strong> aumentar volume de posts no feed e Stories.<br>
+            <strong>Entre 2 e 4:</strong> cadência ideal — manter.<br>
+            <strong>Acima de 6:</strong> priorizar Reels para trazer pessoas novas e equilibrar a base.<br>
+            <em>Fonte: Rafael Kiso · Nielsen, Meta e Kantar</em>
+          </div>
+        </div>
+
+        <div class="check-item" data-phase="phase-2" data-tag="semana1">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Registrar métricas base da semana 1</div>
+            <div class="item-desc">Anotar: seguidores, alcance total, impressões, frequência de impacto (visualizações ÷ contas alcançadas), salvamentos nos carrosséis, retenção média dos Reels. Esses números são o ponto zero — tudo será medido a partir deles.</div>
+          </div>
+          <div class="item-tag tag-semana1">Semana 1</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-2" data-tag="semana1">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Calcular frequência de impacto e ajustar cadência se necessário</div>
+            <div class="item-desc">Se abaixo de 2: adicionar um Stories por dia na semana 2. Se entre 2 e 4: manter como está. Se acima de 6: incluir um Reel extra na semana 2 para ampliar alcance.</div>
+          </div>
+          <div class="item-tag tag-semana1">Semana 1</div>
+        </div>
+
+        <div class="section-title">Stories — rotina diária leve</div>
+
+        <div class="suggestion">
+          <div class="suggestion-label">Por que Stories agora</div>
+          <strong>Stories mantêm afinidade com seguidores existentes.</strong> Pelo algoritmo do Instagram, a afinidade entre o perfil e cada seguidor é calculada em uma janela de 7 dias. Sem interação, a nota cai — e o conteúdo some do feed mesmo para quem já segue. Stories são o canal mais barato para manter essa nota alta.
+        </div>
+
+        <div class="check-item" data-phase="phase-2" data-tag="semana1">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Estabelecer rotina de Stories — 1 por dia nos dias de post</div>
+            <div class="item-desc">Não precisa ser produzido. Pode ser: republicar o post do dia com caixa de pergunta, compartilhar bastidor rápido, ou uma reflexão de 15 segundos. O objetivo é aparecer todo dia sem custo de produção alto.</div>
+          </div>
+          <div class="item-tag tag-semana1">Semana 1</div>
+        </div>
+
+        <div class="section-title">ManyChat — automação de DM</div>
+
+        <div class="manychat-steps">
+          <div class="mc-step"><div class="mc-n">1</div><div class="mc-text">Criar conta gratuita em <strong>manychat.com</strong> e conectar ao Instagram do André</div></div>
+          <div class="mc-step"><div class="mc-n">2</div><div class="mc-text">Criar automação: quando alguém comentar <strong>"link"</strong> ou <strong>"quero"</strong> em qualquer post → enviar DM automático com o link do Calendly</div></div>
+          <div class="mc-step"><div class="mc-n">3</div><div class="mc-text">Mensagem padrão do DM: <em>"Oi! Vi que você quer conversar — aqui está o link para agendar um diagnóstico gratuito com o André: [link Calendly]"</em></div></div>
+          <div class="mc-step"><div class="mc-n">4</div><div class="mc-text">Testar o fluxo antes de ativar. Plano free suporta até <strong>1.000 contatos</strong> — mais do que suficiente para a fase 1.</div></div>
+        </div>
+
+        <div class="check-item" data-phase="phase-2" data-tag="semana1">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Configurar ManyChat — plano free</div>
+            <div class="item-desc">Automação de DM por palavra-chave "link" e "quero". Mensagem padrão com link do Calendly. Testar antes de ativar. Reavalie upgrade para plano pago apenas quando ultrapassar 1.000 contatos mensais.</div>
+          </div>
+          <div class="item-tag tag-free">Grátis</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-2" data-tag="semana1">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Verificar se o Calendly está ativo e com horários atualizados</div>
+            <div class="item-desc">Link deve estar funcionando e apontando para a agenda real do André. Confirmar duração da reunião (sugerido: 30 min diagnóstico inicial) e mensagem de confirmação automática.</div>
+          </div>
+          <div class="item-tag tag-semana1">Semana 1</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 3 -->
+  <div class="phase" id="phase-3">
+    <div class="phase-header" onclick="togglePhase('phase-3')">
+      <div class="phase-header-left">
+        <div class="phase-num">3</div>
+        <div>
+          <div class="phase-title">Ao longo de maio — grade editorial e quadro fixo</div>
+          <div class="phase-deadline">Mai 2026</div>
+        </div>
+      </div>
+      <div class="phase-header-right">
+        <div class="phase-pct" id="pct-phase-3">0%</div>
+        <div class="phase-mini-bar"><div class="phase-mini-fill" id="bar-phase-3" style="width:0%"></div></div>
+        <div class="phase-toggle" id="toggle-phase-3">▾</div>
+      </div>
+    </div>
+    <div class="phase-body" id="body-phase-3">
+      <div class="section-wrap">
+
+        <div class="section-title">Grade editorial — pré-roteiro por dia</div>
+
+        <div class="suggestion">
+          <div class="suggestion-label">Como funciona a grade</div>
+          Cada dia da semana tem uma <strong>temperatura de conteúdo fixa</strong>. Isso elimina a decisão semanal de "o que postar hoje" — você só escolhe o tema dentro da categoria do dia. A grade abaixo é a sugestão para maio. A partir de junho, ajustar com base nos dados.
+        </div>
+
+        <div class="grade-grid">
+          <div class="grade-day">
+            <div class="grade-day-name">Segunda</div>
+            <div class="grade-slot">LinkedIn — artigo ou análise técnica</div>
+            <div class="grade-slot">Tom: autoridade de mercado</div>
+            <div class="grade-slot">Ex: offshore, holding, reforma tributária</div>
+          </div>
+          <div class="grade-day">
+            <div class="grade-day-name">Terça</div>
+            <div class="grade-slot">Instagram — Reel</div>
+            <div class="grade-slot">Formato: Autoridade ou Despertar</div>
+            <div class="grade-slot">Ex: erro na sucessão, por que Jaraguá</div>
+          </div>
+          <div class="grade-day">
+            <div class="grade-day-name">Quarta</div>
+            <div class="grade-slot">Instagram — Carrossel</div>
+            <div class="grade-slot">Tom: qualificação de ICP</div>
+            <div class="grade-slot">Ex: 3 sinais, MFO vs banco, dolarização</div>
+          </div>
+          <div class="grade-day">
+            <div class="grade-day-name">Quinta</div>
+            <div class="grade-slot">LinkedIn — collab EconomiaSC</div>
+            <div class="grade-slot">ou Instagram — família/bastidor</div>
+            <div class="grade-slot">Tom: humano e de propósito</div>
+          </div>
+          <div class="grade-day">
+            <div class="grade-day-name">Sexta</div>
+            <div class="grade-slot">Threads — reflexão leve</div>
+            <div class="grade-slot">Tom: pessoal ou de mercado curto</div>
+            <div class="grade-slot">Ex: legado, observação de pai, dado rápido</div>
+          </div>
+        </div>
+
+        <div class="check-item" data-phase="phase-3" data-tag="maio">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Produzir e aprovar copies das semanas 2 a 5 de maio</div>
+            <div class="item-desc">Usar o calendário editorial e o banco de temas. Cada peça tem o prompt de copy disponível — clicar no calendário para gerar. Aprovação semanal com André.</div>
+          </div>
+          <div class="item-tag tag-maio">Maio</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-3" data-tag="maio">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Gravar Reels das semanas 2, 4 e 5</div>
+            <div class="item-desc">13/05 — Reel Despertar: erro caro na sucessão. 20/05 — Reel Autoridade: rotina em Jaraguá. 27/05 — Reel Autoridade: a pergunta mais difícil. Todos com roteiro pronto antes da gravação.</div>
+          </div>
+          <div class="item-tag tag-maio">Maio</div>
+        </div>
+
+        <div class="section-title">Quadro fixo — primeiro episódio</div>
+
+        <div class="check-item" data-phase="phase-3" data-tag="maio">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Fechar nome do quadro fixo</div>
+            <div class="item-desc">Baseado na decisão com André. Direções: "O Racional", "Faz Sentido?", "Na Lata", "A Outra Conta". O nome precisa ter a energia dele — direto, com personalidade, não apenas descritivo.</div>
+          </div>
+          <div class="item-tag tag-maio">Maio</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-3" data-tag="maio">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Gravar primeiro episódio do quadro fixo</div>
+            <div class="item-desc">Solo. Escritório da Somma. 2 a 3 minutos. Tema sugerido para estreia: "Por que famílias com R$30M+ ainda tratam banco como gestor." Distribuição: Instagram Reels + LinkedIn + YouTube Shorts.</div>
+          </div>
+          <div class="item-tag tag-maio">Maio</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-3" data-tag="maio">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Configurar canal YouTube para distribuição dos Reels</div>
+            <div class="item-desc">Canal no nome do André, com bio e foto alinhadas ao brandbook. Publicar Reels como YouTube Shorts. Não precisa de estratégia separada — apenas redistribuir o que já está sendo gravado.</div>
+          </div>
+          <div class="item-tag tag-maio">Maio</div>
+        </div>
+
+        <div class="section-title">Revisão semanal — ritual de dados</div>
+
+        <div class="check-item" data-phase="phase-3" data-tag="maio">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Estabelecer ritual de análise toda segunda-feira</div>
+            <div class="item-desc">15 minutos toda segunda: calcular frequência de impacto, identificar o post de maior salvamento, o Reel de maior retenção, e decidir se a cadência precisa de ajuste na semana seguinte.</div>
+          </div>
+          <div class="item-tag tag-maio">Maio</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 4 -->
+  <div class="phase" id="phase-4">
+    <div class="phase-header" onclick="togglePhase('phase-4')">
+      <div class="phase-header-left">
+        <div class="phase-num">4</div>
+        <div>
+          <div class="phase-title">Junho em diante — escala e novos canais</div>
+          <div class="phase-deadline">Jun 2026+</div>
+        </div>
+      </div>
+      <div class="phase-header-right">
+        <div class="phase-pct" id="pct-phase-4">0%</div>
+        <div class="phase-mini-bar"><div class="phase-mini-fill" id="bar-phase-4" style="width:0%"></div></div>
+        <div class="phase-toggle" id="toggle-phase-4">▾</div>
+      </div>
+    </div>
+    <div class="phase-body" id="body-phase-4">
+      <div class="section-wrap">
+
+        <div class="section-title">Expansão de canais</div>
+
+        <div class="check-item" data-phase="phase-4" data-tag="junho">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Criar Newsletter no LinkedIn</div>
+            <div class="item-desc">Extensão natural das colunas do EconomiaSC. Conteúdo que o André já produz, distribuído para uma base própria de assinantes independente do algoritmo. Nome sugerido alinhado ao quadro fixo.</div>
+          </div>
+          <div class="item-tag tag-junho">Junho</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-4" data-tag="junho">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Avaliar upgrade ManyChat para plano pago</div>
+            <div class="item-desc">Reavalie quando ultrapassar 1.000 contatos mensais ou quando quiser adicionar sequências mais complexas (nurturing de leads, qualificação automática antes do Calendly).</div>
+          </div>
+          <div class="item-tag tag-avaliar">Avaliar</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-4" data-tag="junho">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Primeiro episódio do quadro fixo com convidado</div>
+            <div class="item-desc">Formato híbrido. Convidado da área jurídica, contábil ou outro gestor. A conversa precisa ter o mesmo nível de consciência do ICP — não básico, não introdutório.</div>
+          </div>
+          <div class="item-tag tag-junho">Junho</div>
+        </div>
+
+        <div class="section-title">Estratégia de SEO e encontrabilidade</div>
+
+        <div class="check-item" data-phase="phase-4" data-tag="junho">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Auditar palavras-chave no Instagram e LinkedIn</div>
+            <div class="item-desc">Verificar se "gestor patrimonial Jaraguá do Sul" encontra o André no Instagram Search e no LinkedIn. Se não encontrar: incluir a expressão na bio, no nome do perfil e nas primeiras linhas das legendas dos posts.</div>
+          </div>
+          <div class="item-tag tag-junho">Junho</div>
+        </div>
+
+        <div class="check-item" data-phase="phase-4" data-tag="junho">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Definir estratégia de resposta e engajamento ativo</div>
+            <div class="item-desc">Regra: responder todos os comentários nas primeiras 2 horas após publicação — esse é um dos sinais mais fortes para o algoritmo continuar distribuindo o post. Definir tom de resposta: direto, sem formalidade excessiva.</div>
+          </div>
+          <div class="item-tag tag-junho">Junho</div>
+        </div>
+
+        <div class="section-title">Tráfego pago — quando e como</div>
+
+        <div class="check-item" data-phase="phase-4" data-tag="junho">
+          <div class="check-box" onclick="toggle(this)"></div>
+          <div class="item-content">
+            <div class="item-title">Avaliar impulsionamento dos melhores posts orgânicos</div>
+            <div class="item-desc">Só após 60 dias de conteúdo orgânico consistente. Impulsionar apenas posts que já performaram bem organicamente — eles provaram que ressoam. Nunca impulsionar post novo sem teste orgânico antes. Budget inicial sugerido: R$500–1.000/mês.</div>
+          </div>
+          <div class="item-tag tag-avaliar">Avaliar em julho</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="celebration" id="celebration">
+    <div class="cel-title">Estratégia ativada.</div>
+    <div class="cel-sub">Todos os itens concluídos. O André está no ar com posicionamento, linha editorial e automação funcionando.</div>
+  </div>
+
+  <div style="margin-top:48px;padding:32px 0;border-top:1px solid rgba(220,181,89,0.12);display:flex;gap:12px;flex-wrap:wrap;">
+    <a href="https://kauanabr.github.io/socialmedia.adr/guia-produ%C3%A7%C3%A3o-andre.html" style="display:inline-block;padding:12px 28px;border:1px solid rgba(220,181,89,0.4);color:rgba(220,181,89,0.8);font-size:10px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(220,181,89,0.08)'" onmouseout="this.style.background='transparent'">
+      Guia de Produção →
+    </a>
+    <a href="https://kauanabr.github.io/sm.operacional/" style="display:inline-block;padding:12px 28px;border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);font-size:10px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='transparent'">
+      ← Estratégia Completa
+    </a>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'andre_checklist_v1';
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+}
+function saveState(state) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+}
+
+function toggle(box) {
+  const item = box.closest('.check-item');
+  const id = getItemId(item);
+  const state = loadState();
+  const isChecked = !box.classList.contains('checked');
+  box.classList.toggle('checked', isChecked);
+  item.classList.toggle('done', isChecked);
+  const title = item.querySelector('.item-title');
+  title.classList.toggle('done-text', isChecked);
+  state[id] = isChecked;
+  saveState(state);
+  updateAll();
+}
+
+function getItemId(item) {
+  return item.querySelector('.item-title').textContent.trim().substring(0,40);
+}
+
+function updateAll() {
+  const state = loadState();
+  const allItems = document.querySelectorAll('.check-item');
+  let total = 0, done = 0;
+  const tagCounts = { urgente: 0, semana1: 0, maio: 0, junho: 0 };
+
+  allItems.forEach(item => {
+    total++;
+    const id = getItemId(item);
+    if (state[id]) done++;
+    const tag = item.dataset.tag;
+    if (tag && tagCounts[tag] !== undefined && !state[id]) tagCounts[tag]++;
+  });
+
+  document.getElementById('progress-text').textContent = `${done} de ${total} concluídos`;
+  document.getElementById('progress-fill').style.width = total ? (done/total*100)+'%' : '0%';
+  document.getElementById('sum-urgente').textContent = tagCounts.urgente;
+  document.getElementById('sum-semana1').textContent = tagCounts.semana1;
+  document.getElementById('sum-maio').textContent = tagCounts.maio;
+  document.getElementById('sum-junho').textContent = tagCounts.junho;
+
+  ['phase-1','phase-2','phase-3','phase-4'].forEach(pid => {
+    const phaseItems = document.querySelectorAll(`.check-item[data-phase="${pid}"]`);
+    let pt = 0, pd = 0;
+    phaseItems.forEach(item => { pt++; if (state[getItemId(item)]) pd++; });
+    const pct = pt ? Math.round(pd/pt*100) : 0;
+    document.getElementById(`pct-${pid}`).textContent = pct + '%';
+    document.getElementById(`bar-${pid}`).style.width = pct + '%';
+  });
+
+  document.getElementById('celebration').classList.toggle('show', done === total && total > 0);
+}
+
+function togglePhase(pid) {
+  const body = document.getElementById('body-' + pid);
+  const toggle = document.getElementById('toggle-' + pid);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+}
+
+function restoreState() {
+  const state = loadState();
+  document.querySelectorAll('.check-item').forEach(item => {
+    const id = getItemId(item);
+    if (state[id]) {
+      item.querySelector('.check-box').classList.add('checked');
+      item.classList.add('done');
+      item.querySelector('.item-title').classList.add('done-text');
+    }
+  });
+  updateAll();
+}
+
+restoreState();
+</script>
+
+</body>
+</html>
