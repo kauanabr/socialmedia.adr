@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro Estratégico · 04.05.2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --carbon:#1F1F1F;--carbon-mid:#2a2a2a;
+  --gold:#DCB559;--gold-light:#e8c97a;--gold-faint:rgba(220,181,89,0.07);
+  --prussian:#163446;--white:#FFFFFF;
+  --silver:rgba(255,255,255,0.55);--muted:rgba(255,255,255,0.3);
+  --border:rgba(220,181,89,0.15);--subtle:rgba(255,255,255,0.07);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--carbon);color:var(--white);
+  font-family:'Inter',sans-serif;font-weight:300;
+  font-size:15px;line-height:1.75;
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(31,31,31,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{
+  font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;
+  color:var(--gold);letter-spacing:.04em;
+}
+.nav-back{
+  font-size:10px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .2s;
+}
+.nav-back:hover{color:var(--gold-light)}
+
+.hero{
+  padding:120px 80px 60px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 80% 20%,rgba(22,52,70,0.4) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:10px;font-weight:400;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(40px,5vw,72px);font-weight:300;
+  line-height:1.05;letter-spacing:-.02em;max-width:800px;
+}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-desc{
+  margin-top:20px;font-size:14px;font-weight:300;
+  color:var(--silver);max-width:560px;line-height:1.85;
+}
+.hero-meta{
+  margin-top:32px;display:flex;gap:32px;flex-wrap:wrap;
+  font-size:11px;color:var(--muted);letter-spacing:.06em;
+}
+.hero-meta strong{color:var(--gold);font-weight:400}
+
+.content{padding:40px 80px 100px;max-width:960px}
+
+.section-label{
+  font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin:48px 0 20px;display:flex;align-items:center;gap:14px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--subtle)}
+
+.accordion{margin-bottom:8px}
+.accordion-header{
+  width:100%;padding:18px 24px;background:rgba(255,255,255,.025);
+  border:1px solid var(--subtle);cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all .25s;text-align:left;
+}
+.accordion-header:hover{
+  border-color:var(--border);background:var(--gold-faint);
+}
+.accordion-header.open{
+  border-color:var(--border);background:var(--gold-faint);
+  border-bottom:1px solid transparent;
+}
+.accordion-title{
+  font-size:14px;font-weight:500;color:var(--white);letter-spacing:-.005em;
+  display:flex;align-items:center;gap:14px;
+}
+.accordion-num{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;
+  color:var(--gold);opacity:.5;
+}
+.accordion-toggle{
+  font-size:18px;color:var(--gold);opacity:.5;
+  transition:transform .3s,opacity .25s;
+}
+.accordion-header.open .accordion-toggle{
+  transform:rotate(45deg);opacity:.9;
+}
+.accordion-body{
+  display:none;padding:8px 24px 28px;
+  border:1px solid var(--border);border-top:none;
+  background:rgba(255,255,255,.015);
+}
+.accordion-body.open{display:block;animation:slideDown .3s ease}
+
+@keyframes slideDown{
+  from{opacity:0;transform:translateY(-6px)}
+  to{opacity:1;transform:none}
+}
+
+.acc-content{font-size:14px;color:rgba(255,255,255,.78);line-height:1.85}
+.acc-content p{margin-bottom:14px}
+.acc-content strong{color:var(--white);font-weight:500}
+.acc-content em{font-style:italic;color:var(--gold-light)}
+
+.acc-list{
+  list-style:none;display:flex;flex-direction:column;gap:8px;
+  margin-top:8px;
+}
+.acc-list li{
+  padding:10px 16px;background:rgba(255,255,255,.03);
+  border-left:2px solid var(--gold);font-size:13px;
+  color:rgba(255,255,255,.7);line-height:1.65;
+}
+.acc-list li strong{color:var(--white);font-weight:500}
+
+.tag{
+  display:inline-block;font-size:9px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:3px 9px;border-radius:2px;margin-left:auto;
+}
+.tag-decided{background:rgba(99,153,34,.15);color:#97C459}
+.tag-pending{background:rgba(220,181,89,.15);color:var(--gold-light)}
+.tag-priority{background:rgba(127,119,221,.15);color:#AFA9EC}
+
+.note{
+  margin-top:14px;padding:14px 18px;
+  background:rgba(22,52,70,.25);border-left:2px solid #5DA8C8;
+}
+.note-label{
+  font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:#5DA8C8;margin-bottom:6px;
+}
+.note-text{font-size:12px;color:rgba(255,255,255,.6);line-height:1.7}
+
+.actions{
+  margin-top:60px;padding:32px;
+  background:rgba(220,181,89,.04);border:1px solid var(--border);
+  border-left:3px solid var(--gold);
+}
+.actions-title{
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;
+  color:var(--white);margin-bottom:16px;
+}
+.actions-list{
+  list-style:none;display:flex;flex-direction:column;gap:6px;
+}
+.actions-list li{
+  padding:10px 0;border-bottom:1px solid var(--subtle);
+  font-size:13px;color:rgba(255,255,255,.7);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.actions-list li::before{
+  content:'→';color:var(--gold);font-weight:500;flex-shrink:0;
+}
+
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .hero,.content{padding-left:24px;padding-right:24px}
+  .hero{padding-top:90px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Registro Estratégico · 04.05.2026</div>
+  <a href="index.html" class="nav-back">← Voltar ao início</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Sessão de trabalho · 04 de maio de 2026</div>
+  <h1 class="hero-title">Registro<br><em>Estratégico.</em></h1>
+  <p class="hero-desc">
+    Documentação completa de tudo que foi decidido, definido e construído na sessão de trabalho do dia 04 de maio de 2026 sobre a estratégia de social media para André Finguer.
+  </p>
+  <div class="hero-meta">
+    <span><strong>9h sessão</strong> · estratégia + execução</span>
+    <span><strong>15 decisões</strong> tomadas</span>
+    <span><strong>5 itens</strong> pendentes de definição</span>
+  </div>
+</section>
+
+<div class="content">
+
+<div class="section-label">Decisões Estratégicas</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">01</span> Posicionamento do André</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>André se posiciona como <strong>estrategista do patrimônio</strong> — que enxerga o conjunto e orquestra os especialistas. Não como especialista técnico em Planejamento Patrimonial.</p>
+      <p>Em <strong>Planejamento Patrimonial</strong>, ele tem repertório por experiência mas não vai se posicionar como especialista jurídico. Quando aprofundar regulamentação ou estruturas, traz convidados especializados.</p>
+      <p>Em <strong>FIDC, MFO, gestão imobiliária e investimentos</strong>, ele tem domínio completo e fala como especialista de fato. Essas são as áreas técnicas dele.</p>
+      <div class="note">
+        <div class="note-label">Por que esse posicionamento</div>
+        <div class="note-text">Especialista em sucessão tem milhares — advogado tributarista. Estrategista que enxerga o todo tem poucos. Esse posicionamento é mais raro e mais valioso comercialmente.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">02</span> Foco dos primeiros 90 dias</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Objetivo primário: <strong>construir autoridade qualificada</strong> em Planejamento Patrimonial.</p>
+      <p>Os outros objetivos — agendamentos qualificados, palestras, network — são consequência natural da autoridade bem construída, não objetivos paralelos.</p>
+      <p>Conceito de referência: <em>Personal Brand Equity</em> — quando o nome da pessoa vira sinônimo de uma especialidade no mercado.</p>
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">03</span> Três tipos de conteúdo</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Toda peça de conteúdo se enquadra em um dos três tipos:</p>
+      <ul class="acc-list">
+        <li><strong>Diagnóstico</strong> — fala da dor, identifica o problema, instala dúvida. Funciona para descoberta e consideração.</li>
+        <li><strong>Educação Estratégica</strong> — ensina o framework de como pensar sobre o problema, sem dar a solução completa. Constrói autoridade.</li>
+        <li><strong>Demonstração de Repertório</strong> — André aplicando seu raciocínio a casos compostos, dando opinião sobre cenários reais. É o que faz alguém ser convidado para palestra.</li>
+      </ul>
+      <p style="margin-top:16px">A maioria dos perfis fica preso no primeiro tipo. Para autoridade, palestras e network — os outros dois são essenciais.</p>
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">04</span> Mapeamento dos 6 blocos do copyzão</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <ul class="acc-list">
+        <li><strong>Bloco 1</strong> — Dor que ninguém nomeia · <em>Diagnóstico</em></li>
+        <li><strong>Bloco 2</strong> — Briga que destrói · <em>Diagnóstico + Educação Leve</em></li>
+        <li><strong>Bloco 3</strong> — Você tem patrimônio mas não tem estrutura · <em>Educação Estratégica</em></li>
+        <li><strong>Bloco 4</strong> — Holding · <em>Educação Estratégica + Demonstração</em></li>
+        <li><strong>Bloco 5</strong> — Sucessão e governança · <em>Educação + Demonstração</em></li>
+        <li><strong>Bloco 6</strong> — Offshore, FIDC, imobiliário · <em>Demonstração de Repertório</em></li>
+      </ul>
+      <p style="margin-top:16px">Sequência de produção e publicação segue ordem dos blocos: dor → educação → demonstração.</p>
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">05</span> Signature Format</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Conceito: <strong>Identity-Based Content</strong> — conteúdo que filtra audiência ao invés de viralizar.</p>
+      <p>O ICP de R$50M+ é raro. O algoritmo entrega para audiência ampla, não para audiência rara. Viralizar atrairia público errado.</p>
+      <p>Referências: Pedro Sobral (tráfego pago) e Rafael Kiso (algoritmo) constroem autoridade desse jeito — quem é do nicho se reconhece, quem não é, ignora.</p>
+      <div class="note">
+        <div class="note-label">Modelo Cliffhanger Sequencing</div>
+        <div class="note-text">Vídeo de abertura como trailer da série. Apresenta os 6 temas e cria expectativa para os próximos episódios. Esquenta o algoritmo sem queimar conteúdo bom — e filtra audiência desde o primeiro post.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">Decisões de Plataforma</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">06</span> Hierarquia de plataformas</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Ordem de prioridade definida pelo comportamento do ICP:</p>
+      <ul class="acc-list">
+        <li><strong>1. Google + GMN</strong> — atalho mais rápido para o André existir como entidade pesquisável</li>
+        <li><strong>2. YouTube</strong> — segundo maior mecanismo de busca, indexa por anos, peça-mãe da produção</li>
+        <li><strong>3. TikTok</strong> — em avaliação. Comportamento da Gen Z sucessora do ICP atual</li>
+        <li><strong>4. Instagram</strong> — currículo visual, validação de quem ouviu falar</li>
+        <li><strong>5. LinkedIn</strong> — onde o decisor está, qualidade vence frequência</li>
+      </ul>
+      <p style="margin-top:16px"><strong>Spotify</strong> entra como canal complementar via vídeo longo do YouTube. <strong>Substack</strong> existe como Além do Capital — canal estratégico de longo prazo. <strong>Threads</strong> como conversacional diário. <strong>Reddit</strong> no radar como repositório de pesquisa de dores.</p>
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">07</span> Cadência por plataforma</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Princípio: <strong>frequência de impacto, não de postagem</strong> (Kiso). Janela ideal de 3 a 4 impactos semanais sobre a mesma pessoa.</p>
+      <ul class="acc-list">
+        <li><strong>YouTube + Spotify</strong> — 2 vídeos longos por mês (quinzenal)</li>
+        <li><strong>Reels Instagram + Shorts + TikTok</strong> — 3 por semana (cortes do vídeo longo)</li>
+        <li><strong>Carrossel Instagram</strong> — 1 por semana</li>
+        <li><strong>LinkedIn</strong> — 1 post nativo por semana (não artigo longo)</li>
+        <li><strong>Threads</strong> — 5 por semana (frases do copyzão)</li>
+        <li><strong>Substack</strong> — 2 por mês (1 tema central + 1 carta pessoal)</li>
+      </ul>
+      <p style="margin-top:16px">Total: aproximadamente 10 a 11 publicações por semana — viáveis com 1 dia de gravação por mês mais produção contínua a partir do copyzão.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">Decisões de Produção</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">08</span> Modelo de produção</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Modelo: <strong>Pillar Content + Punch-Out Recording</strong>.</p>
+      <p>Vídeo longo no YouTube como peça-mãe. Punch-outs marcados antes da gravação — entre 6 e 8 momentos por vídeo identificados como Reels potenciais.</p>
+      <p>Durante a gravação, André entrega esses punch-outs com energia ligeiramente maior e desenvolve a ideia por 30 a 60 segundos. Na edição, esses trechos são extraídos como Reels.</p>
+      <p><strong>IA para primeiro corte</strong> — Opus Clip, Vizard.ai ou Submagic. <strong>Revisão humana</strong> obrigatória para corte final, gancho dos primeiros 3 segundos, legendas em português e termos técnicos.</p>
+      <p>Para Substack — modelo <strong>Voice-to-Text</strong>. André grava áudio de 20 a 30 minutos sobre o tema, transcrição via Otter.ai ou Whisper, edição preservando a voz dele.</p>
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">09</span> Estética e tom visual</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Princípio: <strong>autenticidade Mfield + Stealth Wealth</strong>. 77% dos consumidores engajam mais com conteúdo genuíno (Mfield Mapa da Influência 2026). ICP de alto patrimônio rejeita ostentação.</p>
+      <ul class="acc-list">
+        <li><strong>Câmera profissional</strong> — comunica seriedade institucional</li>
+        <li><strong>Escritório real da Somma</strong> em Jaraguá do Sul — não estúdio cenográfico</li>
+        <li><strong>Camisa social sem terno, sem gravata</strong> — casual elegante</li>
+        <li><strong>Cenário sem produção excessiva</strong> — pode aparecer quadro, planta natural, papel sobre a mesa</li>
+        <li><strong>Postura natural</strong> — sentado de forma confortável, gestos naturais, eventuais pausas</li>
+        <li><strong>Identidade visual minimalista</strong> — paleta restrita do brandbook (carbon e ouro), tipografia limpa</li>
+      </ul>
+      <div class="note">
+        <div class="note-label">Assinatura animada como abertura</div>
+        <div class="note-text">Em avaliação. Logo Reveal Personalizado com a assinatura manuscrita do André animada — assinatura visual única da série Além do Capital. Tecnicamente viável com After Effects, Canva Pro ou Capcut. Precisa da assinatura em vetor.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">10</span> Voz do André</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Análise feita com base em vídeos reais dele falando — podcast antigo de 3 anos atrás e episódio recente do Além do Capital com convidado.</p>
+      <ul class="acc-list">
+        <li><strong>Frases curtas com impacto crescente</strong></li>
+        <li><strong>Reframe como estrutura natural</strong> — pega uma crença e vira</li>
+        <li><strong>Bullets como sequência de raciocínio</strong>, não como lista de tópicos</li>
+        <li><strong>Perguntas retóricas frequentes</strong> — "Como assim, André?", "Tá bom?"</li>
+        <li><strong>"Acho que" como entrada de opinião</strong> — humildade epistêmica</li>
+        <li><strong>"A gente" em vez de "vocês"</strong> — aproximação com o ouvinte</li>
+        <li><strong>Tom de conversa com cliente</strong>, não de pitch ou aula</li>
+        <li><strong>Construção de autoridade por experiência narrada</strong>, não por declaração de títulos</li>
+      </ul>
+      <div class="note">
+        <div class="note-label">Atualização necessária</div>
+        <div class="note-text">O Guia de Produção atual contém uma versão da voz baseada em posts gerados por IA. Precisa ser atualizado com essa nova base — material real de fala dele. Item pendente.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">Decisões de Identidade Editorial</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">11</span> Quadro fixo Além do Capital</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Conceito unificado da série: <strong>Além do Capital</strong>. Já é o nome do Substack do André — agora vira nome do quadro fixo no YouTube e do conceito editorial geral.</p>
+      <p>Adaptado para cada plataforma:</p>
+      <ul class="acc-list">
+        <li><strong>YouTube longo</strong> — episódio completo de 15 a 30 minutos sobre um tema do copyzão</li>
+        <li><strong>Spotify</strong> — mesma gravação do YouTube em versão áudio</li>
+        <li><strong>Instagram Reels e TikTok</strong> — punch-outs do episódio em 60 segundos</li>
+        <li><strong>LinkedIn</strong> — post nativo com pontos centrais do episódio</li>
+        <li><strong>Threads</strong> — frases fortes do episódio</li>
+        <li><strong>Substack</strong> — versão escrita aprofundada do tema</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">12</span> Rubrica No Radar</span>
+    <span class="tag tag-pending">Pendente</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Proposta: usar <strong>"No Radar"</strong> como rubrica específica dentro de Além do Capital — para análises quinzenais de mercado, separadas dos episódios temáticos profundos.</p>
+      <p>Justificativa: "Radar" é palavra que André e o time da Somma usam naturalmente. Vocabulário interno virando marca externa.</p>
+      <div class="note">
+        <div class="note-label">Pendente</div>
+        <div class="note-text">Aguardando validação do André para confirmar uso da rubrica.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">Estratégia de Conteúdo Tema 1</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">13</span> Copyzão Planejamento Patrimonial</span>
+    <span class="tag tag-decided">Concluído</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Documento de 4 mil palavras dividido em 6 blocos progressivos. Estrutura: dor emocional → diagnóstico → estrutura técnica.</p>
+      <ul class="acc-list">
+        <li><strong>Bloco 1</strong> — A dor que ninguém nomeia: morte, silêncio</li>
+        <li><strong>Bloco 2</strong> — A briga que destrói o que levou décadas para construir</li>
+        <li><strong>Bloco 3</strong> — Você tem patrimônio mas não tem estrutura</li>
+        <li><strong>Bloco 4</strong> — Holding familiar: proteção, não apenas economia de imposto</li>
+        <li><strong>Bloco 5</strong> — Sucessão e governança</li>
+        <li><strong>Bloco 6</strong> — Offshore, FIDC e gestão imobiliária</li>
+      </ul>
+      <p style="margin-top:16px">Cada bloco gera potencial de 6 a 8 peças de conteúdo. Total: 36 a 48 peças derivadas. Referências verificáveis com links — sem fontes inventadas.</p>
+      <p>Tom: didático moderno (linha FGV/Insper), formal sem pesar, próximo ao ICP de R$50M+.</p>
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">14</span> Sequência de produção</span>
+    <span class="tag tag-decided">Decidido</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Estrutura de série definida — primeiros 7 episódios:</p>
+      <ul class="acc-list">
+        <li><strong>Episódio 0 — Vídeo de abertura</strong> · trailer da série, apresenta os 6 temas, 5 a 7 minutos</li>
+        <li><strong>Episódio 1 — Bloco 1</strong> · A dor que ninguém nomeia · 20 a 25 minutos</li>
+        <li><strong>Episódio 2 — Bloco 2</strong> · A briga que destrói</li>
+        <li><strong>Episódio 3 — Bloco 3</strong> · Diagnóstico patrimonial</li>
+        <li><strong>Episódio 4 — Bloco 4</strong> · Holding familiar</li>
+        <li><strong>Episódio 5 — Bloco 5</strong> · Sucessão e governança</li>
+        <li><strong>Episódio 6 — Bloco 6</strong> · Offshore, FIDC, imobiliário</li>
+      </ul>
+      <p style="margin-top:16px">Cada episódio gera 6 a 8 Reels, 1 carrossel, 1 post LinkedIn, 5 Threads e 1 Substack. Cobertura prevista: 2 a 3 semanas de publicação por episódio.</p>
+    </div>
+  </div>
+</div>
+
+<div class="accordion">
+  <button class="accordion-header" onclick="tog(this)">
+    <span class="accordion-title"><span class="accordion-num">15</span> Roteiros gravação maio</span>
+    <span class="tag tag-decided">Concluído</span>
+    <span class="accordion-toggle">+</span>
+  </button>
+  <div class="accordion-body">
+    <div class="acc-content">
+      <p>Roteiros do <strong>vídeo de abertura</strong> e do <strong>Bloco 1</strong> finalizados em formato de tópicos com punch-outs marcados.</p>
+      <p>Estrutura adaptada ao estilo do André — mapa de raciocínio ao invés de script literal. Profissionais que dominam o tema não precisam decorar.</p>
+      <p>Punch-outs sinalizados visualmente para o André saber em quais momentos entregar com energia maior e desenvolver por 30 a 60 segundos — gerando Reels limpos para extração.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">Pendências e Próximos Passos</div>
+
+<div class="actions">
+  <div class="actions-title">Próximos passos por prioridade</div>
+  <ul class="actions-list">
+    <li><strong>Cronograma completo dos primeiros 90 dias</strong> · com calendário editorial · principal próximo passo</li>
+    <li><strong>Configurar Google Meu Negócio</strong> do André · esta semana</li>
+    <li><strong>Confirmar data da gravação</strong> com o André · ele confirma após ler o copyzão e os roteiros</li>
+    <li><strong>Identidade visual dos cortes</strong> · usar brandbook do André · capas, legendas, tipografia</li>
+    <li><strong>Avaliar assinatura manuscrita animada</strong> · se viável, virar abertura padrão dos vídeos</li>
+    <li><strong>Definir com André</strong> · estratégia de convidados (advogado tributarista, especialista Real Estate EUA, especialista FIDC)</li>
+    <li><strong>Avaliar com André</strong> · estratégia de TikTok considerando comportamento da Gen Z sucessora</li>
+    <li><strong>Validar com André</strong> · uso da rubrica "No Radar" dentro de Além do Capital</li>
+  </ul>
+</div>
+
+<div class="actions" style="margin-top:24px;border-left-color:#AFA9EC;background:rgba(127,119,221,.04)">
+  <div class="actions-title" style="font-size:18px">Documentos que precisam ser atualizados</div>
+  <ul class="actions-list">
+    <li><strong>Checklist de Ativação</strong> · rever com base nas decisões novas (Reel 3 removido, voz do André atualizada, etc)</li>
+    <li><strong>Guia de Produção</strong> · atualizar a seção de voz do André com a nova base (vídeos reais ao invés de posts gerados por IA)</li>
+    <li><strong>Banco de Temas</strong> · possíveis ajustes de tom</li>
+    <li><strong>Plano de Maio</strong> · possíveis ajustes (Reel 3 já confirmado para remoção)</li>
+  </ul>
+</div>
+
+</div>
+
+<script>
+function tog(btn){
+  const body=btn.nextElementSibling;
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  btn.classList.toggle('open',!isOpen);
+}
+</script>
+
+</body>
+</html>

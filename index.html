@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media · André Finguer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --carbon: #1F1F1F;
+  --gold: #DCB559;
+  --gold-light: #e8c97a;
+  --gold-faint: rgba(220,181,89,0.08);
+  --prussian: #163446;
+  --white: #FFFFFF;
+  --silver: rgba(255,255,255,0.5);
+  --muted: rgba(255,255,255,0.28);
+  --border: rgba(220,181,89,0.15);
+  --subtle: rgba(255,255,255,0.06);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--carbon);
+  color: var(--white);
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+body::before {
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;opacity:0.35;
+}
+
+/* LAYOUT */
+.wrap {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+/* LEFT — brand */
+.left {
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.left::after {
+  content: 'AF';
+  position: absolute;
+  bottom: -40px; right: -20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 280px;
+  font-weight: 300;
+  color: rgba(220,181,89,0.03);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.brand-tag {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.35s forwards;
+}
+
+.brand-name em {
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+}
+
+.brand-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--silver);
+  line-height: 1.85;
+  max-width: 380px;
+  margin-top: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s forwards;
+}
+
+.brand-meta {
+  opacity: 0;
+  animation: fadeUp 0.8s 0.65s forwards;
+}
+
+.brand-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.meta-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.meta-text {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+/* RIGHT — nav */
+.right {
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+
+.doc-link {
+  display: flex;
+  align-items: stretch;
+  text-decoration: none;
+  border: 1px solid var(--subtle);
+  transition: border-color 0.25s, background 0.25s;
+  opacity: 0;
+  transform: translateY(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.doc-link::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--gold);
+  transform: scaleY(0);
+  transition: transform 0.25s;
+  transform-origin: bottom;
+}
+
+.doc-link:hover {
+  border-color: var(--border);
+  background: var(--gold-faint);
+}
+
+.doc-link:hover::before { transform: scaleY(1); }
+
+.doc-link:hover .doc-arrow { transform: translateX(4px); }
+
+.doc-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--gold);
+  opacity: 0.4;
+  padding: 24px 20px;
+  border-right: 1px solid var(--subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  flex-shrink: 0;
+}
+
+.doc-body {
+  padding: 20px 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+
+.doc-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+
+.doc-desc {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.doc-arrow {
+  padding: 20px 20px 20px 0;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: var(--gold);
+  opacity: 0.4;
+  transition: transform 0.25s, opacity 0.25s;
+  flex-shrink: 0;
+}
+
+.doc-link:hover .doc-arrow { opacity: 0.8; }
+
+.doc-tag {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-top: 4px;
+  width: fit-content;
+}
+
+.tag-strategy { background: rgba(220,181,89,0.12); color: var(--gold-light); }
+.tag-plan { background: rgba(55,138,221,0.12); color: #85B7EB; }
+.tag-themes { background: rgba(0,115,116,0.12); color: #24C6C1; }
+.tag-checklist { background: rgba(127,119,221,0.12); color: #AFA9EC; }
+.tag-guide { background: rgba(99,153,34,0.12); color: #97C459; }
+
+/* FOOTER */
+footer {
+  padding: 24px 64px;
+  border-top: 1px solid var(--subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.footer-note {
+  font-size: 10px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.08em;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(16px); }
+  to { opacity:1; transform: none; }
+}
+
+@media (max-width: 768px) {
+  .wrap { grid-template-columns: 1fr; }
+  .left {
+    padding: 60px 28px 48px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    min-height: auto;
+  }
+  .left::after { display: none; }
+  .right { padding: 40px 28px 60px; }
+  footer { padding: 20px 28px; flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div>
+      <div class="brand-tag">Social Media · 2026</div>
+      <h1 class="brand-name">
+        André<br>
+        <em>Finguer</em>
+      </h1>
+      <p class="brand-desc">
+        Estratégia completa de posicionamento digital para André Finguer, Gestor Patrimonial — Somma Multi-Family Office. Foco em patrimônios acima de R$50 milhões no Brasil.
+      </p>
+    </div>
+    <div class="brand-meta">
+      <div class="brand-meta-line">
+        <div class="meta-dot"></div>
+        <div class="meta-text">CFP® · Multi-Family Office · R$18Bi AUM</div>
+      </div>
+      <div class="brand-meta-line">
+        <div class="meta-dot"></div>
+        <div class="meta-text">LinkedIn · Instagram · Threads · WhatsApp</div>
+      </div>
+      <div class="brand-meta-line">
+        <div class="meta-dot"></div>
+        <div class="meta-text">Estratégia + Princípios Rafael Kiso</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+
+    <a href="estrategia.html" class="doc-link" style="animation: fadeUp 0.6s 0.3s forwards;">
+      <div class="doc-num">01</div>
+      <div class="doc-body">
+        <div class="doc-title">Estratégia Completa</div>
+        <div class="doc-desc">Posicionamento, funil editorial, pilares, plataformas, Kiso, quadro fixo e temas prioritários.</div>
+        <span class="doc-tag tag-strategy">Visão estratégica</span>
+      </div>
+      <div class="doc-arrow">→</div>
+    </a>
+
+    <a href="plano.html" class="doc-link" style="animation: fadeUp 0.6s 0.42s forwards;">
+      <div class="doc-num">02</div>
+      <div class="doc-body">
+        <div class="doc-title">Plano de Maio</div>
+        <div class="doc-desc">Calendário editorial interativo, cadência semanal e formatos de Reel classificados.</div>
+        <span class="doc-tag tag-plan">Calendário · Execução</span>
+      </div>
+      <div class="doc-arrow">→</div>
+    </a>
+
+    <a href="banco-temas.html" class="doc-link" style="animation: fadeUp 0.6s 0.54s forwards;">
+      <div class="doc-num">03</div>
+      <div class="doc-body">
+        <div class="doc-title">Banco de Temas</div>
+        <div class="doc-desc">28 temas extraídos do blog da Somma e EconomiaSC, já na linguagem e nível do André. Filtráveis por categoria.</div>
+        <span class="doc-tag tag-themes">Biblioteca de ideias</span>
+      </div>
+      <div class="doc-arrow">→</div>
+    </a>
+
+    <a href="checklist.html" class="doc-link" style="animation: fadeUp 0.6s 0.66s forwards;">
+      <div class="doc-num">04</div>
+      <div class="doc-body">
+        <div class="doc-title">Checklist de Ativação</div>
+        <div class="doc-desc">Tudo que precisa acontecer antes de 28/04 e ao longo de maio. Progresso salvo automaticamente.</div>
+        <span class="doc-tag tag-checklist">Checklist interativo</span>
+      </div>
+      <div class="doc-arrow">→</div>
+    </a>
+
+    <a href="guia-producao.html" class="doc-link" style="animation: fadeUp 0.6s 0.78s forwards;">
+      <div class="doc-num">05</div>
+      <div class="doc-body">
+        <div class="doc-title">Guia de Produção</div>
+        <div class="doc-desc">Voz e copy do André, templates de roteiro Autoridade e Despertar, copies prontos e estratégia WhatsApp.</div>
+        <span class="doc-tag tag-guide">Referência de produção</span>
+      </div>
+      <div class="doc-arrow">→</div>
+    </a>
+
+    <a href="copyzao.html" class="doc-link" style="animation: fadeUp 0.6s 0.90s forwards;">
+      <div class="doc-num">06</div>
+      <div class="doc-body">
+        <div class="doc-title">Copy · Planejamento Patrimonial</div>
+        <div class="doc-desc">6 blocos temáticos sobre planejamento patrimonial. 36+ peças derivadas para Reel, carrossel, LinkedIn, Substack, YouTube e Threads.</div>
+        <span class="doc-tag tag-strategy">Além do Capital</span>
+      </div>
+      <div class="doc-arrow">→</div>
+    </a>
+
+    <a href="roteiros.html" class="doc-link" style="animation: fadeUp 0.6s 1.02s forwards;">
+      <div class="doc-num">07</div>
+      <div class="doc-body">
+        <div class="doc-title">Roteiros de Gravação</div>
+        <div class="doc-desc">Mapa de raciocínio para o vídeo de abertura e Episódio 1 — A dor que ninguém nomeia. Tópicos, frases-âncora e punch-outs marcados para extração de Reels.</div>
+        <span class="doc-tag tag-plan">Maio 2026</span>
+      </div>
+      <div class="doc-arrow">→</div>
+    </a>
+
+    <a href="registro-estrategico.html" class="doc-link" style="animation: fadeUp 0.6s 1.14s forwards;">
+      <div class="doc-num">08</div>
+      <div class="doc-body">
+        <div class="doc-title">Registro Estratégico</div>
+        <div class="doc-desc">Documentação completa das decisões, definições e pendências da sessão de trabalho de 04 de maio de 2026.</div>
+        <span class="doc-tag tag-themes">Sessão 04.05</span>
+      </div>
+      <div class="doc-arrow">→</div>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">André Finguer · Somma MFO · 2026</div>
+  <div class="footer-note">ICP · patrimônio familiar acima de R$50 milhões</div>
+</footer>
+
+</body>
+</html>

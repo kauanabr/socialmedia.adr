@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roteiros de Gravação · Maio 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --carbon:#1F1F1F;--carbon-mid:#2a2a2a;
+  --gold:#DCB559;--gold-light:#e8c97a;--gold-faint:rgba(220,181,89,0.07);
+  --prussian:#163446;--white:#FFFFFF;
+  --silver:rgba(255,255,255,0.55);--muted:rgba(255,255,255,0.3);
+  --border:rgba(220,181,89,0.15);--subtle:rgba(255,255,255,0.07);
+  --punch:rgba(220,181,89,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--carbon);color:var(--white);
+  font-family:'Inter',sans-serif;font-weight:300;
+  font-size:15px;line-height:1.75;
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(31,31,31,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{
+  font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;
+  color:var(--gold);letter-spacing:.04em;
+}
+.nav-back{
+  font-size:10px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .2s;
+}
+.nav-back:hover{color:var(--gold-light)}
+
+.hero{
+  padding:120px 80px 60px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 80% 20%,rgba(22,52,70,0.4) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:10px;font-weight:400;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(40px,5vw,72px);font-weight:300;
+  line-height:1.05;letter-spacing:-.02em;max-width:800px;
+}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-desc{
+  margin-top:20px;font-size:14px;font-weight:300;
+  color:var(--silver);max-width:580px;line-height:1.85;
+}
+
+.intro{
+  margin:32px 80px 0;padding:24px 28px;
+  background:rgba(22,52,70,.2);border-left:2px solid #5DA8C8;
+  max-width:720px;
+}
+.intro-label{
+  font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:#5DA8C8;margin-bottom:10px;
+}
+.intro-text{font-size:13px;color:rgba(255,255,255,.7);line-height:1.8}
+.intro-text strong{color:var(--white);font-weight:500}
+
+.content{padding:40px 80px 100px;max-width:960px}
+
+.section-label{
+  font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin:48px 0 20px;display:flex;align-items:center;gap:14px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--subtle)}
+
+.episode{
+  margin-bottom:60px;
+}
+
+.ep-header{
+  padding:32px;background:rgba(255,255,255,.025);
+  border:1px solid var(--border);
+}
+.ep-num{
+  font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;
+}
+.ep-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;font-weight:300;line-height:1.2;
+  color:var(--white);margin-bottom:14px;
+}
+.ep-title em{font-style:italic;color:var(--gold)}
+.ep-meta{
+  display:flex;flex-wrap:wrap;gap:16px;
+  font-size:11px;color:var(--muted);letter-spacing:.04em;
+}
+.ep-meta span{display:flex;align-items:center;gap:6px}
+.ep-meta span::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--gold);opacity:.5;flex-shrink:0;
+}
+
+.accordion{margin-top:8px}
+.accordion-header{
+  width:100%;padding:16px 22px;background:rgba(255,255,255,.025);
+  border:1px solid var(--subtle);cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all .25s;text-align:left;
+}
+.accordion-header:hover{
+  border-color:var(--border);background:var(--gold-faint);
+}
+.accordion-header.open{
+  border-color:var(--border);background:var(--gold-faint);
+}
+.accordion-title{
+  font-size:14px;font-weight:500;color:var(--white);
+  display:flex;align-items:center;gap:14px;
+}
+.accordion-num{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;
+  color:var(--gold);opacity:.5;
+}
+.accordion-toggle{
+  font-size:18px;color:var(--gold);opacity:.5;
+  transition:transform .3s;
+}
+.accordion-header.open .accordion-toggle{transform:rotate(45deg)}
+
+.accordion-body{
+  display:none;padding:18px 24px 26px;
+  border:1px solid var(--border);border-top:none;
+  background:rgba(255,255,255,.015);
+}
+.accordion-body.open{display:block;animation:slideDown .3s ease}
+
+@keyframes slideDown{
+  from{opacity:0;transform:translateY(-6px)}
+  to{opacity:1;transform:none}
+}
+
+.acc-content{font-size:14px;color:rgba(255,255,255,.78);line-height:1.85}
+.acc-content p{margin-bottom:12px}
+.acc-content strong{color:var(--white);font-weight:500}
+.acc-content em{font-style:italic;color:var(--gold-light)}
+
+.bullets{
+  list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:8px;
+}
+.bullets li{
+  padding:8px 14px;background:rgba(255,255,255,.03);
+  border-left:2px solid var(--gold);font-size:13px;
+  color:rgba(255,255,255,.72);line-height:1.6;
+}
+
+.frase-ancora{
+  margin:14px 0;padding:16px 20px;
+  background:rgba(220,181,89,.05);border-left:2px solid var(--gold);
+  font-style:italic;color:rgba(255,255,255,.85);
+  font-family:'Cormorant Garamond',serif;font-size:16px;line-height:1.6;
+}
+.fa-label{
+  font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;font-style:normal;font-family:'Inter',sans-serif;
+}
+
+.direcao{
+  margin-top:12px;padding:12px 16px;
+  background:rgba(127,119,221,.06);border-left:2px solid #AFA9EC;
+  font-size:12px;color:rgba(255,255,255,.6);line-height:1.7;
+}
+.dir-label{
+  font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:#AFA9EC;margin-bottom:6px;
+}
+
+.punch-out{
+  margin:14px 0;padding:18px 22px;
+  background:var(--punch);border:1px solid var(--gold);
+  border-left:3px solid var(--gold);
+}
+.po-label{
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.po-label::before{
+  content:'⚡';font-size:14px;
+}
+.po-text{
+  font-size:13px;color:rgba(255,255,255,.85);line-height:1.7;
+}
+.po-text strong{color:var(--gold-light);font-weight:500}
+
+.notas{
+  margin-top:32px;padding:24px 28px;
+  background:rgba(99,153,34,.06);border:1px solid rgba(99,153,34,.2);
+  border-left:3px solid #97C459;
+}
+.notas-title{
+  font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:#97C459;margin-bottom:14px;
+}
+.notas-list{
+  list-style:none;display:flex;flex-direction:column;gap:8px;
+}
+.notas-list li{
+  padding:6px 0 6px 20px;font-size:13px;color:rgba(255,255,255,.7);
+  line-height:1.6;position:relative;
+}
+.notas-list li::before{
+  content:'•';position:absolute;left:6px;color:#97C459;
+}
+
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .hero,.content,.intro{padding-left:24px;padding-right:24px;margin-left:0;margin-right:0}
+  .hero{padding-top:90px}
+  .ep-header{padding:22px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Roteiros de Gravação · Além do Capital</div>
+  <a href="index.html" class="nav-back">← Voltar ao início</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Sessão de Gravação · Maio 2026</div>
+  <h1 class="hero-title">Roteiros<br><em>de Gravação.</em></h1>
+  <p class="hero-desc">
+    Mapa de raciocínio para o vídeo de abertura da série Além do Capital e para o Episódio 1 — A dor que ninguém nomeia. Material de apoio para a gravação.
+  </p>
+</section>
+
+<div class="intro">
+  <div class="intro-label">Como usar este documento</div>
+  <div class="intro-text">
+    Esses não são roteiros para serem decorados. São <strong>mapas de raciocínio</strong> — tópicos, frases-âncora opcionais e marcações de punch-outs. André usa como guia, fala naturalmente, adapta com as próprias palavras.<br><br>
+    Os <strong>punch-outs</strong> marcados em dourado são os trechos que viram Reels. Quando chegar num punch-out, fazer micropausa, entregar com energia ligeiramente maior e desenvolver a ideia por 30 a 60 segundos antes de mudar de assunto.<br><br>
+    A <strong>abertura</strong> está mais detalhada — funciona como modelo de referência para entender a lógica. O <strong>Bloco 1</strong> está em formato simplificado de tópicos.
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ABERTURA -->
+<div class="episode">
+  <div class="ep-header">
+    <div class="ep-num">Episódio 0 · Abertura</div>
+    <h2 class="ep-title">Apresentação<br><em>da série Além do Capital.</em></h2>
+    <div class="ep-meta">
+      <span>5 a 7 minutos</span>
+      <span>Escritório Somma · Jaraguá</span>
+      <span>Topo de funil</span>
+      <span>6 punch-outs marcados</span>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">01</span> Hook de abertura</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <p><strong>Tópicos a cobrir:</strong></p>
+        <ul class="bullets">
+          <li>Observação direta sobre o padrão que ele vê em famílias empresárias</li>
+          <li>Mencionar os 12 anos de experiência sem soar como currículo</li>
+          <li>Introduzir as 6 conversas como descoberta dessa observação</li>
+        </ul>
+
+        <div class="frase-ancora">
+          <div class="fa-label">Frase-âncora sugerida</div>
+          Nos últimos 12 anos eu tive acesso a uma quantidade de famílias empresárias que a maioria das pessoas não imagina. E em quase todas elas, eu observei o mesmo padrão. Existem 6 conversas que praticamente nunca acontecem em casa — e que, quando finalmente acontecem, mudam o destino do patrimônio dessas famílias.
+        </div>
+
+        <div class="direcao">
+          <div class="dir-label">Direção</div>
+          Pode adaptar com as próprias palavras. O essencial é o número (12 anos), a observação (padrão que se repete) e o gancho (6 conversas). Não precisa decorar. Não começar com "olá pessoal, eu sou o André" — o hook precisa criar tensão imediata.
+        </div>
+
+        <div class="punch-out">
+          <div class="po-label">Punch-out 01 · Reel</div>
+          <div class="po-text">
+            <strong>Frase-gancho do Reel:</strong> "Existem 6 conversas que praticamente nunca acontecem em famílias empresárias — e quando finalmente acontecem, mudam o destino do patrimônio."<br><br>
+            Após a frase, desenvolver por 30 a 50 segundos contando que esse padrão se repete em quase todas as famílias que ele atende. Pode dar prévia do que descobriu observando isso ao longo dos anos.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">02</span> Quem é o André</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <p><strong>Tópicos a cobrir:</strong></p>
+        <ul class="bullets">
+          <li>Apresentação curta — gestor patrimonial em Jaraguá do Sul, parte de MFO</li>
+          <li>Não falar de currículo formal — falar de experiência</li>
+          <li>Posicionar como estrategista que enxerga o conjunto, não como especialista técnico</li>
+        </ul>
+
+        <div class="frase-ancora">
+          <div class="fa-label">Frase-âncora sugerida</div>
+          Sou André Finguer. Sou Gestor Patrimonial e atuo em Jaraguá do Sul como parte de um Multi-Family Office com R$18 bilhões sob gestão. Mas o que eu quero dividir aqui não é o que eu faço — é o que eu observo. Porque depois de mais de uma década atendendo empresários que construíram patrimônios relevantes, eu percebi que o problema raramente é técnico. O problema é o que ninguém quis conversar antes.
+        </div>
+
+        <div class="direcao">
+          <div class="dir-label">Direção</div>
+          Tom próximo, sem soberba. Não citar casos de clientes específicos para evitar parecer exibição.
+        </div>
+
+        <div class="punch-out">
+          <div class="po-label">Punch-out 02 · Reel</div>
+          <div class="po-text">
+            <strong>Frase-gancho do Reel:</strong> "O problema raramente é técnico. O problema é o que ninguém quis conversar antes."<br><br>
+            Desenvolver por 30 a 50 segundos a observação de que padrões emocionais e de comunicação afetam mais o patrimônio do que decisões técnicas isoladas.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">03</span> Por que essa série existe agora</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <p><strong>Tópicos a cobrir:</strong></p>
+        <ul class="bullets">
+          <li>Reflexão genuína sobre o motivo de falar publicamente</li>
+          <li>Posicionar como provocação, não como aula</li>
+          <li>Deixar claro que ele não vem ensinar — vem provocar conversas</li>
+        </ul>
+
+        <div class="frase-ancora">
+          <div class="fa-label">Frase-âncora sugerida</div>
+          Eu poderia continuar atendendo essas famílias uma a uma. E é isso que eu faço todos os dias. Mas eu percebi que muitas conversas que eu tenho no meu escritório deveriam estar acontecendo muito antes — em outras casas, em outras famílias, em outros momentos. Por isso decidi criar essa série. Não para ensinar nada que você não saiba. Mas para te provocar a ter as conversas que talvez ainda não tenham acontecido aí na sua família.
+        </div>
+
+        <div class="direcao">
+          <div class="dir-label">Direção</div>
+          Tom genuíno, quase confessional. Posicionar como observador-provocador, não como professor. O ICP de R$50M+ não está procurando aula — está procurando reflexão.
+        </div>
+
+        <div class="punch-out">
+          <div class="po-label">Punch-out 03 · Reel</div>
+          <div class="po-text">
+            <strong>Frase-gancho do Reel:</strong> "Não estou aqui para ensinar nada que você não saiba. Estou aqui para te provocar a ter as conversas que ainda não aconteceram."<br><br>
+            Desenvolver por 30 a 50 segundos sobre o porquê dessa série não ser uma aula técnica — e sim um convite a refletir sobre o que está acontecendo em casa, na família, no patrimônio.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">04</span> Apresentação dos 6 temas</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <p>Apresentar cada tema em 30 a 60 segundos. Sem aprofundar — criar expectativa para os próximos episódios.</p>
+
+        <div class="frase-ancora">
+          <div class="fa-label">Tema 1 — A conversa que ninguém quer ter</div>
+          O primeiro tema é a conversa que ninguém quer ter. A conversa sobre o que acontece com o que você construiu, quando você não estiver mais aqui. Vou te mostrar por que esse silêncio tem custo — e ele é mensurável.
+        </div>
+
+        <div class="frase-ancora">
+          <div class="fa-label">Tema 2 — Brigas familiares</div>
+          O segundo tema é sobre as brigas familiares que destroem patrimônios construídos durante décadas. E vou te provar que essas brigas raramente começam por má-fé. Começam por algo muito mais simples: ambiguidade.
+        </div>
+
+        <div class="frase-ancora">
+          <div class="fa-label">Tema 3 — Diagnóstico patrimonial</div>
+          O terceiro tema é o diagnóstico mais desconfortável que eu faço com empresários. A diferença entre acumular patrimônio e estruturar patrimônio. A maioria dos meus clientes fez bem o primeiro. E não fez o segundo.
+        </div>
+
+        <div class="punch-out">
+          <div class="po-label">Punch-out 04 · Reel — provavelmente o mais forte da abertura</div>
+          <div class="po-text">
+            <strong>Frase-gancho do Reel:</strong> "A diferença entre acumular patrimônio e estruturar patrimônio. A maioria dos meus clientes fez bem o primeiro. E não fez o segundo."<br><br>
+            Desenvolver por 40 a 60 segundos a ideia de que acumular não é estruturar. Esse insight para o ICP de imediato. Reel forte para meio de funil.
+          </div>
+        </div>
+
+        <div class="frase-ancora">
+          <div class="fa-label">Tema 4 — Holding familiar</div>
+          O quarto tema é sobre a holding familiar. E aqui eu vou ser direto com você: a maioria das holdings que chegam até mim foram constituídas corretamente. O problema está no que aconteceu depois.
+        </div>
+
+        <div class="punch-out">
+          <div class="po-label">Punch-out 05 · Reel</div>
+          <div class="po-text">
+            <strong>Frase-gancho do Reel:</strong> "A maioria das holdings que chegam até mim foram constituídas corretamente. O problema está no que aconteceu depois."<br><br>
+            Desenvolver por 30 a 50 segundos sobre holding constituída mas mal mantida. Reel para instalar dúvida em quem já tem holding.
+          </div>
+        </div>
+
+        <div class="frase-ancora">
+          <div class="fa-label">Tema 5 — Sucessão e governança</div>
+          O quinto tema é sucessão e governança. As regras que a família precisa antes de precisar delas. Porque intenções não vinculam herdeiros — instrumentos jurídicos sim.
+        </div>
+
+        <div class="frase-ancora">
+          <div class="fa-label">Tema 6 — Patrimônio que ultrapassa fronteiras</div>
+          E o sexto tema é sobre quando o patrimônio ultrapassa fronteiras. Offshore, FIDC, Real Estate nos Estados Unidos. Estruturas que existem para patrimônios que cruzaram um ponto que muitos cruzaram sem perceber.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">05</span> Convite e fechamento</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <p><strong>Tópicos a cobrir:</strong></p>
+        <ul class="bullets">
+          <li>CTA claro para acompanhar a série</li>
+          <li>Inscrição no canal, seguir Instagram e LinkedIn</li>
+          <li>Compartilhar com alguém da família que precisa começar essa conversa</li>
+          <li>Fechamento com força: a conversa começa em casa, não no escritório</li>
+        </ul>
+
+        <div class="frase-ancora">
+          <div class="fa-label">Frase-âncora sugerida</div>
+          Cada um desses temas vai ter um episódio próprio. Vou trazer dado, vou trazer experiência, vou trazer caso. Mas, principalmente, vou te provocar a refletir sobre o que está acontecendo na sua família e no seu patrimônio agora. Se isso faz sentido pra você — me acompanhe. Inscreve aqui no canal, segue lá no Instagram, no LinkedIn. E principalmente: compartilhe esse vídeo com alguém da sua família que precisa começar essa conversa. Porque é assim que ela começa. Não na minha sala. Na sua casa.
+        </div>
+
+        <div class="direcao">
+          <div class="dir-label">Direção</div>
+          Tom firme mas próximo. Não é "se inscreve aí" genérico — é convite real para uma jornada de reflexão. O fechamento "não na minha sala, na sua casa" é o que diferencia essa abertura de qualquer outra de gestor patrimonial.
+        </div>
+
+        <div class="punch-out">
+          <div class="po-label">Punch-out 06 · Reel — fechamento da série</div>
+          <div class="po-text">
+            <strong>Frase-gancho do Reel:</strong> "A conversa não começa na minha sala. Começa na sua casa."<br><br>
+            Reel curto e forte. Funciona como teaser permanente para a série. Pode rodar como Reel autônomo várias vezes ao longo dos próximos meses.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notas">
+    <div class="notas-title">Notas gerais para a gravação — Abertura</div>
+    <ul class="notas-list">
+      <li>Usar roteiro como mapa, não como script</li>
+      <li>Manter o tom dos podcasts — direto, com perguntas retóricas, com pausas naturais</li>
+      <li>Nos punch-outs, dar uma respirada antes de falar a frase — entrega com energia ligeiramente maior</li>
+      <li>Camisa social sem terno, sem gravata — autenticidade Mfield</li>
+      <li>Olhar direto para a câmera, especialmente nos punch-outs</li>
+      <li>2 a 3 takes do vídeo todo se possível — escolher a melhor energia depois</li>
+      <li>Total estimado: 5 a 7 minutos de material final</li>
+    </ul>
+  </div>
+</div>
+
+<!-- BLOCO 1 -->
+<div class="episode">
+  <div class="ep-header">
+    <div class="ep-num">Episódio 1 · Bloco 1</div>
+    <h2 class="ep-title">A dor que ninguém nomeia<br><em>morte, silêncio e o que fica para trás.</em></h2>
+    <div class="ep-meta">
+      <span>20 a 25 minutos</span>
+      <span>Escritório Somma · Jaraguá</span>
+      <span>Topo + meio de funil</span>
+      <span>8 punch-outs marcados</span>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">01</span> Hook de abertura do bloco</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>Entrar direto no tema, sem preâmbulo</li>
+          <li>Observação sobre a conversa que famílias empresárias evitam ter</li>
+          <li>Posicionar como algo que ele vê com frequência</li>
+        </ul>
+        <div class="punch-out">
+          <div class="po-label">Punch-out 01 · Reel</div>
+          <div class="po-text">
+            André abre com a observação sobre a conversa que famílias empresárias não têm. Desenvolve por 40 a 60 segundos por que esse silêncio é compreensível mas tem custo. Gancho mais forte do bloco — Reel de descoberta.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">02</span> Por que essa conversa não acontece</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>Quem construiu patrimônio raramente dissocia isso da própria identidade</li>
+          <li>Falar sobre o que vem depois parece falar sobre o próprio fim</li>
+          <li>Não é negligência — é mecanismo de proteção emocional natural</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">03</span> O custo mensurável do silêncio</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>Mais de 1 milhão de processos de inventário em tramitação no Brasil — fonte CNJ</li>
+          <li>Prazo médio de inventário judicial supera 5 anos</li>
+          <li>Em casos de conflito, pode passar de uma década</li>
+          <li>Durante esse tempo, ativos ficam parcialmente bloqueados</li>
+        </ul>
+        <div class="punch-out">
+          <div class="po-label">Punch-out 02 · Reel</div>
+          <div class="po-text">
+            André entrega o dado dos 5 anos de prazo médio de inventário e desenvolve por 40 a 60 segundos o que isso significa na prática para uma família empresária — imóveis bloqueados, contas restringidas, decisões de negócio paradas. Reel forte de meio de funil.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">04</span> ITCMD e custo financeiro adicional</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>Imposto sobre transmissão pode chegar a 8% em alguns estados</li>
+          <li>Em patrimônios relevantes, é transferência compulsória de riqueza ao Estado</li>
+          <li>Custo pode ser significativamente reduzido com planejamento prévio</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">05</span> A ilusão da abundância</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>Crença silenciosa: "quando o momento chegar, vai ter recursos"</li>
+          <li>Patrimônio imobilizado em participações e imóveis não é liquidez</li>
+          <li>Empresário com R$30 milhões pode deixar herdeiros sem caixa para ITCMD</li>
+        </ul>
+        <div class="punch-out">
+          <div class="po-label">Punch-out 03 · Reel</div>
+          <div class="po-text">
+            Desenvolver "patrimônio grande não é o mesmo que liquidez" por 40 a 60 segundos. Trazer a observação de que abundância de patrimônio e escassez de liquidez imediata coexistem com mais frequência do que se imagina. Reel muito forte para o ICP — quase ninguém pensa nisso desse jeito.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">06</span> O que a morte revela</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>A morte de um patriarca não destrói patrimônios. A falta de preparo, sim</li>
+          <li>O que a morte faz é revelar tudo que estava implícito e nunca foi formalizado</li>
+          <li>Acordos verbais, participações não revisadas, imóveis no nome de pessoas falecidas</li>
+          <li>Quem achava que tinha direito ao quê</li>
+        </ul>
+        <div class="punch-out">
+          <div class="po-label">Punch-out 04 · Reel — possivelmente o mais forte do bloco</div>
+          <div class="po-text">
+            <strong>Frase-âncora:</strong> "A morte não destrói patrimônios. A falta de preparo, sim."<br><br>
+            Desenvolver por 40 a 60 segundos com observação sobre o que ele vê acontecer nesses momentos. Alta capacidade de viralização qualificada.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">07</span> O timing pior possível</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>Morte do patriarca frequentemente coincide com momento de maior vulnerabilidade do negócio</li>
+          <li>Empresa perde principal tomador de decisão exatamente quando precisa navegar processo legal complexo</li>
+          <li>Herdeiros com interesses divergentes</li>
+          <li>Operação que precisa continuar funcionando</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">08</span> Caso ilustrativo — opcional</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>Se quiser, trazer aqui caso composto sem identificar ninguém</li>
+          <li>Padrão observado em famílias com R$10 a 30 milhões de patrimônio</li>
+          <li>Foco nos comportamentos, não em pessoas</li>
+        </ul>
+        <div class="punch-out">
+          <div class="po-label">Punch-out 05 · Reel — se trouxer caso</div>
+          <div class="po-text">
+            Trecho do caso composto. Reel de demonstração de repertório — mostra que André viveu situações reais sem expor cliente nenhum.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">09</span> O silêncio como decisão</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>Não planejar não é omissão — é decisão</li>
+          <li>Decisão que transfere para herdeiros, sistema judicial e acaso o destino do patrimônio</li>
+          <li>Sucessão legítima nem sempre reflete a vontade do patriarca</li>
+          <li>Continuidade do negócio depende de consenso entre herdeiros num momento de luto</li>
+          <li>Valor do patrimônio pode ser erodido por custos, impostos e tempo</li>
+          <li>Relacionamentos construídos por décadas podem ser destruídos em meses</li>
+        </ul>
+        <div class="punch-out">
+          <div class="po-label">Punch-out 06 · Reel</div>
+          <div class="po-text">
+            Desenvolver "não planejar é uma decisão" por 40 a 60 segundos. Pode listar o que essa decisão transfere para herdeiros e sistema. Reel forte de provocação — instala responsabilidade.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">10</span> Reframe final do bloco</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>Planejamento patrimonial não é exercício de morbidez</li>
+          <li>É o ato mais concreto de cuidado que um patriarca pode ter com pessoas e legado</li>
+          <li>Não é desconfiança da família — é proteção da família</li>
+        </ul>
+        <div class="punch-out">
+          <div class="po-label">Punch-out 07 · Reel</div>
+          <div class="po-text">
+            <strong>Frase-âncora:</strong> "Planejamento patrimonial não é morbidez. É cuidado."<br><br>
+            Desenvolver por 30 a 50 segundos. Reel curto e forte — virada de perspectiva.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="tog(this)">
+      <span class="accordion-title"><span class="accordion-num">11</span> Fechamento do bloco</span>
+      <span class="accordion-toggle">+</span>
+    </button>
+    <div class="accordion-body">
+      <div class="acc-content">
+        <ul class="bullets">
+          <li>A pergunta certa não é se vai morrer — é o que deixou preparado</li>
+          <li>Não é tema para ser pensado depois — é tema para ser pensado agora</li>
+          <li>CTA para o próximo episódio: brigas familiares</li>
+          <li>Convite para compartilhar com alguém da família</li>
+        </ul>
+        <div class="punch-out">
+          <div class="po-label">Punch-out 08 · Reel</div>
+          <div class="po-text">
+            <strong>Frase-âncora:</strong> "A pergunta não é se você vai morrer. É o que deixou preparado para quando isso acontecer."<br><br>
+            Reel de fechamento e CTA — funciona muito bem como teaser para o próximo episódio.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notas">
+    <div class="notas-title">Notas gerais para a gravação — Bloco 1</div>
+    <ul class="notas-list">
+      <li>Usar tópicos como mapa de raciocínio</li>
+      <li>Falar naturalmente, com pausas, com perguntas retóricas no estilo dele</li>
+      <li>Não precisa cobrir todos os tópicos com a mesma profundidade — pode aprofundar onde sentir mais à vontade</li>
+      <li>Nos punch-outs, micropausa antes, energia maior, desenvolver por 30 a 60 segundos</li>
+      <li>Dados (CNJ, ITCMD) podem ser citados de forma natural — não precisa decorar números exatos</li>
+      <li>Ao final, sinalizar com naturalidade que é o primeiro de uma série</li>
+      <li>8 punch-outs cobrem 2 a 3 semanas de Reels só desse bloco</li>
+    </ul>
+  </div>
+</div>
+
+</div>
+
+<script>
+function tog(btn){
+  const body=btn.nextElementSibling;
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  btn.classList.toggle('open',!isOpen);
+}
+</script>
+
+</body>
+</html>
